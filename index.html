@@ -142,6 +142,15 @@ textarea.note{width:100%;min-height:64px;border:1px dashed var(--hair);border-ra
 body.offline .offlineBadge{display:block}
 .footer{margin:18px 12px 8px;text-align:center;font-size:11px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+.wx{display:flex;gap:10px;align-items:center;margin-top:8px;font-size:13.5px;color:var(--ink2)}
+.wx b{font-weight:600;color:var(--ink)}
+.wxHint{margin-top:8px;padding:9px 11px;border:1px dashed var(--rc,var(--faint));border-radius:9px;font-size:13px;color:var(--ink2);background:rgba(255,255,255,.4)}
+.lore{border:1px solid var(--hair);border-radius:10px;margin:7px 0;background:rgba(255,255,255,.45);overflow:hidden}
+.lore summary{padding:10px 12px;font-weight:600;font-size:14px;cursor:pointer;list-style:none;position:relative}
+.lore summary::-webkit-details-marker{display:none}
+.lore summary::after{content:"+";position:absolute;right:12px;top:8px;font-size:17px;color:var(--rc,var(--ink2));font-weight:400}
+.lore[open] summary::after{content:"–"}
+.lore .loreBody{padding:0 12px 11px;font-size:13.5px;line-height:1.55;color:var(--ink2)}
 </style>
 </head>
 <body>
@@ -166,14 +175,14 @@ const DATA=[
  transit:[{t:"19:45",l:"AVL → ATL · Delta DL2781",ref:"XI7BLD"},{t:"22:40",l:"ATL → AMS · KLM KL0622 (overnight)",ref:"XI7BLD"}],
  blocks:[
   {n:"Afternoon — Final checks",items:[
-   {b:"Apps installed on both phones",d:"Skyss, Ruter, Norled, Vy, Flåmsbana, Fløibanen, KLM, Delta, Airbnb — plus WhatsApp on all four phones for $0 calls over data."},
+   {b:"Apps installed on both adult phones + the spare",d:"Skyss, Ruter, Norled, Vy, Flåmsbana, Fløibanen, KLM, Delta, Airbnb, DOT (Copenhagen tickets) — plus WhatsApp for $0 calls over data. The boys' Apple Watches can't run WhatsApp; their intl text/iMessage roaming is confirmed, so messages reach them directly."},
    {b:"Offline Google Maps downloaded",d:"Bergen · inner Sognefjord/Balestrand · Flåm + Voss · Hardanger/Lofthus · Oslo · Drøbak · Copenhagen. Do it on home wifi."},
    {b:"T-Mobile roaming confirmed",d:"Both lines confirmed. Unlimited intl text + ~256 kbps data, calls $0.25/min, wifi calling on the main line. Nothing left to verify."}]},
   {n:"Evening — Fly",items:[
-   {b:"Seats on the AVL→ATL hop",d:"Dan 22B · Declan 22A · Gavin 23A · Melissa 23B. Transatlantic legs have no confirmed seats — check in early and grab pairs."},
-   {b:"Overnight leg strategy",d:"Eat the meal, then lights out — Bergen arrival is 4:55 PM local and the goal is walking to dinner, not napping."}]}],
+   {b:"Seats — both legs assigned",d:"AVL→ATL: Dan 22B · Declan 22A · Gavin 23A · Melissa 23B. ATL→AMS: row 41 middle block — Declan 41D · Gavin 41E · Dan 41F · Melissa 41G. All four together; no window, and that's fine for a sleep flight. AMS→BGO still unassigned — grab seats at online check-in."},
+   {b:"Overnight strategy: sleep first",d:"Wheels-up ATL is 22:40 — eat real food in the Atlanta terminal during the layover, then lights out as soon as you board. Skip the late meal service; wake to the in-flight breakfast ~90 min out of Amsterdam. Bergen arrival is 4:55 PM local and the goal is walking to dinner, not napping."}]}],
  phrase:{p:"God tur!",pr:"goo TOOR",e:"Have a good trip! — say it to each other at the gate."},
- boys:"Window seats over Greenland if the routing cooperates — and a movie marathon with zero screen-time rules tonight.",
+ boys:"Row 41, all four in a line — draft who sits next to whom. First one asleep after takeoff wins bragging rights; the breakfast tray over the North Atlantic is the prize.",
  customs:"Scandinavia is card-first from the second you land: no cash needed the entire trip, ever. Always choose local currency (NOK/DKK) if a terminal offers dollars.",
  book:[{l:"Outbound flights",r:"XI7BLD"}]},
 
@@ -185,7 +194,7 @@ const DATA=[
    {b:"Flybussen to the city center",d:"~30 min from the airport. Runs constantly; pay by card or app on board."},
    {b:"Check in — Lovely Terrace Airbnb",d:"Host Jonas · Lille Øvregaten 36E · after 3 PM.",q:"Lille Øvregaten 36E, Bergen",ref:"HMT5X8NM9C"}]},
   {n:"Evening — Land softly",items:[
-   {b:"Light dinner nearby or self-cater",d:"Grab basics at the nearest Kiwi/Rema 1000. Early sleep — tomorrow is the trip's first real day."}]}],
+   {b:"Light dinner nearby or self-cater",d:"Extra Øvregaten (Øvregaten 37) is literally across the street — open to 11 PM. Early sleep; tomorrow is the trip's first real day.",q:"Extra Øvregaten, Øvregaten 37, Bergen"}]}],
  phrase:{p:"Hei hei",pr:"hay hay",e:"Hi! — the doubled version is friendlier and what locals actually say."},
  boys:"First fjord sighting from the plane window on descent into Bergen — mountains straight into the sea.",
  snacks:"First Norwegian grocery run: grab a Kvikk Lunsj (Norway's beloved Kit-Kat-that-isn't), a tube of brunost brown cheese for morning bread, and a Solo orange soda for the boys.",
@@ -196,7 +205,7 @@ const DATA=[
  lede:"The classic Bergen day, timed to stay ahead of three cruise ships: up the mountain early, canoes at the lake, down on foot, then the medieval alleys once the tour groups thin.",
  blocks:[
   {n:"Morning",items:[
-   {b:"Skillingsbolle on the walk",d:"Baker Brun (multiple locations, opens 7 AM) — Bergen's own cinnamon roll, flatter and more caramelized than the ones at home.",q:"Baker Brun Bryggen, Bergen"},
+   {b:"Skillingsbolle on the walk",d:"Baker Brun's Bryggen 27 shop (Svensgården, 4.3★ from ~950 reviews, opens 7 AM Thursdays) — Bergen's own cinnamon roll, flatter and more caramelized than the ones at home. It's on the way to the funicular.",q:"Baker Brun Svensgården, Bryggen 27, Bergen"},
    {b:"Fløibanen funicular at 9:30",d:"Ride up before the ship crowds build. ~1 hr at the summit: seven-mountains panorama, then the Troll Forest.",q:"Fløibanen, Bergen",u:"https://www.floyen.no/en"},
    {b:"Lake Skomakerdiket canoes",d:"Flat 10–15 min walk from the summit. Free canoes, paddles and life jackets from 11:00 — arrive ~10:45 to be first in line. Max 3 per boat; Declan paddles with an adult.",q:"Skomakerdiket, Bergen"},
    {b:"Hike down Fløysvingene",d:"~1 hr, gravel/asphalt the whole way, harbor-neighborhood views on the descent. In town by ~1 PM.",a:"Rain pivot: flip the day — Bryggen alleys first, shift Fløyen to tomorrow morning."}]},
@@ -207,6 +216,10 @@ const DATA=[
    {b:"Outland Bergen with the boys",d:"Strandkaien 14, open to 6 PM Thursdays. Pokémon cards, manga, gaming — the browse is the fun.",q:"Outland Bergen, Strandkaien 14, Bergen",a:"Bigger alternate: Gamle Bergen Museum in Sandviken — free grounds, costumed actors, ~2 hrs, short bus ride."}]},
   {n:"Evening",items:[
    {b:"Self-cater at the Airbnb",d:"Then a waterfront walk in the long light — Bergen stays bright until nearly 11 PM.",a:"Backup: Pingvinen (Vaskerelven 14, from noon) — plukkfisk, fish soup, or reindeer steak."}]}],
+ lore:[
+  {t:"Why Bryggen leans",d:"German Hanseatic merchants ran a dried-cod empire from these wharves for 400 years. The buildings burned and were rebuilt on the same medieval foundations after the 1702 fire — which is why they lean on each other like they've had a long night. Teenage apprentices, some Gavin's age, lived in the unheated lofts: open flames were banned, winters were brutal, and dinner was usually the cod they were selling."},
+  {t:"Troll rules",d:"Official Norwegian folklore: trolls turn to stone in sunlight, which conveniently explains every oddly-shaped boulder in the country. They smell terrible, hate church bells, and are not great thinkers. If something in Trollskogen smells weird, that's a troll. Probably."},
+  {t:"Kvikk Lunsj law",d:"Norway's hiking chocolate since 1937 — roughly nine bars per Norwegian per year, most of them eaten on a mountain. Carrying one on a hike is closer to law than custom. You are now subject to this law."}],
  phrase:{p:"Takk",pr:"tahk",e:"Thanks — the single most-used word of the next two weeks."},
  boys:"The troll hunt in Trollskogen: no official count of carved trolls exists — the mission is to find more than anyone thinks possible. Then free canoes on a mountain lake.",
  eyes:["From the summit, count the seven mountains that ring the city.","In the Bryggen alleys, look up: the buildings lean into each other like they're sharing secrets.","The funicular's front window is the best seat — grab it going up."],
@@ -220,13 +233,17 @@ const DATA=[
    {b:"Bergenhus Fortress + Rosenkrantz Tower",d:"Free grounds at the harbor mouth. The tower (~150 NOK/adult, under-18 free) climbs from 13th-century dungeons past a royal bedchamber to a cannon rooftop with the best harbor view in Bergen.",q:"Rosenkrantz Tower, Bergen",a:"Håkon's Hall (120 NOK) optional — 20 min if energy holds. Bryggens Museum is closed Fridays — not an option today."},
    {b:"St. Mary's Church on the way past",d:"2-min walk from the fortress — oldest building in Bergen (1130s). A quick look is enough.",q:"St Mary's Church Mariakirken, Bergen"}]},
   {n:"Midday",items:[
-   {b:"Picnic on the fortress lawns",d:"Bread and cheese from a Kiwi or Rema 1000 — the ramparts beat any restaurant nearby.",a:"Or Kafé Spesial (Christies gate 13): vegetarian pizza or shakshuka, chocolate fondant after."}]},
+   {b:"Picnic on the fortress lawns",d:"Bread and cheese from Extra Øvregaten (across the street from the apartment, open from 7 AM) — the ramparts beat any restaurant nearby.",q:"Extra Øvregaten, Øvregaten 37, Bergen",a:"Or Kafé Spesial (Christies gate 13): vegetarian pizza or shakshuka, chocolate fondant after."}]},
   {n:"Afternoon",items:[
    {b:"Nordnes Peninsula walk",d:"15–20 min from Bryggen along the harbor edge the whole way.",q:"Nordnes park, Bergen"},
    {b:"Nordnes Sjøbad — the Bergen swim",d:"Heated 30°C saltwater pool, sauna on site, and a diving board that launches straight into the fjord. Family ticket available (~120 NOK/adult).",q:"Nordnes Sjøbad, Nordnesbakken 4, Bergen",a:"Rain: Bergen Aquarium is literally next door. Bigger rain pivot: KODE/Rasmus Meyer — largest Munch collection outside Oslo, open Fridays."}]},
   {n:"Evening",items:[
    {b:"Last Bergen dinner",d:"Pingvinen (Vaskerelven 14) or Kafé Spesial — whichever wasn't used at lunch. Both walk-in friendly.",q:"Pingvinen, Vaskerelven 14, Bergen"}]}],
  warn:"Pack tonight and set alarms: Norled departs 08:00 sharp tomorrow from Strandkaiterminal — be there by 7:40.",
+ lore:[
+  {t:"The tower that survived a shipload of dynamite",d:"On April 20, 1944, the Dutch cargo ship Voorbode — loaded with 120 tons of German explosives — blew up at the quay below the fortress. It flattened much of the harbor and badly damaged both Rosenkrantz Tower and Håkon's Hall. Both were rebuilt; on the climb, look for where the medieval stone stops and the 1950s stone begins."},
+  {t:"Bergen before Oslo",d:"For most of the Middle Ages Bergen was Norway's largest city and its real capital — at one point the biggest city in all of Scandinavia. Oslo is the newcomer. Bergensers have not entirely let this go."},
+  {t:"The pool in the sea",d:"Nordnes Sjøbad opened in 1910: the pool is heated to 30°C, the fjord beside it very much is not. Jumping off the diving board into the actual fjord is the local kids' rite of passage. The gasp is part of the experience."}],
  phrase:{p:"Vær så snill",pr:"vair saw SNILL",e:"Please — literally 'be so kind.'"},
  boys:"Dungeon-to-rooftop-cannon climb in the morning, fjord diving board in the afternoon. Arguably their best one-two day of the trip.",
  eyes:["Original 13th-century stonework in the tower's lower rooms — put a hand on it.","From the cannon roof, spot tomorrow's ferry route out of the harbor.","Cobblestones on the fortress grounds are ship's ballast — Bergen was built from what boats didn't need."],
@@ -239,12 +256,16 @@ const DATA=[
  blocks:[
   {n:"Midday",items:[
    {b:"Drop bags — Fjordapartments",d:"Host Siv · Holmen 19. Try for early access; message Siv if needed.",q:"Holmen 19, Balestrand",ref:"HMZE825RZP"},
-   {b:"THE grocery shop — Joker Balestrand",d:"Holmen 11. Closed Sunday — this run covers Jul 12 + 13 lunches and dinners, plus trail snacks and the fish-dinner sides (potatoes, butter, lemon, dill, peas).",q:"Joker Balestrand, Holmen 11, Balestrand"}]},
+   {b:"THE grocery shop — Joker Balestrand",d:"Holmen 11. Closed Sunday — this run covers Jul 12 + 13 lunches and dinners plus trail snacks. Get the fish-dinner sides now too (potatoes, butter, lemon, dill, peas — they keep fine and get used regardless of the catch); Joker is open Monday for a fresh top-up after the boat if you need one.",q:"Joker Balestrand, Holmen 11, Balestrand"}]},
   {n:"Afternoon — either or both",items:[
    {b:"Balholm farm-shop walk (Ciderhuset)",d:"15-min orchard walk along the fjord. Open Sat 12–16 (closed Sun). Browse ~20 ciders and juices; the boys get the Sprudlande Margaret rhubarb-apple. No paid tasting needed — the walk and shop are the experience.",q:"Ciderhuset, Balestrand"},
    {b:"First fjord cold plunge",d:"Right off the village waterfront. Exhilarating, kid-memorable, and you're well-rested for it."}]},
   {n:"Evening",items:[
    {b:"Self-cater dinner, then dessert at Peters plass",d:"Holmen 8, on the pier, 2 min away, open daily to 10:20 PM. Try the Hutsul (family-recipe cake, the standout) or apple pie if it hasn't sold out.",q:"Peters plass, Holmen 8, Balestrand"}]}],
+ lore:[
+  {t:"King of the fjords",d:"The Sognefjord is 205 km long and 1,308 m deep — deeper than the North Sea. Under the ferry, the mountain walls keep plunging down about as far as they rise above you. The boys are floating over a drowned canyon."},
+  {t:"Two statues, one Kaiser",d:"German Kaiser Wilhelm II vacationed in Balestrand nearly every summer and loved the local Viking sagas. In 1913 he gifted the King Bele statue on Holmen and the 10.5-meter Fridtjov you can spot across the fjord at Vangsnes. One year later World War I began and he never came back."},
+  {t:"Dragon houses",d:"Balestrand's 1890s villas are 'dragon style' — Swiss chalets with Viking dragon heads snarling from the gables, built by painters who came for the fjord light and stayed. Count the dragons on the evening walk."}],
  phrase:{p:"Kan jeg få…?",pr:"kahn yai FAW",e:"Can I have…? — the boys' ordering phrase from here on."},
  boys:"Spot the two saga statues: King Bele by the harbor (a gift from Kaiser Wilhelm II, 1913) and the 10.5-meter Fridtjov the Bold across the fjord at Vangsnes — visible from the water.",
  eyes:["The dragon-style villas along the waterfront — 1890s Norse-romantic architecture built for painters and kaisers.","Balestrand's fruit orchards run right down to the fjord — this is apple country."],
@@ -262,6 +283,8 @@ const DATA=[
    {b:"Heit Sauna Balestrand — optional",d:"Fjord-edge floating sauna with cold-plunge stairs into the Sognefjord (Kong Beles veg 30). Private 1.5-hr slot, book at heitbalestrand.com; bring 2 towels each + swimwear.",q:"Heit Sauna, Balestrand",u:"https://heitbalestrand.com",a:"Honest note: the most skippable of the trip's four sauna options — a free waterfront plunge gives the boys most of the memory. But if you want ONE floating-sauna-on-a-fjord moment, this is the prettiest setting."}]},
   {n:"Evening",items:[
    {b:"Balholm Bar og Bistro",d:"In Balestrand Hotel, fjord-view bar food, walk-in, daily 1–9 PM. Fjord sandwich, fish soup, or burger; coconut cake if it's on.",q:"Balestrand Hotel, Balestrand",a:"Or Gekkens — family-owned, fresh salmon, pepper steak, local beers and ciders. Balholm cider on the balcony either way."}]}],
+ lore:[
+  {t:"Why the water is that color",d:"The green-blue milkiness is glacial rock flour — stone ground to dust by glaciers upstream, carried down in snowmelt, scattering the light. The prettier the color, the colder the plunge. Today you can test this personally."}],
  phrase:{p:"Det smaker godt",pr:"deh SMAH-ker got",e:"It tastes good — deploy on any host or cook and watch them light up."},
  boys:"Wild berries, small waterfalls and wildlife the whole way up — plus the fjord plunge if the sauna happens.",
  conn:"Dead zones above the village on the trail — don't count on a live signal mid-hike. Offline map has you covered.",
@@ -273,12 +296,15 @@ const DATA=[
  blocks:[
   {n:"Morning",items:[{b:"Easy morning",d:"Coffee, balcony, fjord. Keep it light ahead of the boat; pack a picnic from groceries."}]},
   {n:"Midday — Fishing trip [CONFIRMED]",items:[
-   {b:"Captain Tor · Balestrand Fjord Angling",d:"Private boat, your group only. Target the 12:00 slot; arrive 15 min early at the Balestrand Adventure House / Tourist Info. Card payment day-of.",q:"Balestrand Adventure, Balestrand"},
-   {b:"Pick the tier on the day",d:"Classic (3500 NOK, 1.5 hrs): dragon-villa sightseeing + rod fishing for sand whiting — the sensible pick. Legacy (5000 NOK, 3 hrs): adds trolling and the pre-set net haul — pulling up a mystery net is the kid-magnet."},
-   {b:"Inge Menes bare-boat — held as backup",d:"~$125, Tjugum, +47 950 41 651. Still an ACTIVE reservation, not a placeholder — it bills if not used or cancelled. Use it for extra water time, or cancel once Tor's trip is done."}]},
+   {b:"Captain Tor — LEGACY 3-hr, CONFIRMED 12:00",d:"Legacy tour · 3 hrs · 5000 NOK · card on arrival · private boat, your group only. Be at the Balestrand Adventure House at 11:45, dressed for the water. Meeting point, time and Tor's phone: reconfirm against his confirmation email before you go.",q:"Balestrand Adventure, Balestrand"},
+   {b:"What the Legacy tour includes",d:"Dragon-villa sightseeing with Tor's storytelling, rod fishing for sand whiting (\"fjord chicken\") in the Esefjord, trolling — and the pre-set net haul: pulling up a mystery net not knowing what's inside. Crab, starfish, sea urchin, odd fish. That moment is why you booked the 3-hour.",},
+   {b:"Inge Menes bare-boat — open option, zero strings",d:"Not a formal booking — just an email thread; she said she should have boats and to call when you're in town (+47 950 41 651). If the family wants extra water time after Tor, ring her. If not: nothing to cancel, nothing bills."}]},
   {n:"Afternoon",items:[{b:"Clean the fish at the dock",d:"Then back to the apartment."}]},
   {n:"Evening",items:[
    {b:"Cook your own catch — stekt fisk",d:"Classic Norwegian pan-fried fish: salt, butter, lemon, dill — with boiled new potatoes and peas. Light candles, the whole bit. One of the best dinners of the trip, and the boat day exists to make it happen."}]}],
+ lore:[
+  {t:"Fjord chicken",d:"Sand whiting earned the nickname 'fjord chicken' by being mild, abundant, and impossible to dislike. The Esefjord arm stays calm even when the main fjord doesn't — it's where Balestrand families have always filled the pan."},
+  {t:"What's in the net?",d:"Pre-set nets are how fjord households fished for centuries: set at dusk, hauled next day, dinner decided by luck. Crab is the jackpot. Starfish gets thrown back. Sea urchin gets photographed and then thrown back."}],
  phrase:{p:"Tusen takk",pr:"TOO-sen tahk",e:"A thousand thanks — for Captain Tor, after the catch."},
  boys:"Catching dinner with their own hands — and if the Legacy tier wins, hauling a net with no idea what's inside: crab, starfish, sea urchin, odd fish.",
  conn:"Expect dead zones out on the water — tell anyone expecting texts that you'll surface by late afternoon.",
@@ -290,10 +316,10 @@ const DATA=[
   {t:"11:58",l:"Norled ferry Balestrand → Flåm",ref:"#2542170371"},
   {t:"14:45",l:"Flåmsbana Flåm → Myrdal",ref:"OGD-QDL-A3T"},
   {t:"15:56",l:"R40 Myrdal → Voss, arr 16:51",ref:"SUA-CW4-YVS"},
-  {t:"18:01",l:"Skyss Bus 990 Voss Tinghus → Lofthus kai, arr 19:20 · pay in Skyss app",ref:"~$21–24/pp"}],
+  {t:"18:01",l:"Skyss Bus 990 Voss Tinghus → Lofthus kai, arr 19:20 · pay in Skyss app",ref:"~$21–24/pp",app:{n:"Skyss",u:"https://www.skyss.no/en/"}}],
  blocks:[
   {n:"Morning",items:[
-   {b:"Breakfast at Fløyfisken",d:"Holmen 2, fjord view. Norwegian waffles or smoked salmon; soft serve for the boys if it's earned.",q:"Fløyfisken, Balestrand"},
+   {b:"Coffee + breakfast at the apartment",d:"The usual home routine — no sit-down this morning. If anyone's earned a treat, grab a to-go pastry or soft serve from Fløyfisken (Holmen 2) and eat it by the water while you wait for the ferry.",q:"Fløyfisken, Holmen 2, Balestrand"},
    {b:"St. Olaf's Church — 10 minutes",d:"Free, 5-min walk. The striking 1897 neo-stave church said to have inspired the Frozen coronation chapel. Worth the glance on the way out.",q:"St Olaf's Church, Balestrand"},
    {b:"Pack a travel lunch",d:"From Joker leftovers — it's a long chain with thin food options."}]},
   {n:"Evening — arrive Lofthus",items:[
@@ -301,6 +327,11 @@ const DATA=[
    {b:"Grieg's composer cabin on the grounds",d:"'Komposten' — free, in the garden, where Edvard Grieg composed during summer stays."},
    {b:"Easy dinner",d:"Bunnpris (Sjoarvegen 18, open to 8 PM Tue) for a light supermarket dinner, or Lofthus Ekspedisjon on the fjord (open to 22:00) if energy holds.",q:"Lofthus Ekspedisjon, Lofthus"}]}],
  warn:"If the R40 runs late and you miss the 18:01 bus, the next 990 isn't until ~22:16 — have the Ullensvang front desk's taxi contact ready (~NOK 1,000–1,300 from Voss). The hotel was pre-flagged about a possible late transfer.",
+ lore:[
+  {t:"Ferry leg: into the Aurlandsfjord",d:"The boat turns off the main Sognefjord into the narrower Aurlandsfjord for the last stretch to Flåm — walls to ~1,700 m with tiny farms clinging partway up. Find one and ask the boys how the groceries get home."},
+  {t:"Flåmsbana: the improbable railway",d:"20 km, 865 m of climb, gradients to 5.5% — one of the steepest standard-gauge railways on earth, opened 1940 after 20 years of building; 18 of its 20 tunnels were dug by hand. SIT ON THE RIGHT going up: the river, the valley drops and the best waterfalls (Rjoandefossen is the stunner) are on that side. Seating is free — be in line 25–30 min early; the rear cars run emptiest."},
+  {t:"Kjosfossen and the lady in red",d:"Near the top the train stops ~5 minutes at a platform in the spray of the 225-m Kjosfossen (hoods up, phones under jackets). Then music starts — and a Huldra appears dancing on the ruins by the falls. In folklore she's the forest spirit: beautiful from the front, hollow as a rotten log from behind, cow's tail tucked away, famous for luring men into the woods. She's played by students of the Norwegian Ballet School, every train, June–August. Dad stays on the platform."},
+  {t:"The Berekvam meet",d:"The line is single-track; the only passing loop is Berekvam station, where your train pauses while the downhill one slides by. It's not a delay — it's choreography."}],
  phrase:{p:"Fjord og fjell",pr:"fyoor oh FYELL",e:"Fjord and mountain — today's entire itinerary in three words."},
  boys:"The Flåmsbana drops through 20 tunnels on one of the steepest standard railways anywhere — watch for the waterfall stop on the way up.",
  conn:"The rail chain runs through long tunnels and remote valleys — offline maps for Flåm + Hardanger should already be downloaded. Don't burn battery hunting for signal.",
@@ -316,7 +347,10 @@ const DATA=[
   {n:"Afternoon",items:[{b:"Pool, fjord beach, lawn time",d:"Optional cold plunge in the Hardangerfjord after the hike."}]},
   {n:"Evening",items:[
    {b:"Early dinner at KOMPAEN Bistro og Deli",d:"Ullensvangveien 887, 3-min walk. Family-owned, open Wed–Sun until 6 PM ONLY — target ~5 PM seating. The Angus burger is the raved-about pick; fish & chips solid.",q:"KOMPAEN Bistro og Deli, Lofthus",a:"If the hike runs long past KOMPAEN's hard close: Lofthus Ekspedisjon (open to 22:00) — interchangeable with tomorrow's dinner."}]}],
- warn:"Tonight or tomorrow morning: ask the front desk about a packed breakfast box for Friday's 6:30 AM departure — confirm what time it can be ready.",
+ warn:"Tonight or tomorrow morning: ask the front desk about a packed breakfast box for Friday's ~6:40 AM walk-out — confirm what time it can be ready.",
+ lore:[
+  {t:"Grieg's garden hut",d:"Edvard Grieg — Norway's greatest composer, and the boys already know 'In the Hall of the Mountain King' whether they know it or not — spent summers at this hotel and composed in the little garden hut, 'Komposten.' He demanded total silence to work. The hotel, sensibly, obliged."},
+  {t:"Monks planted this",d:"English monks brought orchard-keeping to the Opedal farm here roughly 800 years ago. The deep fjord stores summer heat like a radiator, which is how half a million fruit trees thrive at the latitude of Anchorage, Alaska."}],
  phrase:{p:"Eple",pr:"EH-pleh",e:"Apple — you're standing in Norway's orchard. 500,000+ fruit trees around you."},
  boys:"Waterfall spray at Skrikjo, the mystery pagan holes, and an 88-meter pool channel back at the hotel.",
  snacks:"At Bunnpris: skolebrød (custard bun with coconut), a tube of Norwegian kaviar for knekkebrød, and another Solo for the trail.",
@@ -332,12 +366,14 @@ const DATA=[
    {b:"Lofthus Sideri",d:"Lofthusvegen 49, Mon–Sat 10–18. Drop-in tastings, juice tastings for the kids, ~170 NOK/bottle.",q:"Lofthus Sideri, Lofthus",a:"Optional adds: Opedalstunet walk-in shop on the trail; Helleland Gard is intimate but remote — skip if it's a stretch."}]},
   {n:"Afternoon",items:[{b:"Orchard picnic, then pool / fjord beach",d:"Picnic on the trail — orchard grass, fjord views."}]},
   {n:"Late afternoon — DEPARTURE PREP",items:[
-   {b:"Pack tonight",d:"Everything but toothbrushes. 6:30 AM wake tomorrow."},
+   {b:"Pack tonight",d:"Everything but toothbrushes. 6:00 AM wake tomorrow."},
    {b:"Confirm the breakfast box",d:"With the front desk, if not already done."},
    {b:"Arrange the standby taxi",d:"Soft hold for 6:40 AM via the concierge in case Bus 990 has issues — no charge unless used."}]},
   {n:"Evening",items:[
    {b:"Dinner at Lofthus Ekspedisjon",d:"Sjoarvegen 27, on the fjord with their own dock, open to 22:00. Wood-fired pizza and a flight of house Hardanger ciders.",q:"Lofthus Ekspedisjon, Lofthus"}]}],
- warn:"Tomorrow is the trip's highest-stakes morning: 6:30 wake, 6:40 walk to the kai, 6:55 bus. Alarms on two phones.",
+ warn:"Tomorrow is the trip's highest-stakes morning: 6:00 wake, 6:40 walk to the kai, 6:55 bus. Alarms on both phones AND the spare.",
+ lore:[
+  {t:"Cider with a passport",d:"'Sider frå Hardanger' holds protected-designation status — the Champagne rule: only cider grown and pressed in Hardanger may carry the name. The apple juice the boys taste comes off the same presses. Same terroir, less paperwork."}],
  phrase:{p:"Skål!",pr:"skawl",e:"Cheers! — with cider, in the region that invented Norwegian cider."},
  boys:"Juice tastings poured like wine flights, and permission to eat a picnic in someone's orchard (that's the right-to-roam again).",
  eyes:["Fruit trees planted in rows dating back generations — some farms here are on their 20th generation of the same family.","The Folgefonna glacier across the fjord, hanging white above the orchards."],
@@ -346,14 +382,21 @@ const DATA=[
 {d:"2026-07-17",dow:"Fri",city:"Lofthus → Oslo",sub:"HIGH STAKES · pre-dawn bus + Bergen Railway",r:"capital",
  lede:"The one morning with zero slack: 6:55 bus to Voss, then five hours on the Bergen Railway across the roof of Norway into Oslo. After that, the trip downshifts into city mode.",
  transit:[
-  {t:"06:55",l:"Skyss Bus 990 Lofthus kai → Voss, arr ~8:25 · wake 6:30, walk 6:40",ref:"Skyss app"},
+  {t:"06:55",l:"Skyss Bus 990 Lofthus kai → Voss, arr ~8:25 · wake 6:00, walk 6:40",ref:"Skyss app",app:{n:"Skyss",u:"https://www.skyss.no/en/"}},
   {t:"09:20",l:"Vy F4 Voss → Oslo S, arr 15:09 · Carriage 7, seats 17/18/21/22",ref:"6P3-IOE-EID"}],
  blocks:[
   {n:"Afternoon — arrive Oslo",items:[
    {b:"Uber from Oslo S to Majorstuen",d:"Airbnb host Margareth Aurora · Pilestredet 53C.",q:"Pilestredet 53C, Oslo",ref:"HMAWRADHED"}]},
   {n:"Evening",items:[
-   {b:"Cafe Laundromat",d:"Underhaugsveien 2, ~6 min walk — café-meets-laundromat, cheeseburgers, books, beers, open to midnight.",q:"Cafe Laundromat, Underhaugsveien 2, Oslo",a:"Or Digg Pizza Majorstuen (Bogstadveien 62) — build-your-own, iPad ordering, very kid-friendly."}]}],
+   {b:"Breakfast groceries: Extra Bislett",d:"Pilestredet 73, ~4 min from the apartment (4.1★, open to 11 PM). Stock mornings for the Oslo stay — note it closes Sundays, so cover the weekend tonight or Saturday.",q:"Extra Bislett, Pilestredet 73, Oslo"},
+   {b:"Cafe Laundromat",d:"Underhaugsveien 2, ~6 min walk — café-meets-laundromat, cheeseburgers, books, beers, open to midnight.",q:"Cafe Laundromat, Underhaugsveien 2, Oslo",a:"Or Digg Pizza Majorstuen (Bogstadveien 62) — build-your-own, iPad ordering, very kid-friendly."},
+   {b:"Know your two neighborhood spots",d:"Groceries: KIWI St. Olavs Plass 3, the closest supermarket (open to 11 PM). Morning pastries for all three Oslo days: Encore Kafe & Konditori, Pilestredet 75C — on your own street, 4.9★ from 330 reviews, \"best pastries in Oslo\" comes up repeatedly. Pain au chocolat and the pistachio ones are the raves. Opens 8 AM.",q:"Encore Kafe og Konditori, Pilestredet 75C, Oslo"}]}],
  warn:"Backup if the bus fails: the standby taxi arranged yesterday via Ullensvang (~NOK 3,000–4,000, ~90 min to Voss). Missed train: rebook at vy.no.",
+ lore:[
+  {t:"The line that took thirty years",d:"The Bergen Railway opened in 1909 — thousands of 'rallare' (navvies) blasted 182 tunnels through the mountains, mostly with hand drills and dynamite. Their old supply road, the Rallarvegen, still runs beside the track; watch for cyclists on it near the top."},
+  {t:"Where to look",d:"Voss→Myrdal: LEFT side for the Raundalen gorge and its waterfalls. After Myrdal the trees give up and the RIGHT side owns the show — the Hardangervidda, northern Europe's largest mountain plateau, with the Hardangerjøkulen glacier on clear days. Your seats are fixed (Car 7), so trade windows at the highlights — or camp in the café car, which has big windows and no seat politics."},
+  {t:"Finse = Hoth",d:"Finse station, 1,222 m, is the line's highest stop — no roads in, rail or boots only. Amundsen trained his South Pole dogs here. And in 1979, the Empire Strikes Back crew filmed the ice-planet Hoth battle on the glacier above it. Tell the boys at the right moment: out that window is Star Wars."},
+  {t:"The invisible summit",d:"Minutes after Finse the train enters the 10.3-km Finse Tunnel and crosses the line's true high point — 1,237 m — in total darkness. The most anticlimactic summit in world railroading."}],
  phrase:{p:"Unnskyld",pr:"OON-shill",e:"Excuse me — the essential city word, starting today."},
  boys:"The Bergen Railway is one of Europe's great train rides — snowfields in July possible near the top. Breakfast box on laps, five hours of scenery.",
  conn:"Long tunnels most of the morning. By Oslo you're back to full-strength city coverage for the rest of Norway.",
@@ -372,6 +415,9 @@ const DATA=[
    {b:"Oslo Reptile Park",d:"St. Olavs gate 2, ~1 hr, no booking, rain-proof. Boas, poison dart frogs, tarantulas, a black widow, feeding times. High 'whoa' factor.",q:"Oslo Reptilpark",a:"Optional: Outland Oslo (Grensen 5–7) is ~15 min south — card-shop break on the way back."}]},
   {n:"Evening",items:[
    {b:"Tram back to Majorstuen, casual dinner",d:"Cafe Laundromat or Digg Pizza if not used Friday, or self-cater."}]}],
+ lore:[
+  {t:"One man, two hundred statues",d:"Gustav Vigeland made every sculpture in the park — a lifetime deal: he gave Oslo all his work, Oslo gave him a studio and a park. The Monolith is 121 intertwined figures cut from a single 14-meter granite block; three carvers, fourteen years."},
+  {t:"Sinnataggen",d:"The furious little boy is Norway's most famous statue — a bronze toddler mid-tantrum since 1940. His left hand gleams from decades of people grabbing it (don't; it wears him out). Park game: find the statue matching each family member's current mood."}],
  phrase:{p:"Hvor er…?",pr:"voor AIR",e:"Where is…? — pair it with 'toalettet' and the boys are self-sufficient."},
  boys:"A black widow, feeding time, and Sinnataggen — the angriest toddler in art history. Photo op stomping alongside him.",
  eyes:["Vigeland designed everything in the park down to the lamp posts and gates.","Grünerløkka's street art changes constantly — the boys can hunt for the best piece.","The Akerselva river powered Oslo's whole industrial revolution; the old mills are now studios."],
@@ -390,6 +436,9 @@ const DATA=[
    {b:"Akershus Fortress — the centerpiece",d:"Free grounds, open to 9 PM. Dramatic 13th-century clifftop fortress; the boys run the cobblestone ramparts, harbor views the whole way.",q:"Akershus Fortress, Oslo",a:"Flex hour: Aker Brygge harbor wander, or the Reptile Park if it didn't happen Saturday."}]},
   {n:"Evening",items:[
    {b:"Dinner near the Airbnb + pack",d:"Tomorrow is a moving day — bags mostly closed tonight makes the morning easy."}]}],
+ lore:[
+  {t:"The fortress never taken",d:"Akershus has guarded Oslo since about 1300 and survived every siege in 700 years. The only time it fell — April 1940 — not a shot was fired at it; the government had already slipped out of the city (thanks, in part, to Wednesday's island). Norway's modern kings rest in the chapel crypt."},
+  {t:"A state in one stroll",d:"Royal Palace, Parliament, City Hall — the whole Norwegian state sits along one 20-minute walk, mostly fence-free. Few capitals let you do that on foot."}],
  phrase:{p:"Regningen, takk",pr:"RYE-ning-en tahk",e:"The bill, please — though in Norway you usually pay at the counter."},
  boys:"Rampart-running at Akershus, and the completion of the game-meat quest: reindeer dog (Bergen) → moose burger (yesterday) → moose sausage (today).",
  eyes:["Stortinget's lions out front are carved from prison labor's granite — by a convicted counterfeiter.","From the fortress walls, look across to the Opera House roof — you'll be standing on it tomorrow."],
@@ -398,7 +447,7 @@ const DATA=[
 
 {d:"2026-07-20",dow:"Mon",city:"Oslo → Drøbak",sub:"Opera roof send-off · bus down the fjord",r:"capital",
  lede:"A last Oslo flourish — walking up a building designed to be walked on — then the easy bus down the Oslofjord to a wooden town of galleries and one very famous Santa shop.",
- transit:[{t:"~15:00",l:"Bus 500 Oslo Bussterminal → Drøbak Brygge, ~50 min · every 30 min, Ruter app",ref:"no booking"}],
+ transit:[{t:"~15:00",l:"Bus 500 Oslo Bussterminal → Drøbak Brygge, ~50 min · every 30 min, Ruter app",ref:"no booking",app:{n:"Ruter",u:"https://ruter.no/en/"}}],
  blocks:[
   {n:"Late morning",items:[
    {b:"Checkout by 12, bags to Oslo S",d:"T-bane Line 1 or 2 from Majorstuen (~10 min). Drop bags at Bounce/Radical Storage near Oslo S (~$13–17 total via app)."},
@@ -406,10 +455,13 @@ const DATA=[
   {n:"Midday",items:[
    {b:"Lunch at Østbanehallen",d:"Food hall inside Oslo S — fast, multiple stalls, zero detour. Then collect bags.",q:"Østbanehallen, Oslo"}]},
   {n:"Late afternoon — Drøbak",items:[
-   {b:"Grocery stop en route to the Airbnb",d:"Coop, Rema 1000 or Bunnpris — all central. Tonight's dinner + tomorrow's picnic supplies."},
+   {b:"Grocery stop: Matkroken, 1 min from the door",d:"Kirkegata 9 — tonight's dinner + tomorrow's picnic. Honest note: it's small and basic (3.5★) but unbeatably close. For a proper full-size shop, Extra Drøbak (Holterveien 2B, 4.2★) is ~20 min north — open to 11 PM Mon–Sat and, rare for Norway, Sundays 9–9.",q:"Matkroken, Kirkegata 9, Drøbak"},
    {b:"Check in 4 PM — Torget 7",d:"Host Åse, on the town square, ~5 min walk from the bus.",q:"Torget 7, Drøbak",ref:"HMJQSM2XHS"}]},
   {n:"Evening",items:[
    {b:"Self-cater dinner + harbor walk",d:"Cheese, charcuterie, local fish cakes, cider. The walk passes Tregaardens Julehus (the year-round Christmas house), the Father Christmas sign, and Drøbak Church (1776).",q:"Tregaardens Julehus, Drøbak"}]}],
+ lore:[
+  {t:"Santa's official address",d:"Drøbak hosts Norway's Julenissen (Santa) post office — thousands of children's letters addressed to 'Santa, Norway' land here — and Tregaardens Julehus sells Christmas every day of the year. In July this is deeply weird, and therefore great."},
+  {t:"Why a town exists here",d:"This is the Oslofjord's narrowest squeeze. When the inner fjord froze, ships unloaded at Drøbak and cargo crossed the ice into Oslo — the capital's winter harbor. That same narrowness becomes the whole story on Wednesday's island."}],
  phrase:{p:"Båt",pr:"bawt",e:"Boat — Drøbak's whole reason for existing."},
  boys:"Running up the Opera House roof — a building you're supposed to climb — then Norway's Christmas headquarters in July.",
  eyes:["Note: the B22 ferry to Drøbak runs weekends only — that's why today is a bus day.","Drøbak was Oslo's winter harbor when the inner fjord froze — the wooden town is largely intact 1700s–1800s."],
@@ -428,6 +480,8 @@ const DATA=[
    {b:"Drøbak Badstue",d:"Lehmannsbrygga, ~10 min walk. Fjord-edge sauna with a direct view of Oscarsborg, cold-plunge steps into the Oslofjord. Private for 4: NOK 1,700 / 1.5 hrs weekdays (shared: NOK 250/pp). Open 7 AM–10 PM.",q:"Drøbak Badstue",u:"https://drobakbadstue.no",a:"Skip guilt-free if the walk ran long — pivot to the Airbnb."}]},
   {n:"Evening",items:[
    {b:"Dinner flex (one night out of two)",d:"Default self-cater tonight; if eating out, dgb – Mat & Vinstue is the pick — see tomorrow's Dinner Pool for the full rundown."}]}],
+ lore:[
+  {t:"Hugo's PR problem",d:"Wolffish look like a nightmare — those teeth are for crushing sea urchins and crabs — but they're famously calm, and Norwegian aquariums keep them as resident personalities. Hugo is the local celebrity. Respect the underbite."}],
  phrase:{p:"Havet",pr:"HAH-veh",e:"The sea — what everything in Drøbak faces."},
  boys:"Hugo the wolffish (all teeth, weirdly lovable), a beach swim, and a sauna that ends with jumping into a fjord.",
  customs:"Sauna etiquette: shower first, sit on a towel, and the cold plunge is optional-but-honorable. Quiet talk inside — it's a place to be calm, not loud.",
@@ -447,6 +501,9 @@ const DATA=[
    {b:"dgb – Mat & Vinstue [RECOMMENDED]",d:"Havnebakken 1, on Torget, in an 18th-century bakery. Real kids' menu. The creamy fish soup (349 kr) is the specialty — get one for the table; kids' cheeseburger 175 kr; adults DGB burger or scampi pasta. ~1,200–1,400 kr for four.",q:"dgb Mat og Vinstue, Drøbak"},
    {b:"Kumlegaarden — optional splurge",d:"30 sec away, traditional Norwegian in Drøbak's oldest buildings, fish soup the standout. Mains 398–498 kr (~$170–230 for four) — hold only if you want ONE formal Norwegian dinner this trip. Wednesday works.",q:"Kumlegaarden, Drøbak",a:"Third option: Handelshuset Gastrobar on Torget — candle-lit pizza, daily to 11 PM, ~$60–80 family."}]}],
  warn:"Tomorrow is cruise day — the near-unrecoverable deadline. Tonight: confirm bags are packable by ~11 AM and set the bakery-run plan.",
+ lore:[
+  {t:"April 9, 1940, 04:21",d:"The German cruiser Blücher led an invasion fleet up the narrows, carrying the troops assigned to seize Norway's king and government. Oscarsborg's commander, Colonel Birger Eriksen, 64, with no clear orders and seconds to decide, fired the fortress's ancient Krupp guns — nicknamed Moses and Aron — and the hidden torpedo battery finished the job. His words became legend: 'Either I will be decorated, or I will be court-martialed. Fire!' The sinking bought the hours that let the King, the government and the gold reserves escape by train."},
+  {t:"The wreck below",d:"Blücher still lies ~90 m down, a few hundred meters off the island, quietly seeping oil into the fjord after 86 years. You'll swim within sight of one of WWII's most consequential shipwrecks."}],
  phrase:{p:"Festning",pr:"FEST-ning",e:"Fortress — today's word, today's island."},
  boys:"Standing next to the actual cannons that sank a heavy cruiser at point-blank range on April 9, 1940 — then swimming where it happened.",
  eyes:["The torpedo battery hidden inside the island did the fatal damage — the cannons get the fame.","Blücher still lies on the fjord floor ~90m down, a few hundred meters from where you'll picnic."],
@@ -455,43 +512,49 @@ const DATA=[
 {d:"2026-07-23",dow:"Thu",city:"Drøbak → Cruise",sub:"Bus to Oslo · board M/S Nordic Pearl",r:"cruise",
  lede:"The one hard deadline of the back half: on the ship by 3:30. Everything today is sequenced backward from that — bakery, bus with buffer, optional food-hall lunch that gets dropped without hesitation if time runs tight.",
  transit:[
-  {t:"≤12:30",l:"Bus 500 Drøbak Brygge → Oslo Bussterminal, ~50 min · Ruter app · leave NO later than 12:30",ref:"no booking"},
+  {t:"≤12:30",l:"Bus 500 Drøbak Brygge → Oslo Bussterminal, ~50 min · Ruter app · leave NO later than 12:30",ref:"no booking",app:{n:"Ruter",u:"https://ruter.no/en/"}},
   {t:"15:30",l:"Board M/S Nordic Pearl at Vippetangen · departs 16:30",ref:"#119987 · DcTtM2QqkP"}],
  blocks:[
   {n:"Morning",items:[
-   {b:"Bakery run: Håndverksbakeriet",d:"Skolebrød, cinnamon rolls, pizza slices — this is dinner. Stay at the Airbnb until ~11 checkout.",q:"Håndverksbakeriet, Drøbak"}]},
+   {b:"Bakery run: Håndverksbakeriet — baked goods only",d:"Skolebrød, cinnamon rolls, pizza slices, bread — the parts of the cabin picnic that travel well. Leave the cold stuff for Oslo so it's fresh and you're not hauling it on the bus. Stay at the Airbnb until ~11 checkout.",q:"Håndverksbakeriet, Drøbak"}]},
   {n:"Midday — Oslo buffer",items:[
    {b:"Bags: DFDS terminal at Vippetangen (confirm free drop) or Bounce backup",d:"Bounce/Radical at a Narvesen kiosk near Oslo S, ~$13–17 total — far cheaper than Speed Lockers."},
    {b:"OPTIONAL lunch: Vippa food hall",d:"Akershusstranda 25, 10-min walk from the cruise terminal. Burmese, Guatemalan, Syrian, Filipino stalls in a container park.",q:"Vippa, Oslo",a:"⚠ DROPPABLE: if transit runs tight, skip entirely — eat in Drøbak before leaving or rely on the cabin picnic. Nothing jeopardizes boarding."},
-   {b:"Light walk if time allows",d:"Akershus grounds, Aker Brygge, or the Opera roof if it didn't happen Monday."}]},
+   {b:"Perishables run: Coop Mega Aker Brygge",d:"Holmens gate 7, right on the harbor promenade — cheese, charcuterie, fruit, drinks for the cabin picnic. Big and well-stocked (4.2★), ~15 min walk from Vippetangen, so it slots into the pre-boarding stroll. If transit ran late, skip it — the cruise's takeout pizza is the standing backup.",q:"Coop Mega Aker Brygge, Holmens gate 7, Oslo"},
+   {b:"Light walk if time allows",d:"Akershus grounds, Aker Brygge (the grocery stop is on it), or the Opera roof if it didn't happen Monday."}]},
   {n:"Evening — aboard",items:[
    {b:"Cabin picnic dinner",d:"4-bed sea-view cabin with bunks. Bakery haul + cheese + drinks from Drøbak. Watch the Oslofjord fade in the long twilight — you'll sail right past Drøbak and Oscarsborg.",a:"Backup: à-la-carte takeout pizza onboard if supplies run thin."}]}],
  warn:"⚠ AIRPLANE MODE ON BOARDING — all phones. The ship's maritime satellite is NOT covered by T-Mobile and bills at extreme per-MB rates. Ship wifi only until Copenhagen.",
+ lore:[
+  {t:"Sail past your own week",d:"The ship runs the full length of the Oslofjord — about an hour out, Drøbak and Oscarsborg slide past the rail. Be on deck to wave at Wednesday. Then the fjord opens into the Skagerrak strait for the night crossing to Denmark."}],
  phrase:{p:"Ha det bra",pr:"hah deh BRAH",e:"Goodbye (literally 'have it good') — to Norway, from the stern rail."},
  boys:"Claiming bunks, exploring a working ship, and watching Oscarsborg — yesterday's fortress — slide past from the water.",
  conn:"⚠ The moment the ship leaves the dock, phones may latch onto maritime satellite. Airplane mode BEFORE departure; normal coverage returns near the Danish coast tomorrow morning.",
  book:[{l:"M/S Nordic Pearl",r:"#119987 · security DcTtM2QqkP"}]},
 
 {d:"2026-07-24",dow:"Fri",city:"Copenhagen",sub:"Arrival · Christianshavn · the spire climb",r:"denmark",
- lede:"Denmark begins: taxi from the port, harbor-market lunch, and at 1 PM the trip's most vertiginous booked moment — 400 steps up Vor Frelsers Kirke, the last 150 winding OUTSIDE the golden spire.",
+ lede:"Denmark begins: taxi from the port, harbor-market lunch, and at 1:30 PM the trip's most vertiginous booked moment — 400 steps up Vor Frelsers Kirke, the last 150 winding OUTSIDE the golden spire.",
  transit:[{t:"10:00",l:"Arrive Copenhagen · Oceankaj terminal (Oceanvej 13, Nordhavn)",ref:"#119987"}],
  blocks:[
   {n:"Midday — transit + lunch",items:[
    {b:"Taxi / Bolt XL / DRIVR — book in-app FROM THE SHIP",d:"~300–500 DKK total, 20–30 min door-to-door to Dronningensgade 23. Do NOT use the taxi-rank queue — it can hit 60–90 min on busy ship days.",a:"Bags: message the host in advance about early drop; Radical Storage in Christianshavn is the backup."},
    {b:"Lunch: Broens Gadekøkken",d:"Strandgade 95, from 11 AM. Harbor-side food market — Gasoline Grill burgers, fish & chips, gyros, poke. Eat by ~12:30 so nobody climbs 400 steps hungry.",q:"Broens Gadekøkken, Copenhagen"}]},
   {n:"Afternoon — 13:00 tower [BOOKED]",items:[
-   {b:"Vor Frelsers Kirke tower climb",d:"1 PM slot booked at billetto.dk — tickets on file. 400 steps, the last 150 outside up the gilded spire: exposed, exhilarating, 86m views.",q:"Church of Our Saviour, Copenhagen",a:"Weather closes the tower in rain/wind — the slot is refundable and shiftable to any afternoon (open daily 9–8). If heights lose the vote, the church interior is free and still worth it."}]},
+   {b:"Vor Frelsers Kirke tower climb",d:"1:30–2:00 PM slot booked — Order #21750292, tickets on file. 400 steps, the last 150 outside up the gilded spire: exposed, exhilarating, 86m views.",q:"Church of Our Saviour, Copenhagen",a:"Weather closes the tower in rain/wind — the slot is refundable and shiftable to any afternoon (open daily 9–8). If heights lose the vote, the church interior is free and still worth it."}]},
   {n:"Late afternoon",items:[
    {b:"Check in 3 PM — Christianshavn Airbnb",d:"Dronningensgade 23. Unpack, exhale.",q:"Dronningensgade 23, Copenhagen"},
    {b:"Netto grocery run",d:"Torvegade, 2 min from the Metro. Tonight's dinner + tomorrow's GoBoat picnic.",q:"Netto Torvegade, Copenhagen"}]},
   {n:"Evening",items:[
    {b:"Smørrebrød night at the Airbnb",d:"Open-face sandwich assembly: herring, smoked salmon, leverpostej, cheese on rugbrød, Danish beer or elderflower. Canal stroll after — houseboats, quiet brick streets."}]}],
+ lore:[
+  {t:"A king's copy of Amsterdam",d:"Christianshavn was dug in 1618 by Christian IV as a fortified merchant quarter on the Dutch model — canals, gables, houseboats. Your street stands on 400-year-old reclaimed harbor bottom."},
+  {t:"The backwards spiral",d:"Legend: the architect of Vor Frelsers' spire hurled himself from the top after realizing his spiral winds the 'wrong' way. Truth: he died peacefully in bed, years later. But around step 380, outside, in the wind — the legend feels truer."}],
  phrase:{p:"Hej hej",pr:"hi hi",e:"Hello — Danish now. Softer than the Norwegian version; same warmth."},
  boys:"The outside of a golden spire, 86 meters up, on stairs that get narrower as you climb. Genuinely thrilling.",
  conn:"Phones OFF airplane mode once you're alongside in Copenhagen. Danish coverage (TDC/Telia) is strong everywhere from here.",
  customs:"THE Copenhagen rule: bike lanes are not sidewalks. Never step into one without looking — cyclists are fast, silent, and have right of way. Drill the boys on day one.",
  snacks:"Denmark switch at Netto: rugbrød (dense rye), leverpostej for it, flødeboller (chocolate-shelled cream puffs) for the boys, a Tuborg for the adults.",
- book:[{l:"Tower 13:00",r:"billetto.dk — on file"},{l:"CPH Airbnb",r:"Dronningensgade 23"}]},
+ book:[{l:"Tower 13:30",r:"#21750292"},{l:"CPH Airbnb",r:"Dronningensgade 23"}]},
 
 {d:"2026-07-25",dow:"Sat",city:"Copenhagen",sub:"GoBoat · DØP · Rosenborg · Færgecafé",r:"denmark",
  lede:"The full Copenhagen Saturday: captaining your own boat through the canals, the city's famous organic hot dog, crown jewels behind vault walls, and a 6:30 dinner in a converted ferry.",
@@ -508,6 +571,8 @@ const DATA=[
    {b:"Faraos Cigarer",d:"Skindergade 27, Sat 10–5, ~10 min south. Copenhagen's best comics + Pokémon shop — the boys' reward for tolerating a castle.",q:"Faraos Cigarer, Skindergade 27, Copenhagen"}]},
   {n:"Evening — Dinner [LOCKED 18:30]",items:[
    {b:"Christianshavns Færgecafé",d:"Strandgade 50, 5 min from the Airbnb — boat seating confirmed. Smørrebrød platter, flæskesteg, schnitzel; the converted-ferry atmosphere is the draw. Nyhavn walk-through after if energy holds — the Jazz Festival may have free outdoor sets.",q:"Christianshavns Færgecafé, Copenhagen"}]}],
+ lore:[
+  {t:"A harbor you can swim in",d:"A generation ago this harbor was industrial soup. Copenhagen cleaned it until it passed swimming standards — the Islands Brygge harbor bath you'll boat past is the proof. Very few capitals let you drive the boat AND swim the water on the same morning."}],
  phrase:{p:"Tak",pr:"tahk (short, soft)",e:"Thanks — Danish drops the extra K sound. Also means please. Danes use it constantly."},
  boys:"Driving the boat. Actually driving it. Then a Pokémon shop and dinner inside a ferry.",
  eyes:["From the water, look for the golden spire you climbed yesterday.","Rosenborg's silver lions have guarded the throne room since the 1660s.","On Strøget, the Stork Fountain is where new midwives traditionally dance."],
@@ -527,6 +592,9 @@ const DATA=[
    {b:"Dinner: Tivoli Food Hall ~7 PM",d:"15 stalls — smørrebrød, sushi, churros. Everyone picks their own; no reservation."},
    {b:"8–11 PM — the payoff",d:"Illuminated gardens after sunset (~9:30). Sunday crowds thin as locals leave — re-ride the coaster lit up, see the Nimb palace and Chinese Pagoda glowing. Leave whenever satisfied; done-at-9:30 is a complete day.",a:"No fireworks tonight (Saturdays only) — deliberately traded for calmer crowds and a gentle lead-in to Monday's flight."}]}],
  warn:"Final bags closed tonight. Monday departs the Airbnb by 11:30 AM latest.",
+ lore:[
+  {t:"The park that taught Disney",d:"Tivoli opened in 1843 — the world's second-oldest amusement park. Walt Disney visited in the 1950s, took notes, and told his team he wanted Disneyland to feel like this. The 1914 Rutschebanen wooden coaster still carries a human brakeman riding every single train."},
+  {t:"Why Sunday night",d:"Evening is Tivoli's real trick: over 100,000 lamps come on and the gardens become the definition of hyggeligt. Sunday closes the weekend — the lines thin out exactly as the lights come up."}],
  phrase:{p:"Hyggeligt",pr:"HOO-guh-lit",e:"Cozy, lovely, warm-hearted — what the lit gardens will be. The most Danish word there is."},
  boys:"A 112-year-old wooden coaster with a human brakeman riding along, then the same rides again after dark with the park glowing.",
  book:[{l:"Tivoli entry + Ride Pass",r:"book: tivoli.dk"}]},
@@ -534,7 +602,7 @@ const DATA=[
 {d:"2026-07-27",dow:"Mon",city:"Return",sub:"Copenhagen → Amsterdam → Atlanta → home",r:"travel",
  lede:"Twenty-one days, six beds, four boats, one fish dinner caught by hand. The Metro takes 12 minutes; the rest is airplane food and a movie backlog.",
  transit:[
-  {t:"≤11:30",l:"M2 Metro Christianshavn → CPH Airport, ~12 min, DKK 36/pp",ref:"DOT app / card"},
+  {t:"≤11:30",l:"M2 Metro Christianshavn → CPH Airport, ~12 min, DKK 36/pp",ref:"DOT app / card",app:{n:"DOT",u:"https://dinoffentligetransport.dk/en/"}},
   {t:"14:40",l:"CPH → AMS · KLM KL1272, arr 16:05",ref:"XIAPW6"},
   {t:"17:05",l:"AMS → ATL · KLM KL0621, arr 20:25",ref:"XIAPW6"},
   {t:"22:40",l:"ATL → AVL · Delta DL3116, arr 23:43",ref:"XIAPW6"}],
@@ -552,7 +620,7 @@ const VAULT=[
 {g:"Flights",rows:[
  {t:"Outbound · Jul 7–8",s:"AVL→ATL DL2781 19:45 · ATL→AMS KL0622 22:40 · AMS→BGO KL1169 15:15→16:55",r:"XI7BLD"},
  {t:"Return · Jul 27",s:"CPH→AMS KL1272 14:40 · AMS→ATL KL0621 17:05 · ATL→AVL DL3116 22:40→23:43",r:"XIAPW6"},
- {t:"Seats (AVL↔ATL only)",s:"Dan 22B · Melissa 23B · Gavin 23A · Declan 22A. No confirmed seats on transatlantic/EU legs.",r:""},
+ {t:"Seats",s:"AVL↔ATL both ways: Dan 22B · Melissa 23B · Gavin 23A · Declan 22A. ATL→AMS: Declan 41D · Gavin 41E · Dan 41F · Melissa 41G. AMS→BGO + both return EU/TATL legs: pick at check-in.",r:""},
  {t:"Baggage",s:"1 × 23kg checked bag per person (4 total).",r:""}]},
 {g:"Beds",rows:[
  {t:"Bergen · Jul 8–11",s:"Jonas · Lille Øvregaten 36E · check-in 3 PM, out 11 AM",r:"HMT5X8NM9C"},
@@ -576,9 +644,9 @@ const VAULT=[
 {g:"Activities",rows:[
  {t:"Captain Tor fishing · Jul 13 ~12:00",s:"Balestrand Adventure House, arrive 15 min early · card day-of · Classic 3500 / Legacy 5000 NOK",r:"email confirmation"},
  {t:"Inge Menes boat (BACKUP — active!)",s:"~$125 · Tjugum · bills if not used or cancelled",r:"+47 950 41 651"},
- {t:"Vor Frelsers tower · Jul 24 13:00",s:"Booked · refundable · weather-shiftable to any day 9–8",r:"billetto.dk"},
+ {t:"Vor Frelsers tower · Jul 24 13:30",s:"Sankt Annæ Gade 29 · refundable · weather-shiftable to any day 9–8",r:"#21750292"},
  {t:"GoBoat · Jul 25 10:45–12:45",s:"Islands Brygge · incl. cancellation protection",r:"69c0465f3a4c2d9d2cd19967"},
- {t:"Færgecafé dinner · Jul 25 18:30",s:"Strandgade 50 · boat seating",r:"+45 32 54 46 24"},
+ {t:"Færgecafé dinner · Jul 25 18:30",s:"Strandgade 50 · boat seating · +45 32 54 46 24",r:"yC6cCJw3CA"},
  {t:"Rosenborg · Jul 25 — BOOK",s:"kongernessamling.dk · sell-out risk",r:"not yet booked"},
  {t:"Tivoli · Jul 26 — BOOK",s:"tivoli.dk · entry + unlimited Ride Pass ~$52/pp",r:"not yet booked"},
  {t:"Drøbak Badstue · Jul 21 — BOOK",s:"drobakbadstue.no · private NOK 1,700 / 1.5 hr",r:"not yet booked"},
@@ -586,6 +654,9 @@ const VAULT=[
 {g:"Emergency & essentials",rows:[
  {t:"Norway emergency",s:"Fire 110 · Police 112 · Ambulance 113 · Non-urgent medical (legevakt) 116 117",r:""},
  {t:"Denmark emergency",s:"All emergencies 112 · Copenhagen after-hours medical 1813",r:""},
+  {t:"US Embassy Oslo",s:"Morgedalsvegen 36 · 24/7",r:"+47 21 30 85 40"},
+  {t:"US Embassy Copenhagen",s:"Dag Hammarskjölds Allé 24 · 24/7",r:"+45 33 41 71 00"},
+  {t:"Captain Tor (fishing)",s:"Legacy 3-hr · Jul 13 12:00 · arrive 11:45",r:"+47 900 81 939"},
  {t:"Phones",s:"Calls $0.25/min — use WhatsApp/FaceTime over data. Wifi calling on main line. Data ~256 kbps.",r:""},
  {t:"Money",s:"NOK ≈ 10:1 USD · DKK ≈ 7:1 USD · card-first everywhere · ALWAYS decline DCC, choose local currency",r:""}]}
 ];
@@ -595,7 +666,7 @@ const PREP=[
  "Book Drøbak Badstue private slot, Jul 21 (drobakbadstue.no)",
  "Decide Heit Sauna Balestrand: book or skip (heitbalestrand.com)",
  "All apps installed on both phones (Skyss, Ruter, Norled, Vy, Flåmsbana, Fløibanen, KLM, Delta, Airbnb, DOT, Tivoli)",
- "WhatsApp on all four phones",
+ "WhatsApp on both adult phones + the spare (kids' watches: iMessage/text)",
  "Offline Google Maps: Bergen · Sognefjord · Flåm+Voss · Hardanger · Oslo · Drøbak · Copenhagen",
  "Online check-in + seat grab for transatlantic legs (no seats held!)",
  "Message CPH host about Jul 24 early bag drop",
@@ -660,11 +731,11 @@ function renderDay(){
      <button class="navBtn" onclick="stepDay(1)" ${curDay===DATA.length-1?"disabled style='opacity:.35'":""}>${curDay<DATA.length-1?esc(DATA[curDay+1].city.split("→").pop().trim()):""} →</button></div>`;
  h+=`<div class="dayHead" style="--rc:${rc}"><div class="kick">${esc(day.dow)} · ${fmtDate(day.d)} · Day ${curDay+1} of 21</div>
      <div class="city serif">${esc(day.city)}</div><div class="dsub">${esc(day.sub)}</div>
-     <p class="lede">${esc(day.lede)}</p></div>`;
+     <p class="lede">${esc(day.lede)}</p>${wxHTML(day)}</div>`;
  if(day.transit&&day.transit.length){
   h+=`<div class="sec" style="--rc:${rc}"><h3>Locked transit</h3>`;
   day.transit.forEach(t=>{h+=`<div class="item"><div class="it"><span class="time">${esc(t.t)}</span><b>${esc(t.l)}</b>
-    ${t.ref?`<div class="desc"><span class="ref">${esc(t.ref)}</span></div>`:""}</div></div>`});
+    <div class="desc">${t.ref?`<span class="ref">${esc(t.ref)}</span> `:""}${t.app?`<a class="pill" target="_blank" rel="noopener" href="${esc(t.app.u)}">↗ ${esc(t.app.n)}</a>`:""}</div></div></div>`});
   h+=`</div>`}
  h+=`<div class="sec" style="--rc:${rc}"><h3>The day</h3>`;
  (day.blocks||[]).forEach((blk,bi)=>{h+=`<div class="blockName serif">${esc(blk.n)}</div>`;
@@ -674,6 +745,9 @@ function renderDay(){
   h+=`<div style="display:${editing?"block":"none"}"><button class="btn" onclick="addItem(${curDay},${bi})">＋ Add to ${esc(blk.n.split("—")[0].trim())}</button></div>`});
  if(day.warn)h+=`<div class="warnBox"><b>Heads up:</b> ${esc(day.warn)}</div>`;
  h+=`</div>`;
+ if(day.lore&&day.lore.length){h+=`<div class="sec" style="--rc:${rc}"><h3>Field guide</h3>`;
+  day.lore.forEach(L=>{h+=`<details class="lore" style="--rc:${rc}"><summary>${esc(L.t)}</summary><div class="loreBody">${esc(L.d)}</div></details>`});
+  h+=`</div>`}
  h+=`<div class="sec" style="--rc:${rc}"><h3>Field notes</h3>`;
  h+=`<div class="mini phrase"><span class="lab">Phrase for the day</span><div class="phraseBox"><span class="p serif">${esc(day.phrase.p)}</span><span class="pr">${esc(day.phrase.pr)}</span></div><div class="desc" style="font-size:13.5px;color:var(--ink2)">${esc(day.phrase.e)}</div></div>`;
  if(day.boys)h+=`<div class="mini"><span class="lab">For the boys</span>${esc(day.boys)}</div>`;
@@ -718,7 +792,7 @@ function renderMore(){
   <button class="btn primary" onclick="exportState()">Export my changes</button>
   <button class="btn" onclick="importState()">Import</button></div>`;
  h+=`<div class="tool"><h4>About this app</h4>
-  <div class="small">Built from Live_Schedule_07012026.md. Works fully offline once loaded. To change the underlying itinerary (not just notes), ask Claude to regenerate the app and push the new index.html to GitHub — the app picks it up next time it opens online. Data version: 1.0 · Jul 1 2026.</div></div>`;
+  <div class="small">Built from Live_Schedule_07022026.md. Works fully offline once loaded. To change the underlying itinerary (not just notes), ask Claude to regenerate the app and push the new index.html to GitHub — the app picks it up next time it opens online. Data version: 1.2 · Jul 2 2026. Live weather via Open-Meteo when online, cached for offline.</div></div>`;
  h+=`<div class="footer">Ryan Family · Scandinavia 2026</div>`;return h}
 
 function render(){
@@ -765,11 +839,37 @@ function wireConverter(){
   $("#cvOut").textContent=a+" "+c.toUpperCase()+" ≈ $"+(a/r).toFixed(2)+" USD"};
  ["cvAmt","cvCur","rNok","rDkk"].forEach(id=>$("#"+id).addEventListener("input",f));f()}
 
+/* ---- live weather (Open-Meteo, no key, cached 3h for offline) ---- */
+const WXPT={avl:[35.5951,-82.5515],bgo:[60.3913,5.3221],bal:[61.2086,6.5366],flm:[60.8630,7.1130],lof:[60.3283,6.6603],osl:[59.9139,10.7522],dro:[59.6633,10.6290],cph:[55.6761,12.5683]};
+const WXDAY={"2026-07-07":"avl","2026-07-08":"bgo","2026-07-09":"bgo","2026-07-10":"bgo","2026-07-11":"bal","2026-07-12":"bal","2026-07-13":"bal","2026-07-14":"flm","2026-07-15":"lof","2026-07-16":"lof","2026-07-17":"osl","2026-07-18":"osl","2026-07-19":"osl","2026-07-20":"dro","2026-07-21":"dro","2026-07-22":"dro","2026-07-23":"osl","2026-07-24":"cph","2026-07-25":"cph","2026-07-26":"cph","2026-07-27":"cph"};
+function wxIcon(c){if(c===0)return"☀️";if(c<=2)return"🌤️";if(c===3)return"☁️";if(c<=48)return"🌫️";if(c<=57)return"🌦️";if(c<=67)return"🌧️";if(c<=77)return"🌨️";if(c<=82)return"🌧️";if(c<=86)return"🌨️";return"⛈️"}
+function wxGet(){try{return JSON.parse(localStorage.getItem("rt26.wx")||"{}")}catch(e){return{}}}
+function wxHTML(day){
+ const W=wxGet(),k=WXDAY[day.d],rec=W.data&&W.data[k]&&W.data[k][day.d];
+ if(!rec)return"";
+ let h=`<div class="wx"><span>${wxIcon(rec.c)}</span><b>${Math.round(rec.lo)}–${Math.round(rec.hi)}°F</b><span>· ${rec.p}% rain</span><span style="opacity:.55;font-size:11.5px">${W.at?new Date(W.at).toLocaleDateString(undefined,{month:"short",day:"numeric"})+" fcst":""}</span></div>`;
+ if(rec.p>=50)h+=`<div class="wxHint">☂ <b>Rain likely.</b> ${esc(day.rain||"Lean on this day's italic alternates — they're the indoor pivots.")}</div>`;
+ return h}
+async function wxFetch(force){
+ if(!navigator.onLine)return;
+ const W=wxGet();
+ if(!force&&W.at&&Date.now()-W.at<3*3600*1000)return;
+ const out={};
+ await Promise.all(Object.entries(WXPT).map(async([k,pt])=>{
+  try{
+   const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pt[0]}&longitude=${pt[1]}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&temperature_unit=fahrenheit&forecast_days=16`);
+   const j=await r.json();const m={};
+   (j.daily&&j.daily.time||[]).forEach((d,i)=>{m[d]={c:j.daily.weather_code[i],hi:j.daily.temperature_2m_max[i],lo:j.daily.temperature_2m_min[i],p:j.daily.precipitation_probability_max[i]??0}});
+   out[k]=m;
+  }catch(e){}
+ }));
+ if(Object.keys(out).length){localStorage.setItem("rt26.wx",JSON.stringify({at:Date.now(),data:out}));if(curTab==="day")render()}}
+
 document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{curTab=b.dataset.tab;editing=false;render()});
-window.addEventListener("online",()=>document.body.classList.remove("offline"));
+window.addEventListener("online",()=>{document.body.classList.remove("offline");wxFetch()});
 window.addEventListener("offline",()=>document.body.classList.add("offline"));
 if(!navigator.onLine)document.body.classList.add("offline");
-curDay=todayIdx();render();
+curDay=todayIdx();render();wxFetch();
 setInterval(()=>{if(curTab==="day"){const c=document.querySelector(".count");if(c)c.outerHTML=countdownHTML()}},30000);
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
