@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Scandinavia">
+<meta name="theme-color" content="#F1EDE2">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Ryan Family · Scandinavia 2026</title>
+<style>
+:root{
+  --paper:#F1EDE2; --paper2:#EAE4D4; --ink:#14263A; --ink2:#4A5A6C; --faint:#8B93A0;
+  --hair:#CFC6B0; --card:#FBF8F0;
+  --travel:#5A6B8F; --fjord:#1E6E68; --capital:#9C4A2F; --cruise:#24466B; --denmark:#A63A46;
+  --ok:#2E7D4F; --warn:#B5541C;
+  --safe-b: env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  overscroll-behavior-y:none}
+.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+.mono{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace}
+button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:pointer}
+a{color:inherit}
+#app{max-width:640px;margin:0 auto;padding-bottom:calc(76px + var(--safe-b))}
+
+/* ---------- voyage scrubber ---------- */
+#voyage{position:sticky;top:0;z-index:40;background:linear-gradient(var(--paper) 82%,rgba(241,237,226,0));
+  padding:10px 12px 14px}
+#vTitle{display:flex;justify-content:space-between;align-items:baseline;padding:2px 4px 8px}
+#vTitle .t{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-weight:600;font-size:15px;letter-spacing:.04em}
+#vTitle .d{font-size:11px;color:var(--ink2);letter-spacing:.08em;text-transform:uppercase}
+#track{position:relative;height:34px}
+#trackLine{position:absolute;left:6px;right:6px;top:16px;border-top:2px dashed var(--hair)}
+#ticks{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;padding:0 2px}
+.tick{width:100%;height:34px;display:flex;align-items:center;justify-content:center;position:relative}
+.tick i{display:block;width:7px;height:7px;border-radius:50%;background:var(--tc,var(--faint));opacity:.55;transition:all .15s}
+.tick.cur i{width:15px;height:15px;opacity:1;box-shadow:0 0 0 3px var(--paper),0 0 0 4.5px var(--tc)}
+.tick.today i::after{content:"";position:absolute;left:50%;top:-3px;transform:translateX(-50%);
+  width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--ink)}
+/* ---------- day header ---------- */
+.dayHead{margin:2px 12px 14px;padding:16px 16px 14px;background:var(--card);border:1px solid var(--hair);
+  border-radius:14px;position:relative;overflow:hidden}
+.dayHead::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--rc)}
+.kick{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--rc);font-weight:700}
+.city{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:30px;line-height:1.12;font-weight:600;margin:4px 0 2px}
+.dsub{font-size:13px;color:var(--ink2)}
+.lede{margin:10px 0 0;font-size:14.5px;color:var(--ink2);line-height:1.5}
+.navRow{display:flex;justify-content:space-between;margin:0 12px 10px;gap:8px}
+.navBtn{flex:1;padding:9px 0;border:1px solid var(--hair);border-radius:10px;background:var(--card);
+  font-size:13px;font-weight:600;color:var(--ink2)}
+.navBtn:active{background:var(--paper2)}
+/* ---------- countdown ---------- */
+.count{margin:0 12px 12px;padding:10px 14px;border-radius:12px;background:var(--ink);color:#F4EFE2;
+  display:flex;justify-content:space-between;align-items:center;font-size:13.5px}
+.count b{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:15px}
+/* ---------- sections ---------- */
+.sec{margin:0 12px 12px;padding:14px 16px;background:var(--card);border:1px solid var(--hair);border-radius:14px}
+.sec h3{margin:0 0 8px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);
+  font-weight:700;display:flex;align-items:center;gap:8px}
+.sec h3::after{content:"";flex:1;border-top:1px dashed var(--hair)}
+.blockName{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-weight:700;font-size:16px;margin:12px 0 4px}
+.blockName:first-of-type{margin-top:2px}
+/* items */
+.item{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--paper2);position:relative}
+.item:last-child{border-bottom:none}
+.chk{flex:none;width:22px;height:22px;margin-top:1px;border:1.6px solid var(--hair);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;color:transparent;font-size:13px;background:var(--paper)}
+.item.done .chk{background:var(--ok);border-color:var(--ok);color:#fff}
+.item.done .it{opacity:.45;text-decoration:line-through}
+.it{flex:1;min-width:0}
+.it b{font-size:15px}
+.it .desc{font-size:13.5px;color:var(--ink2);margin-top:1px}
+.it .alt{font-size:13px;color:var(--faint);font-style:italic;margin-top:3px}
+.it .time{display:inline-block;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-weight:700;font-size:13px;
+  color:var(--rc);margin-right:6px}
+.links{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--rc);
+  border:1px solid var(--hair);border-radius:99px;padding:3px 10px;background:var(--paper);text-decoration:none}
+.ref{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;background:var(--paper2);
+  border-radius:6px;padding:1px 7px;letter-spacing:.03em}
+.editBtn{flex:none;color:var(--faint);font-size:15px;padding:2px 4px;align-self:flex-start;display:none}
+body.editing .editBtn{display:block}
+body.editing .chk{display:none}
+.item.hidden{display:none}
+body.editing .item.hidden{display:flex;opacity:.35}
+/* mini sections */
+.mini{font-size:14px;line-height:1.55}
+.mini + .mini{margin-top:8px}
+.mini .lab{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--rc);display:block;margin-bottom:2px}
+.phraseBox{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.phraseBox .p{font-family:"Iowan Old Style",Palatino,Georgia,serif;font-size:21px;font-weight:700}
+.phraseBox .pr{font-size:13px;color:var(--ink2)}
+.warnBox{border-left:4px solid var(--warn);background:#F7EEDF;border-radius:10px;padding:10px 12px;font-size:13.5px;margin-top:10px}
+.warnBox b{color:var(--warn)}
+/* notes */
+textarea.note{width:100%;min-height:64px;border:1px dashed var(--hair);border-radius:10px;background:var(--paper);
+  padding:10px;font:14px/1.5 -apple-system,sans-serif;color:var(--ink);resize:vertical}
+/* ---------- list view ---------- */
+.dayRow{display:flex;gap:12px;align-items:center;margin:0 12px 8px;padding:12px 14px;background:var(--card);
+  border:1px solid var(--hair);border-radius:12px}
+.dayRow .dot{flex:none;width:11px;height:11px;border-radius:50%;background:var(--rc)}
+.dayRow .m{flex:1;min-width:0}
+.dayRow .m b{font-size:15px}
+.dayRow .m span{display:block;font-size:12.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dayRow .dn{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11.5px;color:var(--faint)}
+.dayRow.today{outline:2px solid var(--ink);outline-offset:-1px}
+/* ---------- vault ---------- */
+.vGroup{margin:0 12px 12px;background:var(--card);border:1px solid var(--hair);border-radius:14px;overflow:hidden}
+.vGroup h4{margin:0;padding:11px 16px;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink2);
+  border-bottom:1px dashed var(--hair);background:var(--paper2)}
+.vRow{padding:10px 16px;border-bottom:1px dashed var(--paper2);font-size:14px}
+.vRow:last-child{border-bottom:none}
+.vRow .vt{font-weight:600}
+.vRow .vs{font-size:12.5px;color:var(--ink2);margin:1px 0 4px}
+.copyRef{margin-left:6px;font-size:11px;color:var(--rc);font-weight:700}
+/* ---------- more ---------- */
+.tool{margin:0 12px 12px;padding:14px 16px;background:var(--card);border:1px solid var(--hair);border-radius:14px}
+.tool h4{margin:0 0 8px;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink2)}
+.convRow{display:flex;gap:8px;align-items:center;margin-top:6px}
+.convRow input{width:0;flex:1;border:1px solid var(--hair);border-radius:10px;padding:9px 10px;font:15px -apple-system,sans-serif;background:var(--paper)}
+.convRow select{border:1px solid var(--hair);border-radius:10px;padding:9px 6px;background:var(--paper);font:14px -apple-system,sans-serif}
+.convOut{margin-top:8px;font-size:15px;font-weight:700}
+.btn{display:inline-block;border:1px solid var(--hair);border-radius:10px;background:var(--paper);padding:9px 14px;
+  font-size:13.5px;font-weight:600;color:var(--ink);margin:4px 6px 0 0}
+.btn.primary{background:var(--ink);color:#F4EFE2;border-color:var(--ink)}
+.small{font-size:12.5px;color:var(--ink2)}
+/* ---------- tabbar ---------- */
+#tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(251,248,240,.96);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--hair);
+  display:flex;max-width:640px;margin:0 auto;padding-bottom:var(--safe-b)}
+#tabs button{flex:1;padding:10px 0 8px;font-size:11px;font-weight:600;color:var(--faint);
+  display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:.02em}
+#tabs button .ic{font-size:19px;line-height:1}
+#tabs button.on{color:var(--ink)}
+.offlineBadge{position:fixed;top:calc(env(safe-area-inset-top,0px) + 6px);right:10px;z-index:60;font-size:10px;
+  font-weight:700;letter-spacing:.08em;background:var(--ink);color:#F4EFE2;border-radius:99px;padding:3px 9px;display:none}
+body.offline .offlineBadge{display:block}
+.footer{margin:18px 12px 8px;text-align:center;font-size:11px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="offlineBadge">Offline · Saved copy</div>
+<div id="voyage">
+  <div id="vTitle"><span class="t serif">Scandinavia 2026</span><span class="d" id="vDate"></span></div>
+  <div id="track"><div id="trackLine"></div><div id="ticks"></div></div>
+</div>
+<div id="app"></div>
+<nav id="tabs">
+  <button data-tab="day" class="on"><span class="ic">☀︎</span>Today</button>
+  <button data-tab="days"><span class="ic">☰</span>Days</button>
+  <button data-tab="vault"><span class="ic">⚓︎</span>Vault</button>
+  <button data-tab="more"><span class="ic">✚</span>More</button>
+</nav>
+<script>
+/* ============ TRIP DATA — generated from Live_Schedule_07012026.md ============ */
+const REGIONS={travel:"--travel",fjord:"--fjord",capital:"--capital",cruise:"--cruise",denmark:"--denmark"};
+const DATA=[
+{d:"2026-07-07",dow:"Tue",city:"Departure Day",sub:"Asheville → Atlanta → overnight to Amsterdam",r:"travel",
+ lede:"Final prep, then the overnight hop across. Everything from here runs on the plan — tonight is just execution.",
+ transit:[{t:"19:45",l:"AVL → ATL · Delta DL2781",ref:"XI7BLD"},{t:"22:40",l:"ATL → AMS · KLM KL0622 (overnight)",ref:"XI7BLD"}],
+ blocks:[
+  {n:"Afternoon — Final checks",items:[
+   {b:"Apps installed on both phones",d:"Skyss, Ruter, Norled, Vy, Flåmsbana, Fløibanen, KLM, Delta, Airbnb — plus WhatsApp on all four phones for $0 calls over data."},
+   {b:"Offline Google Maps downloaded",d:"Bergen · inner Sognefjord/Balestrand · Flåm + Voss · Hardanger/Lofthus · Oslo · Drøbak · Copenhagen. Do it on home wifi."},
+   {b:"T-Mobile roaming confirmed",d:"Both lines confirmed. Unlimited intl text + ~256 kbps data, calls $0.25/min, wifi calling on the main line. Nothing left to verify."}]},
+  {n:"Evening — Fly",items:[
+   {b:"Seats on the AVL→ATL hop",d:"Dan 22B · Declan 22A · Gavin 23A · Melissa 23B. Transatlantic legs have no confirmed seats — check in early and grab pairs."},
+   {b:"Overnight leg strategy",d:"Eat the meal, then lights out — Bergen arrival is 4:55 PM local and the goal is walking to dinner, not napping."}]}],
+ phrase:{p:"God tur!",pr:"goo TOOR",e:"Have a good trip! — say it to each other at the gate."},
+ boys:"Window seats over Greenland if the routing cooperates — and a movie marathon with zero screen-time rules tonight.",
+ customs:"Scandinavia is card-first from the second you land: no cash needed the entire trip, ever. Always choose local currency (NOK/DKK) if a terminal offers dollars.",
+ book:[{l:"Outbound flights",r:"XI7BLD"}]},
+
+{d:"2026-07-08",dow:"Wed",city:"Bergen",sub:"Arrival day · Amsterdam → Bergen",r:"fjord",
+ lede:"Layover, short hop, and you're in fjord country by late afternoon. Tonight asks nothing of anyone: keys, food, sleep.",
+ transit:[{t:"15:15",l:"AMS → BGO · KLM KL1169, arrives 16:55",ref:"XI7BLD"}],
+ blocks:[
+  {n:"Afternoon — Arrive",items:[
+   {b:"Flybussen to the city center",d:"~30 min from the airport. Runs constantly; pay by card or app on board."},
+   {b:"Check in — Lovely Terrace Airbnb",d:"Host Jonas · Lille Øvregaten 36E · after 3 PM.",q:"Lille Øvregaten 36E, Bergen",ref:"HMT5X8NM9C"}]},
+  {n:"Evening — Land softly",items:[
+   {b:"Light dinner nearby or self-cater",d:"Grab basics at the nearest Kiwi/Rema 1000. Early sleep — tomorrow is the trip's first real day."}]}],
+ phrase:{p:"Hei hei",pr:"hay hay",e:"Hi! — the doubled version is friendlier and what locals actually say."},
+ boys:"First fjord sighting from the plane window on descent into Bergen — mountains straight into the sea.",
+ snacks:"First Norwegian grocery run: grab a Kvikk Lunsj (Norway's beloved Kit-Kat-that-isn't), a tube of brunost brown cheese for morning bread, and a Solo orange soda for the boys.",
+ conn:"Baseline for the trip: both lines roam free — unlimited texting, data at ~256 kbps (fine for Maps and iMessage, not for streaming). Calls $0.25/min, so use WhatsApp or FaceTime audio.",
+ book:[{l:"Bergen Airbnb · Jonas",r:"HMT5X8NM9C"}]},
+
+{d:"2026-07-09",dow:"Thu",city:"Bergen",sub:"Fløyen · trolls · canoes · Bryggen",r:"fjord",
+ lede:"The classic Bergen day, timed to stay ahead of three cruise ships: up the mountain early, canoes at the lake, down on foot, then the medieval alleys once the tour groups thin.",
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Skillingsbolle on the walk",d:"Baker Brun (multiple locations, opens 7 AM) — Bergen's own cinnamon roll, flatter and more caramelized than the ones at home.",q:"Baker Brun Bryggen, Bergen"},
+   {b:"Fløibanen funicular at 9:30",d:"Ride up before the ship crowds build. ~1 hr at the summit: seven-mountains panorama, then the Troll Forest.",q:"Fløibanen, Bergen",u:"https://www.floyen.no/en"},
+   {b:"Lake Skomakerdiket canoes",d:"Flat 10–15 min walk from the summit. Free canoes, paddles and life jackets from 11:00 — arrive ~10:45 to be first in line. Max 3 per boat; Declan paddles with an adult.",q:"Skomakerdiket, Bergen"},
+   {b:"Hike down Fløysvingene",d:"~1 hr, gravel/asphalt the whole way, harbor-neighborhood views on the descent. In town by ~1 PM.",a:"Rain pivot: flip the day — Bryggen alleys first, shift Fløyen to tomorrow morning."}]},
+  {n:"Midday",items:[
+   {b:"Trekroneren hot dog cart",d:"Kong Oscars gate 1, at the foot of the funicular. The reindeer sausage in lompe with lingonberry, spicy mustard and fried onions. It's enormous.",q:"Trekroneren, Kong Oscars gate 1, Bergen"}]},
+  {n:"Afternoon",items:[
+   {b:"Bryggen alleyways",d:"The real experience is the narrow medieval passages behind the colorful facades — artisan shops, silverwork, ceramics. Best after 3 PM when tour groups thin.",q:"Bryggen, Bergen"},
+   {b:"Outland Bergen with the boys",d:"Strandkaien 14, open to 6 PM Thursdays. Pokémon cards, manga, gaming — the browse is the fun.",q:"Outland Bergen, Strandkaien 14, Bergen",a:"Bigger alternate: Gamle Bergen Museum in Sandviken — free grounds, costumed actors, ~2 hrs, short bus ride."}]},
+  {n:"Evening",items:[
+   {b:"Self-cater at the Airbnb",d:"Then a waterfront walk in the long light — Bergen stays bright until nearly 11 PM.",a:"Backup: Pingvinen (Vaskerelven 14, from noon) — plukkfisk, fish soup, or reindeer steak."}]}],
+ phrase:{p:"Takk",pr:"tahk",e:"Thanks — the single most-used word of the next two weeks."},
+ boys:"The troll hunt in Trollskogen: no official count of carved trolls exists — the mission is to find more than anyone thinks possible. Then free canoes on a mountain lake.",
+ eyes:["From the summit, count the seven mountains that ring the city.","In the Bryggen alleys, look up: the buildings lean into each other like they're sharing secrets.","The funicular's front window is the best seat — grab it going up."],
+ customs:"Quiet voices on the funicular and buses — Norwegians keep public transit library-calm, and it's the fastest way for the boys to pass as locals.",
+ book:[{l:"Fløibanen tickets",r:"buy day-of in app / floyen.no"}]},
+
+{d:"2026-07-10",dow:"Fri",city:"Bergen",sub:"Fortress · fjord swim · last Bergen night",r:"fjord",
+ lede:"Lightest cruise day of the stay. A 13th-century tower in the morning, a heated saltwater pool with a fjord diving board in the afternoon, and bags packed before bed — the ferry waits for no one.",
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Bergenhus Fortress + Rosenkrantz Tower",d:"Free grounds at the harbor mouth. The tower (~150 NOK/adult, under-18 free) climbs from 13th-century dungeons past a royal bedchamber to a cannon rooftop with the best harbor view in Bergen.",q:"Rosenkrantz Tower, Bergen",a:"Håkon's Hall (120 NOK) optional — 20 min if energy holds. Bryggens Museum is closed Fridays — not an option today."},
+   {b:"St. Mary's Church on the way past",d:"2-min walk from the fortress — oldest building in Bergen (1130s). A quick look is enough.",q:"St Mary's Church Mariakirken, Bergen"}]},
+  {n:"Midday",items:[
+   {b:"Picnic on the fortress lawns",d:"Bread and cheese from a Kiwi or Rema 1000 — the ramparts beat any restaurant nearby.",a:"Or Kafé Spesial (Christies gate 13): vegetarian pizza or shakshuka, chocolate fondant after."}]},
+  {n:"Afternoon",items:[
+   {b:"Nordnes Peninsula walk",d:"15–20 min from Bryggen along the harbor edge the whole way.",q:"Nordnes park, Bergen"},
+   {b:"Nordnes Sjøbad — the Bergen swim",d:"Heated 30°C saltwater pool, sauna on site, and a diving board that launches straight into the fjord. Family ticket available (~120 NOK/adult).",q:"Nordnes Sjøbad, Nordnesbakken 4, Bergen",a:"Rain: Bergen Aquarium is literally next door. Bigger rain pivot: KODE/Rasmus Meyer — largest Munch collection outside Oslo, open Fridays."}]},
+  {n:"Evening",items:[
+   {b:"Last Bergen dinner",d:"Pingvinen (Vaskerelven 14) or Kafé Spesial — whichever wasn't used at lunch. Both walk-in friendly.",q:"Pingvinen, Vaskerelven 14, Bergen"}]}],
+ warn:"Pack tonight and set alarms: Norled departs 08:00 sharp tomorrow from Strandkaiterminal — be there by 7:40.",
+ phrase:{p:"Vær så snill",pr:"vair saw SNILL",e:"Please — literally 'be so kind.'"},
+ boys:"Dungeon-to-rooftop-cannon climb in the morning, fjord diving board in the afternoon. Arguably their best one-two day of the trip.",
+ eyes:["Original 13th-century stonework in the tower's lower rooms — put a hand on it.","From the cannon roof, spot tomorrow's ferry route out of the harbor.","Cobblestones on the fortress grounds are ship's ballast — Bergen was built from what boats didn't need."],
+ customs:"Tipping in Norway: genuinely not expected. Round up or add ~10% only if service was great — never at counters or casual spots.",
+ book:[{l:"Rosenkrantz Tower",r:"pay at door"}]},
+
+{d:"2026-07-11",dow:"Sat",city:"Bergen → Balestrand",sub:"Express ferry up the Sognefjord",r:"fjord",
+ lede:"Four hours up the world's longest ice-free fjord to a village of 1,300. The one non-negotiable errand: Joker closes Sundays, so today's grocery run covers three days.",
+ transit:[{t:"08:00",l:"Norled express ferry, Bergen Strandkaiterminal → Balestrand (arr ~12:00) · arrive 7:40",ref:"#3884347377"}],
+ blocks:[
+  {n:"Midday",items:[
+   {b:"Drop bags — Fjordapartments",d:"Host Siv · Holmen 19. Try for early access; message Siv if needed.",q:"Holmen 19, Balestrand",ref:"HMZE825RZP"},
+   {b:"THE grocery shop — Joker Balestrand",d:"Holmen 11. Closed Sunday — this run covers Jul 12 + 13 lunches and dinners, plus trail snacks and the fish-dinner sides (potatoes, butter, lemon, dill, peas).",q:"Joker Balestrand, Holmen 11, Balestrand"}]},
+  {n:"Afternoon — either or both",items:[
+   {b:"Balholm farm-shop walk (Ciderhuset)",d:"15-min orchard walk along the fjord. Open Sat 12–16 (closed Sun). Browse ~20 ciders and juices; the boys get the Sprudlande Margaret rhubarb-apple. No paid tasting needed — the walk and shop are the experience.",q:"Ciderhuset, Balestrand"},
+   {b:"First fjord cold plunge",d:"Right off the village waterfront. Exhilarating, kid-memorable, and you're well-rested for it."}]},
+  {n:"Evening",items:[
+   {b:"Self-cater dinner, then dessert at Peters plass",d:"Holmen 8, on the pier, 2 min away, open daily to 10:20 PM. Try the Hutsul (family-recipe cake, the standout) or apple pie if it hasn't sold out.",q:"Peters plass, Holmen 8, Balestrand"}]}],
+ phrase:{p:"Kan jeg få…?",pr:"kahn yai FAW",e:"Can I have…? — the boys' ordering phrase from here on."},
+ boys:"Spot the two saga statues: King Bele by the harbor (a gift from Kaiser Wilhelm II, 1913) and the 10.5-meter Fridtjov the Bold across the fjord at Vangsnes — visible from the water.",
+ eyes:["The dragon-style villas along the waterfront — 1890s Norse-romantic architecture built for painters and kaisers.","Balestrand's fruit orchards run right down to the fjord — this is apple country."],
+ snacks:"At Joker: knekkebrød (rye crispbread) for hikes, a Stratos bar (bubbly milk chocolate), and Balholm's non-alcoholic sparkling juices for the balcony.",
+ conn:"Download offline maps for Balestrand / inner Sognefjord before leaving Bergen wifi this morning — coverage thins as you head up the fjord.",
+ book:[{l:"Norled ferry",r:"#3884347377"},{l:"Balestrand Airbnb · Siv",r:"HMZE825RZP"}]},
+
+{d:"2026-07-12",dow:"Sun",city:"Balestrand",sub:"Orrabenken hike · optional fjord sauna",r:"fjord",
+ lede:"Up through birch forest to a bench with the whole Sognefjord below, picnic from yesterday's groceries, and an optional floating sauna if the family votes for it.",
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Kreklingen → Orrabenken hike",d:"Trailhead ~15 min from the quay by the school sports hall. ~1 hr up through birch forest to the 370m viewpoint — picnic tables, panorama over village and fjord. Round trip 1.5–2 hrs. Turn around at the bench; skip Buråsi (575m) unless everyone's strong and it's clear.",q:"Kreklingen, Balestrand",a:"Rain pivot: Norsk Reiselivsmuseum (Holmen 12) — built into bedrock, ~1.5 hr, café with fjord views."}]},
+  {n:"Midday",items:[{b:"Packed lunch from Joker groceries",d:"On the trail or back at the apartment."}]},
+  {n:"Afternoon",items:[
+   {b:"Heit Sauna Balestrand — optional",d:"Fjord-edge floating sauna with cold-plunge stairs into the Sognefjord (Kong Beles veg 30). Private 1.5-hr slot, book at heitbalestrand.com; bring 2 towels each + swimwear.",q:"Heit Sauna, Balestrand",u:"https://heitbalestrand.com",a:"Honest note: the most skippable of the trip's four sauna options — a free waterfront plunge gives the boys most of the memory. But if you want ONE floating-sauna-on-a-fjord moment, this is the prettiest setting."}]},
+  {n:"Evening",items:[
+   {b:"Balholm Bar og Bistro",d:"In Balestrand Hotel, fjord-view bar food, walk-in, daily 1–9 PM. Fjord sandwich, fish soup, or burger; coconut cake if it's on.",q:"Balestrand Hotel, Balestrand",a:"Or Gekkens — family-owned, fresh salmon, pepper steak, local beers and ciders. Balholm cider on the balcony either way."}]}],
+ phrase:{p:"Det smaker godt",pr:"deh SMAH-ker got",e:"It tastes good — deploy on any host or cook and watch them light up."},
+ boys:"Wild berries, small waterfalls and wildlife the whole way up — plus the fjord plunge if the sauna happens.",
+ conn:"Dead zones above the village on the trail — don't count on a live signal mid-hike. Offline map has you covered.",
+ customs:"Norway's allemannsretten — the right to roam. You can walk, picnic and swim on almost any uncultivated land. The trail crossing farm fences is normal and legal; close every gate behind you.",
+ book:[]},
+
+{d:"2026-07-13",dow:"Mon",city:"Balestrand",sub:"Fishing with Captain Tor · cook your catch",r:"fjord",
+ lede:"The marquee Balestrand day: out on the Esefjord with Captain Tor around midday, then the whole point of the exercise — pan-frying your own catch for dinner.",
+ blocks:[
+  {n:"Morning",items:[{b:"Easy morning",d:"Coffee, balcony, fjord. Keep it light ahead of the boat; pack a picnic from groceries."}]},
+  {n:"Midday — Fishing trip [CONFIRMED]",items:[
+   {b:"Captain Tor · Balestrand Fjord Angling",d:"Private boat, your group only. Target the 12:00 slot; arrive 15 min early at the Balestrand Adventure House / Tourist Info. Card payment day-of.",q:"Balestrand Adventure, Balestrand"},
+   {b:"Pick the tier on the day",d:"Classic (3500 NOK, 1.5 hrs): dragon-villa sightseeing + rod fishing for sand whiting — the sensible pick. Legacy (5000 NOK, 3 hrs): adds trolling and the pre-set net haul — pulling up a mystery net is the kid-magnet."},
+   {b:"Inge Menes bare-boat — held as backup",d:"~$125, Tjugum, +47 950 41 651. Still an ACTIVE reservation, not a placeholder — it bills if not used or cancelled. Use it for extra water time, or cancel once Tor's trip is done."}]},
+  {n:"Afternoon",items:[{b:"Clean the fish at the dock",d:"Then back to the apartment."}]},
+  {n:"Evening",items:[
+   {b:"Cook your own catch — stekt fisk",d:"Classic Norwegian pan-fried fish: salt, butter, lemon, dill — with boiled new potatoes and peas. Light candles, the whole bit. One of the best dinners of the trip, and the boat day exists to make it happen."}]}],
+ phrase:{p:"Tusen takk",pr:"TOO-sen tahk",e:"A thousand thanks — for Captain Tor, after the catch."},
+ boys:"Catching dinner with their own hands — and if the Legacy tier wins, hauling a net with no idea what's inside: crab, starfish, sea urchin, odd fish.",
+ conn:"Expect dead zones out on the water — tell anyone expecting texts that you'll surface by late afternoon.",
+ book:[{l:"Captain Tor 12:00 slot",r:"confirmed by email"},{l:"Inge Menes backup boat",r:"+47 950 41 651"}]},
+
+{d:"2026-07-14",dow:"Tue",city:"Balestrand → Lofthus",sub:"Ferry · Flåmsbana · rail · bus — the big chain",r:"fjord",
+ lede:"Four vehicles, one spectacular day: express ferry down the Aurlandsfjord, one of the world's steepest railways up to Myrdal, rail to Voss, bus over to the Hardangerfjord. Every leg is booked; the buffers are built in.",
+ transit:[
+  {t:"11:58",l:"Norled ferry Balestrand → Flåm",ref:"#2542170371"},
+  {t:"14:45",l:"Flåmsbana Flåm → Myrdal",ref:"OGD-QDL-A3T"},
+  {t:"15:56",l:"R40 Myrdal → Voss, arr 16:51",ref:"SUA-CW4-YVS"},
+  {t:"18:01",l:"Skyss Bus 990 Voss Tinghus → Lofthus kai, arr 19:20 · pay in Skyss app",ref:"~$21–24/pp"}],
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Breakfast at Fløyfisken",d:"Holmen 2, fjord view. Norwegian waffles or smoked salmon; soft serve for the boys if it's earned.",q:"Fløyfisken, Balestrand"},
+   {b:"St. Olaf's Church — 10 minutes",d:"Free, 5-min walk. The striking 1897 neo-stave church said to have inspired the Frozen coronation chapel. Worth the glance on the way out.",q:"St Olaf's Church, Balestrand"},
+   {b:"Pack a travel lunch",d:"From Joker leftovers — it's a long chain with thin food options."}]},
+  {n:"Evening — arrive Lofthus",items:[
+   {b:"Check in — Hotel Ullensvang",d:"Family Junior Suite. Lofthus kai is ~5 min from the hotel.",q:"Hotel Ullensvang, Lofthus"},
+   {b:"Grieg's composer cabin on the grounds",d:"'Komposten' — free, in the garden, where Edvard Grieg composed during summer stays."},
+   {b:"Easy dinner",d:"Bunnpris (Sjoarvegen 18, open to 8 PM Tue) for a light supermarket dinner, or Lofthus Ekspedisjon on the fjord (open to 22:00) if energy holds.",q:"Lofthus Ekspedisjon, Lofthus"}]}],
+ warn:"If the R40 runs late and you miss the 18:01 bus, the next 990 isn't until ~22:16 — have the Ullensvang front desk's taxi contact ready (~NOK 1,000–1,300 from Voss). The hotel was pre-flagged about a possible late transfer.",
+ phrase:{p:"Fjord og fjell",pr:"fyoor oh FYELL",e:"Fjord and mountain — today's entire itinerary in three words."},
+ boys:"The Flåmsbana drops through 20 tunnels on one of the steepest standard railways anywhere — watch for the waterfall stop on the way up.",
+ conn:"The rail chain runs through long tunnels and remote valleys — offline maps for Flåm + Hardanger should already be downloaded. Don't burn battery hunting for signal.",
+ book:[{l:"Hotel Ullensvang",r:"Family Junior Suite"}]},
+
+{d:"2026-07-15",dow:"Wed",city:"Lofthus",sub:"Ullensvang Bath · Elvadalen waterfalls",r:"fjord",
+ lede:"Hardanger settles in: a morning in the hotel's 88-meter swim channel, an easy river-valley hike to two waterfalls, and an early burger dinner — KOMPAEN closes at six sharp.",
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Slow hotel breakfast, then the Ullensvang Bath",d:"88m swimming channel, multiple saunas — included for guests. Pack a picnic from Bunnpris before heading out.",q:"Hotel Ullensvang, Lofthus"}]},
+  {n:"Late morning",items:[
+   {b:"Elvadalen (River Valley) hike",d:"3.5-mi loop, 1.5–2 hrs, ~120m gain, along the Opo river through orchards to the Bjødnabykset and Skrikjo waterfalls. First kilometer is steep, then it evens out.",q:"Elvadalen, Lofthus",a:"Look for the rock with ancient drilled pagan holes on the left — the info board explains it."}]},
+  {n:"Afternoon",items:[{b:"Pool, fjord beach, lawn time",d:"Optional cold plunge in the Hardangerfjord after the hike."}]},
+  {n:"Evening",items:[
+   {b:"Early dinner at KOMPAEN Bistro og Deli",d:"Ullensvangveien 887, 3-min walk. Family-owned, open Wed–Sun until 6 PM ONLY — target ~5 PM seating. The Angus burger is the raved-about pick; fish & chips solid.",q:"KOMPAEN Bistro og Deli, Lofthus",a:"If the hike runs long past KOMPAEN's hard close: Lofthus Ekspedisjon (open to 22:00) — interchangeable with tomorrow's dinner."}]}],
+ warn:"Tonight or tomorrow morning: ask the front desk about a packed breakfast box for Friday's 6:30 AM departure — confirm what time it can be ready.",
+ phrase:{p:"Eple",pr:"EH-pleh",e:"Apple — you're standing in Norway's orchard. 500,000+ fruit trees around you."},
+ boys:"Waterfall spray at Skrikjo, the mystery pagan holes, and an 88-meter pool channel back at the hotel.",
+ snacks:"At Bunnpris: skolebrød (custard bun with coconut), a tube of Norwegian kaviar for knekkebrød, and another Solo for the trail.",
+ conn:"Farm trails and higher ground are patchy; the village and hotel are fine.",
+ book:[]},
+
+{d:"2026-07-16",dow:"Thu",city:"Lofthus",sub:"Fruit Trail · cider farms · pre-dawn prep",r:"fjord",
+ lede:"The Hardanger Fruit Trail at a stroll — drop-in cider farms, juice tastings for the boys, orchard picnic — then buttoned-up prep for tomorrow's high-stakes 6:55 bus.",
+ blocks:[
+  {n:"Late morning",items:[
+   {b:"Hardanger Fruktstien (Fruit Trail)",d:"Paved paths through the orchards around the hotel — fruit growing here started 800 years ago at Opedal farm. 2–3 hrs at a leisurely pace with stops.",q:"Lofthus, Ullensvang"},
+   {b:"Alvavoll Frukt & Sidergard",d:"Opedalsvegen 39 — drop-in cider flight and snacks, Mon–Sat in summer.",q:"Alvavoll frukt og sidergard, Lofthus"},
+   {b:"Lofthus Sideri",d:"Lofthusvegen 49, Mon–Sat 10–18. Drop-in tastings, juice tastings for the kids, ~170 NOK/bottle.",q:"Lofthus Sideri, Lofthus",a:"Optional adds: Opedalstunet walk-in shop on the trail; Helleland Gard is intimate but remote — skip if it's a stretch."}]},
+  {n:"Afternoon",items:[{b:"Orchard picnic, then pool / fjord beach",d:"Picnic on the trail — orchard grass, fjord views."}]},
+  {n:"Late afternoon — DEPARTURE PREP",items:[
+   {b:"Pack tonight",d:"Everything but toothbrushes. 6:30 AM wake tomorrow."},
+   {b:"Confirm the breakfast box",d:"With the front desk, if not already done."},
+   {b:"Arrange the standby taxi",d:"Soft hold for 6:40 AM via the concierge in case Bus 990 has issues — no charge unless used."}]},
+  {n:"Evening",items:[
+   {b:"Dinner at Lofthus Ekspedisjon",d:"Sjoarvegen 27, on the fjord with their own dock, open to 22:00. Wood-fired pizza and a flight of house Hardanger ciders.",q:"Lofthus Ekspedisjon, Lofthus"}]}],
+ warn:"Tomorrow is the trip's highest-stakes morning: 6:30 wake, 6:40 walk to the kai, 6:55 bus. Alarms on two phones.",
+ phrase:{p:"Skål!",pr:"skawl",e:"Cheers! — with cider, in the region that invented Norwegian cider."},
+ boys:"Juice tastings poured like wine flights, and permission to eat a picnic in someone's orchard (that's the right-to-roam again).",
+ eyes:["Fruit trees planted in rows dating back generations — some farms here are on their 20th generation of the same family.","The Folgefonna glacier across the fjord, hanging white above the orchards."],
+ book:[]},
+
+{d:"2026-07-17",dow:"Fri",city:"Lofthus → Oslo",sub:"HIGH STAKES · pre-dawn bus + Bergen Railway",r:"capital",
+ lede:"The one morning with zero slack: 6:55 bus to Voss, then five hours on the Bergen Railway across the roof of Norway into Oslo. After that, the trip downshifts into city mode.",
+ transit:[
+  {t:"06:55",l:"Skyss Bus 990 Lofthus kai → Voss, arr ~8:25 · wake 6:30, walk 6:40",ref:"Skyss app"},
+  {t:"09:20",l:"Vy F4 Voss → Oslo S, arr 15:09 · Carriage 7, seats 17/18/21/22",ref:"6P3-IOE-EID"}],
+ blocks:[
+  {n:"Afternoon — arrive Oslo",items:[
+   {b:"Uber from Oslo S to Majorstuen",d:"Airbnb host Margareth Aurora · Pilestredet 53C.",q:"Pilestredet 53C, Oslo",ref:"HMAWRADHED"}]},
+  {n:"Evening",items:[
+   {b:"Cafe Laundromat",d:"Underhaugsveien 2, ~6 min walk — café-meets-laundromat, cheeseburgers, books, beers, open to midnight.",q:"Cafe Laundromat, Underhaugsveien 2, Oslo",a:"Or Digg Pizza Majorstuen (Bogstadveien 62) — build-your-own, iPad ordering, very kid-friendly."}]}],
+ warn:"Backup if the bus fails: the standby taxi arranged yesterday via Ullensvang (~NOK 3,000–4,000, ~90 min to Voss). Missed train: rebook at vy.no.",
+ phrase:{p:"Unnskyld",pr:"OON-shill",e:"Excuse me — the essential city word, starting today."},
+ boys:"The Bergen Railway is one of Europe's great train rides — snowfields in July possible near the top. Breakfast box on laps, five hours of scenery.",
+ conn:"Long tunnels most of the morning. By Oslo you're back to full-strength city coverage for the rest of Norway.",
+ book:[{l:"Vy train",r:"6P3-IOE-EID"},{l:"Oslo Airbnb · Margareth Aurora",r:"HMAWRADHED"}]},
+
+{d:"2026-07-18",dow:"Sat",city:"Oslo",sub:"Vigeland · Grünerløkka · reptiles",r:"capital",
+ lede:"Oslo's two personalities in one day: 200 bronze humans in a monumental park, then the indie-coffee-and-street-art side of the river — with a reptile park wedged in for the boys.",
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Vigeland Park",d:"~10 min walk west, free, open 24/7. 1.5–2 hrs among 200+ Gustav Vigeland sculptures: the Monolith, the Bridge, and Sinnataggen — the famous furious toddler.",q:"Vigeland Park, Oslo",a:"Rain pivot: VIKINGR at the Historical Museum (NOK 160/adult, under-18 free) — the Viking Ship Museum is closed until 2027; this is the substitute."}]},
+  {n:"Midday",items:[
+   {b:"T-bane to Grünerløkka, lunch at Mathallen",d:"Helt Vilt inside the food hall — wild game burgers. The moose burger or the Arctic Journey tasting platter.",q:"Mathallen Oslo"}]},
+  {n:"Afternoon",items:[
+   {b:"Grünerløkka wander",d:"Akerselva river path, street art, vintage shops.",q:"Grünerløkka, Oslo"},
+   {b:"Tim Wendelboe",d:"Grüners gate 1 — world-renowned Nordic roaster, standing-only. Hot chocolate for the boys.",q:"Tim Wendelboe, Oslo"},
+   {b:"Oslo Reptile Park",d:"St. Olavs gate 2, ~1 hr, no booking, rain-proof. Boas, poison dart frogs, tarantulas, a black widow, feeding times. High 'whoa' factor.",q:"Oslo Reptilpark",a:"Optional: Outland Oslo (Grensen 5–7) is ~15 min south — card-shop break on the way back."}]},
+  {n:"Evening",items:[
+   {b:"Tram back to Majorstuen, casual dinner",d:"Cafe Laundromat or Digg Pizza if not used Friday, or self-cater."}]}],
+ phrase:{p:"Hvor er…?",pr:"voor AIR",e:"Where is…? — pair it with 'toalettet' and the boys are self-sufficient."},
+ boys:"A black widow, feeding time, and Sinnataggen — the angriest toddler in art history. Photo op stomping alongside him.",
+ eyes:["Vigeland designed everything in the park down to the lamp posts and gates.","Grünerløkka's street art changes constantly — the boys can hunt for the best piece.","The Akerselva river powered Oslo's whole industrial revolution; the old mills are now studios."],
+ customs:"Janteloven — the unwritten Nordic law of modesty. Nobody brags, nobody flexes. It's why service can feel reserved: it's respect, not rudeness.",
+ book:[]},
+
+{d:"2026-07-19",dow:"Sun",city:"Oslo",sub:"Karl Johans spine · Akershus Fortress",r:"capital",
+ lede:"The classic city spine on a quiet Sunday: palace park, the main street's ice-cream drift, a moose-sausage lunch, and an unhurried afternoon running the ramparts of a 13th-century fortress.",
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Tram 19 to Slottsparken",d:"Royal Palace grounds, free public park. Glance at the guards on post — Jul 19 is NOT a parade day; the 13:30 handover is a 15-min static swap, not worth planning around.",q:"Slottsparken, Oslo"}]},
+  {n:"Midday",items:[
+   {b:"Walk down Karl Johans gate",d:"Palace → Stortinget. Shops, street performers, ice cream.",q:"Karl Johans gate, Oslo"},
+   {b:"Lunch: Sausage Factory & Wild Factory truck",d:"Rådhusplassen — Norwegian game sausages; the moose sausage with cranberry, caramelized onion and mustard is the signature. Confirm the truck's there day-of (it travels to festivals).",q:"Rådhusplassen, Oslo",a:"Fallback: Oslo Street Food (Torggata 16b, Sun 12–21) — indoor hall, 8 min northeast."}]},
+  {n:"Afternoon",items:[
+   {b:"Akershus Fortress — the centerpiece",d:"Free grounds, open to 9 PM. Dramatic 13th-century clifftop fortress; the boys run the cobblestone ramparts, harbor views the whole way.",q:"Akershus Fortress, Oslo",a:"Flex hour: Aker Brygge harbor wander, or the Reptile Park if it didn't happen Saturday."}]},
+  {n:"Evening",items:[
+   {b:"Dinner near the Airbnb + pack",d:"Tomorrow is a moving day — bags mostly closed tonight makes the morning easy."}]}],
+ phrase:{p:"Regningen, takk",pr:"RYE-ning-en tahk",e:"The bill, please — though in Norway you usually pay at the counter."},
+ boys:"Rampart-running at Akershus, and the completion of the game-meat quest: reindeer dog (Bergen) → moose burger (yesterday) → moose sausage (today).",
+ eyes:["Stortinget's lions out front are carved from prison labor's granite — by a convicted counterfeiter.","From the fortress walls, look across to the Opera House roof — you'll be standing on it tomorrow."],
+ customs:"No jaywalking, even on an empty street at midnight — Norwegians wait for the green man, and the boys should too.",
+ book:[]},
+
+{d:"2026-07-20",dow:"Mon",city:"Oslo → Drøbak",sub:"Opera roof send-off · bus down the fjord",r:"capital",
+ lede:"A last Oslo flourish — walking up a building designed to be walked on — then the easy bus down the Oslofjord to a wooden town of galleries and one very famous Santa shop.",
+ transit:[{t:"~15:00",l:"Bus 500 Oslo Bussterminal → Drøbak Brygge, ~50 min · every 30 min, Ruter app",ref:"no booking"}],
+ blocks:[
+  {n:"Late morning",items:[
+   {b:"Checkout by 12, bags to Oslo S",d:"T-bane Line 1 or 2 from Majorstuen (~10 min). Drop bags at Bounce/Radical Storage near Oslo S (~$13–17 total via app)."},
+   {b:"Oslo Opera House roof walk",d:"10-min walk across the pedestrian bridge. Free, open 24/7 — the sloping marble roof was designed to be climbed. Fjord, MUNCH museum and Barcode skyline views. 30–45 min.",q:"Oslo Opera House",a:"If everyone's tired: skip the climb, walk the Bjørvika waterfront instead — same send-off, no slope."}]},
+  {n:"Midday",items:[
+   {b:"Lunch at Østbanehallen",d:"Food hall inside Oslo S — fast, multiple stalls, zero detour. Then collect bags.",q:"Østbanehallen, Oslo"}]},
+  {n:"Late afternoon — Drøbak",items:[
+   {b:"Grocery stop en route to the Airbnb",d:"Coop, Rema 1000 or Bunnpris — all central. Tonight's dinner + tomorrow's picnic supplies."},
+   {b:"Check in 4 PM — Torget 7",d:"Host Åse, on the town square, ~5 min walk from the bus.",q:"Torget 7, Drøbak",ref:"HMJQSM2XHS"}]},
+  {n:"Evening",items:[
+   {b:"Self-cater dinner + harbor walk",d:"Cheese, charcuterie, local fish cakes, cider. The walk passes Tregaardens Julehus (the year-round Christmas house), the Father Christmas sign, and Drøbak Church (1776).",q:"Tregaardens Julehus, Drøbak"}]}],
+ phrase:{p:"Båt",pr:"bawt",e:"Boat — Drøbak's whole reason for existing."},
+ boys:"Running up the Opera House roof — a building you're supposed to climb — then Norway's Christmas headquarters in July.",
+ eyes:["Note: the B22 ferry to Drøbak runs weekends only — that's why today is a bus day.","Drøbak was Oslo's winter harbor when the inner fjord froze — the wooden town is largely intact 1700s–1800s."],
+ snacks:"At the Drøbak grocery: fresh fiskekaker (fish cakes — pan-fry for dinner), a local Oslofjord-brewery beer, and Smash! (chocolate-covered corn snacks) for the boys.",
+ book:[{l:"Drøbak Airbnb · Åse",r:"HMJQSM2XHS"}]},
+
+{d:"2026-07-21",dow:"Tue",city:"Drøbak",sub:"Hugo the wolffish · coast path · fjord sauna",r:"capital",
+ lede:"Small-town day, big-memory pieces: a charmingly dated aquarium with a celebrity wolffish, a pine-woods coastal walk to a swimming beach, and a booked fjord-edge sauna staring across at Oscarsborg.",
+ blocks:[
+  {n:"Late morning",items:[
+   {b:"Drøbak Akvarium",d:"Under the Tourist Info at the harbor, ~NOK 40–160. Touch pool, sharks, and Hugo the wolffish — the local celebrity. ~1 hr.",q:"Drøbak Akvarium",a:"Honest expectation: small, dated, charming — recent reviews flag some tank wear. Worth an hour for the touch pool and Hugo; don't expect Bergen polish."}]},
+  {n:"Afternoon",items:[
+   {b:"Picnic supplies: Håndverksbakeriet",d:"Torggata 6, 3 min away, 8–5 daily. Sandwiches, pizza slices, skolebrød, cinnamon rolls. Anna at the counter gets name-checked in reviews.",q:"Håndverksbakeriet, Drøbak"},
+   {b:"Kyststien to Skiphellestranda",d:"~25 min south along the coast path, then pine woods. Swim, rock-sit, picnic. ~2.5–3 mi total, very easy.",q:"Skiphellestranda, Drøbak",a:"Backup: Badeparken + Parrstranda harbor loop — sandy beach, swim ladders, diving towers, playground. Gentler, in town."}]},
+  {n:"Late afternoon — SAUNA [book in advance]",items:[
+   {b:"Drøbak Badstue",d:"Lehmannsbrygga, ~10 min walk. Fjord-edge sauna with a direct view of Oscarsborg, cold-plunge steps into the Oslofjord. Private for 4: NOK 1,700 / 1.5 hrs weekdays (shared: NOK 250/pp). Open 7 AM–10 PM.",q:"Drøbak Badstue",u:"https://drobakbadstue.no",a:"Skip guilt-free if the walk ran long — pivot to the Airbnb."}]},
+  {n:"Evening",items:[
+   {b:"Dinner flex (one night out of two)",d:"Default self-cater tonight; if eating out, dgb – Mat & Vinstue is the pick — see tomorrow's Dinner Pool for the full rundown."}]}],
+ phrase:{p:"Havet",pr:"HAH-veh",e:"The sea — what everything in Drøbak faces."},
+ boys:"Hugo the wolffish (all teeth, weirdly lovable), a beach swim, and a sauna that ends with jumping into a fjord.",
+ customs:"Sauna etiquette: shower first, sit on a towel, and the cold plunge is optional-but-honorable. Quiet talk inside — it's a place to be calm, not loud.",
+ book:[{l:"Drøbak Badstue private slot",r:"drobakbadstue.no"}]},
+
+{d:"2026-07-22",dow:"Wed",city:"Drøbak",sub:"Oscarsborg — the fortress that sank a warship",r:"capital",
+ lede:"The full day on the island: the guns that sank the Blücher on the first morning of Norway's WWII, tunnels to explore, rocks to swim off — then the town's best-fit dinner back on the square.",
+ blocks:[
+  {n:"Late morning",items:[
+   {b:"Ferry to Oscarsborg from Sundbrygga",d:"Main jetty, 5 min from the Airbnb; 5-min crossing. Buy the round-trip QR ticket BEFORE boarding (valid 7 days, not sold onboard), ~NOK 80–100/adult.",q:"Sundbrygga, Drøbak",a:"⚠ Verify the day's departures at the dock on arrival — some sailings require phone pre-booking (+47 900 99 414). Don't get stranded."}]},
+  {n:"On the island",items:[
+   {b:"Oscarsborg Fortress — free",d:"The 28cm Krupp cannons in their emplacements, the Blücher-sinking museum with the April 9, 1940 video, tunnels, and the island loop walk. 2–3 hrs.",q:"Oscarsborg Fortress"},
+   {b:"Island picnic + swim off the rocks",d:"From this morning's groceries and bakery haul. The boys will want the swim if the weather allows."}]},
+  {n:"Mid-afternoon",items:[
+   {b:"Cake stop: Galleri Cafe Teskje",d:"Niels Carlsens gate 7, Wed 11:30–5. Homemade cakes in an art gallery — strawberries-and-cream is the standout.",q:"Galleri Cafe Teskje, Drøbak",a:"Skip if the island picnic ran heavy."}]},
+  {n:"Evening — Drøbak Dinner Pool (pick tonight or self-cater)",items:[
+   {b:"dgb – Mat & Vinstue [RECOMMENDED]",d:"Havnebakken 1, on Torget, in an 18th-century bakery. Real kids' menu. The creamy fish soup (349 kr) is the specialty — get one for the table; kids' cheeseburger 175 kr; adults DGB burger or scampi pasta. ~1,200–1,400 kr for four.",q:"dgb Mat og Vinstue, Drøbak"},
+   {b:"Kumlegaarden — optional splurge",d:"30 sec away, traditional Norwegian in Drøbak's oldest buildings, fish soup the standout. Mains 398–498 kr (~$170–230 for four) — hold only if you want ONE formal Norwegian dinner this trip. Wednesday works.",q:"Kumlegaarden, Drøbak",a:"Third option: Handelshuset Gastrobar on Torget — candle-lit pizza, daily to 11 PM, ~$60–80 family."}]}],
+ warn:"Tomorrow is cruise day — the near-unrecoverable deadline. Tonight: confirm bags are packable by ~11 AM and set the bakery-run plan.",
+ phrase:{p:"Festning",pr:"FEST-ning",e:"Fortress — today's word, today's island."},
+ boys:"Standing next to the actual cannons that sank a heavy cruiser at point-blank range on April 9, 1940 — then swimming where it happened.",
+ eyes:["The torpedo battery hidden inside the island did the fatal damage — the cannons get the fame.","Blücher still lies on the fjord floor ~90m down, a few hundred meters from where you'll picnic."],
+ book:[]},
+
+{d:"2026-07-23",dow:"Thu",city:"Drøbak → Cruise",sub:"Bus to Oslo · board M/S Nordic Pearl",r:"cruise",
+ lede:"The one hard deadline of the back half: on the ship by 3:30. Everything today is sequenced backward from that — bakery, bus with buffer, optional food-hall lunch that gets dropped without hesitation if time runs tight.",
+ transit:[
+  {t:"≤12:30",l:"Bus 500 Drøbak Brygge → Oslo Bussterminal, ~50 min · Ruter app · leave NO later than 12:30",ref:"no booking"},
+  {t:"15:30",l:"Board M/S Nordic Pearl at Vippetangen · departs 16:30",ref:"#119987 · DcTtM2QqkP"}],
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Bakery run: Håndverksbakeriet",d:"Skolebrød, cinnamon rolls, pizza slices — this is dinner. Stay at the Airbnb until ~11 checkout.",q:"Håndverksbakeriet, Drøbak"}]},
+  {n:"Midday — Oslo buffer",items:[
+   {b:"Bags: DFDS terminal at Vippetangen (confirm free drop) or Bounce backup",d:"Bounce/Radical at a Narvesen kiosk near Oslo S, ~$13–17 total — far cheaper than Speed Lockers."},
+   {b:"OPTIONAL lunch: Vippa food hall",d:"Akershusstranda 25, 10-min walk from the cruise terminal. Burmese, Guatemalan, Syrian, Filipino stalls in a container park.",q:"Vippa, Oslo",a:"⚠ DROPPABLE: if transit runs tight, skip entirely — eat in Drøbak before leaving or rely on the cabin picnic. Nothing jeopardizes boarding."},
+   {b:"Light walk if time allows",d:"Akershus grounds, Aker Brygge, or the Opera roof if it didn't happen Monday."}]},
+  {n:"Evening — aboard",items:[
+   {b:"Cabin picnic dinner",d:"4-bed sea-view cabin with bunks. Bakery haul + cheese + drinks from Drøbak. Watch the Oslofjord fade in the long twilight — you'll sail right past Drøbak and Oscarsborg.",a:"Backup: à-la-carte takeout pizza onboard if supplies run thin."}]}],
+ warn:"⚠ AIRPLANE MODE ON BOARDING — all phones. The ship's maritime satellite is NOT covered by T-Mobile and bills at extreme per-MB rates. Ship wifi only until Copenhagen.",
+ phrase:{p:"Ha det bra",pr:"hah deh BRAH",e:"Goodbye (literally 'have it good') — to Norway, from the stern rail."},
+ boys:"Claiming bunks, exploring a working ship, and watching Oscarsborg — yesterday's fortress — slide past from the water.",
+ conn:"⚠ The moment the ship leaves the dock, phones may latch onto maritime satellite. Airplane mode BEFORE departure; normal coverage returns near the Danish coast tomorrow morning.",
+ book:[{l:"M/S Nordic Pearl",r:"#119987 · security DcTtM2QqkP"}]},
+
+{d:"2026-07-24",dow:"Fri",city:"Copenhagen",sub:"Arrival · Christianshavn · the spire climb",r:"denmark",
+ lede:"Denmark begins: taxi from the port, harbor-market lunch, and at 1 PM the trip's most vertiginous booked moment — 400 steps up Vor Frelsers Kirke, the last 150 winding OUTSIDE the golden spire.",
+ transit:[{t:"10:00",l:"Arrive Copenhagen · Oceankaj terminal (Oceanvej 13, Nordhavn)",ref:"#119987"}],
+ blocks:[
+  {n:"Midday — transit + lunch",items:[
+   {b:"Taxi / Bolt XL / DRIVR — book in-app FROM THE SHIP",d:"~300–500 DKK total, 20–30 min door-to-door to Dronningensgade 23. Do NOT use the taxi-rank queue — it can hit 60–90 min on busy ship days.",a:"Bags: message the host in advance about early drop; Radical Storage in Christianshavn is the backup."},
+   {b:"Lunch: Broens Gadekøkken",d:"Strandgade 95, from 11 AM. Harbor-side food market — Gasoline Grill burgers, fish & chips, gyros, poke. Eat by ~12:30 so nobody climbs 400 steps hungry.",q:"Broens Gadekøkken, Copenhagen"}]},
+  {n:"Afternoon — 13:00 tower [BOOKED]",items:[
+   {b:"Vor Frelsers Kirke tower climb",d:"1 PM slot booked at billetto.dk — tickets on file. 400 steps, the last 150 outside up the gilded spire: exposed, exhilarating, 86m views.",q:"Church of Our Saviour, Copenhagen",a:"Weather closes the tower in rain/wind — the slot is refundable and shiftable to any afternoon (open daily 9–8). If heights lose the vote, the church interior is free and still worth it."}]},
+  {n:"Late afternoon",items:[
+   {b:"Check in 3 PM — Christianshavn Airbnb",d:"Dronningensgade 23. Unpack, exhale.",q:"Dronningensgade 23, Copenhagen"},
+   {b:"Netto grocery run",d:"Torvegade, 2 min from the Metro. Tonight's dinner + tomorrow's GoBoat picnic.",q:"Netto Torvegade, Copenhagen"}]},
+  {n:"Evening",items:[
+   {b:"Smørrebrød night at the Airbnb",d:"Open-face sandwich assembly: herring, smoked salmon, leverpostej, cheese on rugbrød, Danish beer or elderflower. Canal stroll after — houseboats, quiet brick streets."}]}],
+ phrase:{p:"Hej hej",pr:"hi hi",e:"Hello — Danish now. Softer than the Norwegian version; same warmth."},
+ boys:"The outside of a golden spire, 86 meters up, on stairs that get narrower as you climb. Genuinely thrilling.",
+ conn:"Phones OFF airplane mode once you're alongside in Copenhagen. Danish coverage (TDC/Telia) is strong everywhere from here.",
+ customs:"THE Copenhagen rule: bike lanes are not sidewalks. Never step into one without looking — cyclists are fast, silent, and have right of way. Drill the boys on day one.",
+ snacks:"Denmark switch at Netto: rugbrød (dense rye), leverpostej for it, flødeboller (chocolate-shelled cream puffs) for the boys, a Tuborg for the adults.",
+ book:[{l:"Tower 13:00",r:"billetto.dk — on file"},{l:"CPH Airbnb",r:"Dronningensgade 23"}]},
+
+{d:"2026-07-25",dow:"Sat",city:"Copenhagen",sub:"GoBoat · DØP · Rosenborg · Færgecafé",r:"denmark",
+ lede:"The full Copenhagen Saturday: captaining your own boat through the canals, the city's famous organic hot dog, crown jewels behind vault walls, and a 6:30 dinner in a converted ferry.",
+ transit:[{t:"10:45",l:"GoBoat, Islands Brygge · 2 hrs, picnic aboard",ref:"69c0465f…9967"}],
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Pack the GoBoat cooler",d:"Netto run if needed: cheese, charcuterie, bread, fruit, pastries. Max 2 alcohol units/person on board, no spirits."},
+   {b:"GoBoat 10:45–12:45 [LOCKED]",d:"Self-driven electric boat, no license needed — the boys help steer. Route past Nyhavn, Christiansborg, and your own Christianshavn canals from the water.",q:"GoBoat Islands Brygge, Copenhagen"}]},
+  {n:"Midday",items:[
+   {b:"Lunch: DØP — the organic hot dog",d:"Amagertorv 31, on Strøget, ~20-min canal walk from GoBoat. The classic Copenhagen pølse with Nordic buns — drier, denser, better. ~$25–35 for four.",q:"DØP Amagertorv, Copenhagen"}]},
+  {n:"Afternoon — two anchors, trim freely",items:[
+   {b:"Rosenborg Castle",d:"Metro to Nørreport + 5-min walk. Christian IV's Renaissance castle: the Danish crown jewels in the basement vault, three life-size silver lions guarding the thrones. ~1 hr. Adults ~130 DKK, under-18 free. PRE-BOOKED slot skips the queue.",q:"Rosenborg Castle, Copenhagen",u:"https://www.kongernessamling.dk/en/rosenborg/",a:"Trim option: skip the interior, walk the King's Garden free."},
+   {b:"Torvehallerne market halls",d:"5-min walk from Rosenborg. Coffee Collective for the adults, Hija de Sanchez tacos (ex-Noma pastry chef) if the line moves. Keep it to ~30 min — dinner is at 6:30.",q:"Torvehallerne, Copenhagen"},
+   {b:"Faraos Cigarer",d:"Skindergade 27, Sat 10–5, ~10 min south. Copenhagen's best comics + Pokémon shop — the boys' reward for tolerating a castle.",q:"Faraos Cigarer, Skindergade 27, Copenhagen"}]},
+  {n:"Evening — Dinner [LOCKED 18:30]",items:[
+   {b:"Christianshavns Færgecafé",d:"Strandgade 50, 5 min from the Airbnb — boat seating confirmed. Smørrebrød platter, flæskesteg, schnitzel; the converted-ferry atmosphere is the draw. Nyhavn walk-through after if energy holds — the Jazz Festival may have free outdoor sets.",q:"Christianshavns Færgecafé, Copenhagen"}]}],
+ phrase:{p:"Tak",pr:"tahk (short, soft)",e:"Thanks — Danish drops the extra K sound. Also means please. Danes use it constantly."},
+ boys:"Driving the boat. Actually driving it. Then a Pokémon shop and dinner inside a ferry.",
+ eyes:["From the water, look for the golden spire you climbed yesterday.","Rosenborg's silver lions have guarded the throne room since the 1660s.","On Strøget, the Stork Fountain is where new midwives traditionally dance."],
+ book:[{l:"GoBoat 10:45",r:"69c0465f3a4c2d9d2cd19967"},{l:"Færgecafé 18:30",r:"confirmed · +45 32 54 46 24"},{l:"Rosenborg",r:"book: kongernessamling.dk"}]},
+
+{d:"2026-07-26",dow:"Sun",city:"Copenhagen",sub:"Tivoli — afternoon into the lights",r:"denmark",
+ lede:"The finale, played correctly: a genuinely lazy morning, pack while fresh, then one entry into Tivoli around 2:30 and ride it straight through dinner into the illuminated gardens. No backtracking, no re-entry, no fireworks-chasing — the lights are the show.",
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Sleep in, slow breakfast, PACK NOW",d:"Bags closed while everyone's fresh keeps tonight and Monday calm. Last Lagkagehuset pastry (Torvegade 45, from 6 AM).",q:"Lagkagehuset Torvegade, Copenhagen",a:"Energetic-morning options (pick at most one): Islands Brygge harbour swim · canal walk with bakery coffee · or just go to Tivoli at noon and slow-play the whole park."}]},
+  {n:"Afternoon — Tivoli from ~2:30",items:[
+   {b:"Metro to Tivoli",d:"M2 toward København H — main entrance 2 min from Central Station. ~15 min.",q:"Tivoli Gardens, Copenhagen"},
+   {b:"Unlimited Ride Pass (~$52/pp) — the right call",d:"Book entry + passes at tivoli.dk. For a 2:30 arrival through an 8-hour evening the boys clear the break-even easily. Download the Tivoli app — ride photos are free via QR.",u:"https://www.tivoli.dk/en"},
+   {b:"The hit list",d:"Rutschebanen (1914 wooden coaster with a live brakeman), Himmelskibet Star Flyer (80m swing tower), The Demon (looping coaster). Don't chase all 25 — the gardens, lake and Pantomime Theatre are half the point."}]},
+  {n:"Evening — in the park",items:[
+   {b:"18:30 — Tivoli Boys Guard parade",d:"100 Danish kids in red tunics and bearskin hats marching to a free concert."},
+   {b:"Dinner: Tivoli Food Hall ~7 PM",d:"15 stalls — smørrebrød, sushi, churros. Everyone picks their own; no reservation."},
+   {b:"8–11 PM — the payoff",d:"Illuminated gardens after sunset (~9:30). Sunday crowds thin as locals leave — re-ride the coaster lit up, see the Nimb palace and Chinese Pagoda glowing. Leave whenever satisfied; done-at-9:30 is a complete day.",a:"No fireworks tonight (Saturdays only) — deliberately traded for calmer crowds and a gentle lead-in to Monday's flight."}]}],
+ warn:"Final bags closed tonight. Monday departs the Airbnb by 11:30 AM latest.",
+ phrase:{p:"Hyggeligt",pr:"HOO-guh-lit",e:"Cozy, lovely, warm-hearted — what the lit gardens will be. The most Danish word there is."},
+ boys:"A 112-year-old wooden coaster with a human brakeman riding along, then the same rides again after dark with the park glowing.",
+ book:[{l:"Tivoli entry + Ride Pass",r:"book: tivoli.dk"}]},
+
+{d:"2026-07-27",dow:"Mon",city:"Return",sub:"Copenhagen → Amsterdam → Atlanta → home",r:"travel",
+ lede:"Twenty-one days, six beds, four boats, one fish dinner caught by hand. The Metro takes 12 minutes; the rest is airplane food and a movie backlog.",
+ transit:[
+  {t:"≤11:30",l:"M2 Metro Christianshavn → CPH Airport, ~12 min, DKK 36/pp",ref:"DOT app / card"},
+  {t:"14:40",l:"CPH → AMS · KLM KL1272, arr 16:05",ref:"XIAPW6"},
+  {t:"17:05",l:"AMS → ATL · KLM KL0621, arr 20:25",ref:"XIAPW6"},
+  {t:"22:40",l:"ATL → AVL · Delta DL3116, arr 23:43",ref:"XIAPW6"}],
+ blocks:[
+  {n:"Morning",items:[
+   {b:"Final breakfast, last pastry if time allows",d:"Depart the Airbnb by 11:30 at the absolute latest — 90 min + security buffer at CPH."}]},
+  {n:"Evening",items:[
+   {b:"Seats on the ATL→AVL hop",d:"Dan 22B · Declan 22A · Gavin 23A · Melissa 23B. Home by midnight."}]}],
+ phrase:{p:"Vi ses",pr:"vee SESS",e:"See you — because Scandinavia will still be here."},
+ boys:"One last flæskesvær-and-flødeboller raid at the airport, then movies until Atlanta.",
+ book:[{l:"Return flights",r:"XIAPW6"}]}
+];
+/* ============ VAULT (all confirmations, offline) ============ */
+const VAULT=[
+{g:"Flights",rows:[
+ {t:"Outbound · Jul 7–8",s:"AVL→ATL DL2781 19:45 · ATL→AMS KL0622 22:40 · AMS→BGO KL1169 15:15→16:55",r:"XI7BLD"},
+ {t:"Return · Jul 27",s:"CPH→AMS KL1272 14:40 · AMS→ATL KL0621 17:05 · ATL→AVL DL3116 22:40→23:43",r:"XIAPW6"},
+ {t:"Seats (AVL↔ATL only)",s:"Dan 22B · Melissa 23B · Gavin 23A · Declan 22A. No confirmed seats on transatlantic/EU legs.",r:""},
+ {t:"Baggage",s:"1 × 23kg checked bag per person (4 total).",r:""}]},
+{g:"Beds",rows:[
+ {t:"Bergen · Jul 8–11",s:"Jonas · Lille Øvregaten 36E · check-in 3 PM, out 11 AM",r:"HMT5X8NM9C"},
+ {t:"Balestrand · Jul 11–14",s:"Siv · Holmen 19 · check-in 3 PM, out 11 AM",r:"HMZE825RZP"},
+ {t:"Lofthus · Jul 14–17",s:"Hotel Ullensvang · Family Junior Suite",r:"—"},
+ {t:"Oslo · Jul 17–20",s:"Margareth Aurora · Pilestredet 53C · in 3 PM, out 12 PM",r:"HMAWRADHED"},
+ {t:"Drøbak · Jul 20–23",s:"Åse · Torget 7 · check-in 4 PM, out 11 AM",r:"HMJQSM2XHS"},
+ {t:"Cruise · Jul 23–24",s:"M/S Nordic Pearl · 4-bed sea-view · board 15:30, dep 16:30 Vippetangen → arr 10:00 Oceankaj",r:"#119987 · DcTtM2QqkP"},
+ {t:"Copenhagen · Jul 24–27",s:"Christianshavn Airbnb · Dronningensgade 23",r:"—"}]},
+{g:"Trains · Ferries · Buses",rows:[
+ {t:"Norled Bergen→Balestrand · Jul 11 08:00",s:"Strandkaiterminal, arrive 7:40",r:"#3884347377"},
+ {t:"Norled Balestrand→Flåm · Jul 14 11:58",s:"",r:"#2542170371"},
+ {t:"Flåmsbana Flåm→Myrdal · Jul 14 14:45",s:"",r:"OGD-QDL-A3T"},
+ {t:"R40 Myrdal→Voss · Jul 14 15:56→16:51",s:"",r:"SUA-CW4-YVS"},
+ {t:"Bus 990 Voss→Lofthus · Jul 14 18:01→19:20",s:"Pay in Skyss app",r:"—"},
+ {t:"Bus 990 Lofthus→Voss · Jul 17 06:55→~08:25",s:"Pay in Skyss app · standby taxi via Ullensvang",r:"—"},
+ {t:"Vy F4 Voss→Oslo S · Jul 17 09:20→15:09",s:"Carriage 7 · seats 17/18/21/22",r:"6P3-IOE-EID"},
+ {t:"Bus 500 Oslo→Drøbak · Jul 20 ~15:00",s:"Ruter app · every 30 min (B22 ferry is weekend-only)",r:"—"},
+ {t:"Bus 500 Drøbak→Oslo · Jul 23 ≤12:30",s:"Ruter app · hard deadline for cruise",r:"—"},
+ {t:"M2 Metro → CPH Airport · Jul 27",s:"~12 min · DKK 36/pp · DOT app or card",r:"—"}]},
+{g:"Activities",rows:[
+ {t:"Captain Tor fishing · Jul 13 ~12:00",s:"Balestrand Adventure House, arrive 15 min early · card day-of · Classic 3500 / Legacy 5000 NOK",r:"email confirmation"},
+ {t:"Inge Menes boat (BACKUP — active!)",s:"~$125 · Tjugum · bills if not used or cancelled",r:"+47 950 41 651"},
+ {t:"Vor Frelsers tower · Jul 24 13:00",s:"Booked · refundable · weather-shiftable to any day 9–8",r:"billetto.dk"},
+ {t:"GoBoat · Jul 25 10:45–12:45",s:"Islands Brygge · incl. cancellation protection",r:"69c0465f3a4c2d9d2cd19967"},
+ {t:"Færgecafé dinner · Jul 25 18:30",s:"Strandgade 50 · boat seating",r:"+45 32 54 46 24"},
+ {t:"Rosenborg · Jul 25 — BOOK",s:"kongernessamling.dk · sell-out risk",r:"not yet booked"},
+ {t:"Tivoli · Jul 26 — BOOK",s:"tivoli.dk · entry + unlimited Ride Pass ~$52/pp",r:"not yet booked"},
+ {t:"Drøbak Badstue · Jul 21 — BOOK",s:"drobakbadstue.no · private NOK 1,700 / 1.5 hr",r:"not yet booked"},
+ {t:"Oscarsborg ferry · Jul 22",s:"Verify departures at Sundbrygga dock · some need phone booking",r:"+47 900 99 414"}]},
+{g:"Emergency & essentials",rows:[
+ {t:"Norway emergency",s:"Fire 110 · Police 112 · Ambulance 113 · Non-urgent medical (legevakt) 116 117",r:""},
+ {t:"Denmark emergency",s:"All emergencies 112 · Copenhagen after-hours medical 1813",r:""},
+ {t:"Phones",s:"Calls $0.25/min — use WhatsApp/FaceTime over data. Wifi calling on main line. Data ~256 kbps.",r:""},
+ {t:"Money",s:"NOK ≈ 10:1 USD · DKK ≈ 7:1 USD · card-first everywhere · ALWAYS decline DCC, choose local currency",r:""}]}
+];
+const PREP=[
+ "Book Rosenborg Castle (kongernessamling.dk) — sell-out risk",
+ "Book Tivoli entry + unlimited Ride Passes (tivoli.dk)",
+ "Book Drøbak Badstue private slot, Jul 21 (drobakbadstue.no)",
+ "Decide Heit Sauna Balestrand: book or skip (heitbalestrand.com)",
+ "All apps installed on both phones (Skyss, Ruter, Norled, Vy, Flåmsbana, Fløibanen, KLM, Delta, Airbnb, DOT, Tivoli)",
+ "WhatsApp on all four phones",
+ "Offline Google Maps: Bergen · Sognefjord · Flåm+Voss · Hardanger · Oslo · Drøbak · Copenhagen",
+ "Online check-in + seat grab for transatlantic legs (no seats held!)",
+ "Message CPH host about Jul 24 early bag drop",
+ "Confirm DFDS/Vippetangen bag-drop policy with Go Nordic"];
+
+/* ============ APP ============ */
+const $=s=>document.querySelector(s);
+const store={
+ get k(){return "ryanTrip2026"},
+ load(){try{return JSON.parse(localStorage.getItem(this.k))||{}}catch(e){return{}}},
+ save(s){try{localStorage.setItem(this.k,JSON.stringify(s))}catch(e){}}
+};
+let S=store.load(); S.done=S.done||{}; S.notes=S.notes||{}; S.edits=S.edits||{}; S.hidden=S.hidden||{}; S.custom=S.custom||{}; S.prep=S.prep||{}; S.rate=S.rate||{nok:10.0,dkk:6.9};
+let curDay=0, curTab="day", editing=false;
+const esc=t=>(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const maps=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+const fmtDate=d=>{const dt=new Date(d+"T12:00:00");return dt.toLocaleDateString("en-US",{month:"short",day:"numeric"})};
+function todayIdx(){const now=new Date();for(let i=0;i<DATA.length;i++){const d=new Date(DATA[i].d+"T23:59:59");if(now<=d)return i}return DATA.length-1}
+function itemKey(di,bi,ii){return di+"."+bi+"."+ii}
+function itemState(di,bi,ii,f,v){const k=itemKey(di,bi,ii);if(v===undefined)return S[f][k];S[f][k]=v;store.save(S)}
+
+function nextTransit(){
+ const now=new Date();
+ for(let i=0;i<DATA.length;i++){const day=DATA[i];if(!day.transit)continue;
+  for(const t of day.transit){const m=t.t.match(/(\d{1,2}):(\d{2})/);if(!m)continue;
+   const dt=new Date(day.d+"T"+m[1].padStart(2,"0")+":"+m[2]+":00");
+   if(dt>now)return{dt,l:t.l,d:day.d}}}
+ return null}
+function countdownHTML(){
+ const n=nextTransit();if(!n)return"";
+ const ms=n.dt-new Date();if(ms>1000*60*60*36||ms<0)return"";
+ const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);
+ return `<div class="count"><span>Next departure · ${esc(n.l.split("·")[0].trim())}</span><b>${h}h ${String(m).padStart(2,"0")}m</b></div>`}
+
+function renderVoyage(){
+ const T=$("#ticks");T.innerHTML="";const ti=todayIdx();
+ DATA.forEach((day,i)=>{const t=document.createElement("button");t.className="tick"+(i===curDay?" cur":"")+(i===ti?" today":"");
+  t.style.setProperty("--tc",`var(--${day.r})`);t.innerHTML="<i></i>";t.setAttribute("aria-label",day.city+" "+fmtDate(day.d));
+  t.onclick=()=>{curDay=i;curTab="day";render()};T.appendChild(t)});
+ $("#vDate").textContent=fmtDate(DATA[curDay].d)+" · Day "+(curDay+1)+" of 21"}
+
+function itemHTML(di,bi,it,ii,isCustom){
+ const k=itemKey(di,bi,ii),done=!!S.done[k],hid=!!S.hidden[k];
+ const ed=S.edits[k]||{};const b=ed.b??it.b,d=ed.d??it.d;
+ let links="";
+ if(it.q)links+=`<a class="pill" target="_blank" rel="noopener" href="${maps(it.q)}">⌖ Map</a>`;
+ if(it.u)links+=`<a class="pill" target="_blank" rel="noopener" href="${esc(it.u)}">↗ Site</a>`;
+ return `<div class="item ${done?"done":""} ${hid?"hidden":""}" data-k="${k}">
+  <button class="chk" onclick="toggleDone('${k}')">✓</button>
+  <div class="it"><b>${esc(b)}</b>
+   ${d?`<div class="desc">${esc(d)}${it.ref?` <span class="ref">${esc(it.ref)}</span>`:""}</div>`:""}
+   ${it.a?`<div class="alt">${esc(it.a)}</div>`:""}
+   ${links?`<div class="links">${links}</div>`:""}
+  </div>
+  <button class="editBtn" onclick="editItem('${k}','${di}','${bi}','${ii}',${!!isCustom})">✎</button></div>`}
+
+function renderDay(){
+ const day=DATA[curDay],rc=`var(--${day.r})`;let h="";
+ h+=countdownHTML();
+ h+=`<div class="navRow"><button class="navBtn" onclick="stepDay(-1)" ${curDay===0?"disabled style='opacity:.35'":""}>← ${curDay>0?esc(DATA[curDay-1].city.split("→").pop().trim()):""}</button>
+     <button class="navBtn" onclick="goToday()">Today</button>
+     <button class="navBtn" onclick="stepDay(1)" ${curDay===DATA.length-1?"disabled style='opacity:.35'":""}>${curDay<DATA.length-1?esc(DATA[curDay+1].city.split("→").pop().trim()):""} →</button></div>`;
+ h+=`<div class="dayHead" style="--rc:${rc}"><div class="kick">${esc(day.dow)} · ${fmtDate(day.d)} · Day ${curDay+1} of 21</div>
+     <div class="city serif">${esc(day.city)}</div><div class="dsub">${esc(day.sub)}</div>
+     <p class="lede">${esc(day.lede)}</p></div>`;
+ if(day.transit&&day.transit.length){
+  h+=`<div class="sec" style="--rc:${rc}"><h3>Locked transit</h3>`;
+  day.transit.forEach(t=>{h+=`<div class="item"><div class="it"><span class="time">${esc(t.t)}</span><b>${esc(t.l)}</b>
+    ${t.ref?`<div class="desc"><span class="ref">${esc(t.ref)}</span></div>`:""}</div></div>`});
+  h+=`</div>`}
+ h+=`<div class="sec" style="--rc:${rc}"><h3>The day</h3>`;
+ (day.blocks||[]).forEach((blk,bi)=>{h+=`<div class="blockName serif">${esc(blk.n)}</div>`;
+  blk.items.forEach((it,ii)=>h+=itemHTML(curDay,bi,it,ii,false));
+  const cust=(S.custom[curDay+"."+bi]||[]);
+  cust.forEach((it,ci)=>h+=itemHTML(curDay,bi,it,"c"+ci,true));
+  h+=`<div style="display:${editing?"block":"none"}"><button class="btn" onclick="addItem(${curDay},${bi})">＋ Add to ${esc(blk.n.split("—")[0].trim())}</button></div>`});
+ if(day.warn)h+=`<div class="warnBox"><b>Heads up:</b> ${esc(day.warn)}</div>`;
+ h+=`</div>`;
+ h+=`<div class="sec" style="--rc:${rc}"><h3>Field notes</h3>`;
+ h+=`<div class="mini phrase"><span class="lab">Phrase for the day</span><div class="phraseBox"><span class="p serif">${esc(day.phrase.p)}</span><span class="pr">${esc(day.phrase.pr)}</span></div><div class="desc" style="font-size:13.5px;color:var(--ink2)">${esc(day.phrase.e)}</div></div>`;
+ if(day.boys)h+=`<div class="mini"><span class="lab">For the boys</span>${esc(day.boys)}</div>`;
+ if(day.eyes)h+=`<div class="mini"><span class="lab">Keep an eye out</span>${day.eyes.map(e=>"· "+esc(e)).join("<br>")}</div>`;
+ if(day.snacks)h+=`<div class="mini"><span class="lab">Snacks & groceries</span>${esc(day.snacks)}</div>`;
+ if(day.customs)h+=`<div class="mini"><span class="lab">Local custom</span>${esc(day.customs)}</div>`;
+ if(day.conn)h+=`<div class="mini"><span class="lab">Connectivity</span>${esc(day.conn)}</div>`;
+ h+=`</div>`;
+ if(day.book&&day.book.length){h+=`<div class="sec" style="--rc:${rc}"><h3>Today's bookings</h3>`;
+  day.book.forEach(b=>{h+=`<div class="item"><div class="it"><b>${esc(b.l)}</b><div class="desc"><span class="ref">${esc(b.r)}</span></div></div></div>`});h+=`</div>`}
+ h+=`<div class="sec" style="--rc:${rc}"><h3>Notes for this day</h3>
+     <textarea class="note" placeholder="Anything worth remembering — a change of plan, a place you loved, something to tell Claude to update later…" onchange="saveNote(this.value)">${esc(S.notes[curDay]||"")}</textarea></div>`;
+ h+=`<div class="navRow"><button class="navBtn" onclick="toggleEdit()">${editing?"Done editing":"✎ Edit this day"}</button></div>`;
+ h+=`<div class="footer">Ryan Family · Scandinavia 2026</div>`;
+ return h}
+
+function renderDays(){let h="";const ti=todayIdx();
+ DATA.forEach((day,i)=>{h+=`<div class="dayRow ${i===ti?"today":""}" style="--rc:var(--${day.r})" onclick="curDay=${i};curTab='day';render()">
+  <span class="dot"></span><div class="m"><b>${esc(day.city)}</b><span>${esc(day.sub)}</span></div>
+  <span class="dn">${esc(day.dow)}<br>${fmtDate(day.d)}</span></div>`});
+ h+=`<div class="footer">Tap any day to open it</div>`;return h}
+
+function renderVault(){let h="";
+ VAULT.forEach(g=>{h+=`<div class="vGroup"><h4>${esc(g.g)}</h4>`;
+  g.rows.forEach(r=>{h+=`<div class="vRow"><div class="vt">${esc(r.t)}</div>${r.s?`<div class="vs">${esc(r.s)}</div>`:""}
+   ${r.r?`<span class="ref">${esc(r.r)}</span><button class="copyRef" onclick="copyText('${esc(r.r)}')">copy</button>`:""}</div>`});
+  h+=`</div>`});
+ h+=`<div class="footer">Everything here works offline</div>`;return h}
+
+function renderMore(){
+ const prepDone=PREP.filter((_,i)=>S.prep[i]).length;
+ let h=`<div class="tool"><h4>Pre-trip checklist · ${prepDone}/${PREP.length}</h4>`;
+ PREP.forEach((p,i)=>{h+=`<div class="item ${S.prep[i]?"done":""}"><button class="chk" onclick="S.prep[${i}]=!S.prep[${i}];store.save(S);render()">✓</button><div class="it" style="font-size:14px">${esc(p)}</div></div>`});
+ h+=`</div>`;
+ h+=`<div class="tool"><h4>Currency</h4>
+  <div class="convRow"><input type="number" id="cvAmt" inputmode="decimal" placeholder="Amount" value="100">
+  <select id="cvCur"><option value="nok">NOK → USD</option><option value="dkk">DKK → USD</option></select></div>
+  <div class="convOut" id="cvOut"></div>
+  <div class="small" style="margin-top:6px">Rates used: NOK <input style="width:52px;border:1px solid var(--hair);border-radius:6px;padding:2px 4px;background:var(--paper)" id="rNok" value="${S.rate.nok}"> /USD · DKK <input style="width:52px;border:1px solid var(--hair);border-radius:6px;padding:2px 4px;background:var(--paper)" id="rDkk" value="${S.rate.dkk}"> /USD — editable, saved on device.</div></div>`;
+ h+=`<div class="tool"><h4>Sync between phones</h4>
+  <div class="small">Check-offs, notes and edits live on THIS phone only. To copy them to the other phone: Export here → send via iMessage → Import there.</div>
+  <button class="btn primary" onclick="exportState()">Export my changes</button>
+  <button class="btn" onclick="importState()">Import</button></div>`;
+ h+=`<div class="tool"><h4>About this app</h4>
+  <div class="small">Built from Live_Schedule_07012026.md. Works fully offline once loaded. To change the underlying itinerary (not just notes), ask Claude to regenerate the app and push the new index.html to GitHub — the app picks it up next time it opens online. Data version: 1.0 · Jul 1 2026.</div></div>`;
+ h+=`<div class="footer">Ryan Family · Scandinavia 2026</div>`;return h}
+
+function render(){
+ renderVoyage();
+ const views={day:renderDay,days:renderDays,vault:renderVault,more:renderMore};
+ $("#app").innerHTML=views[curTab]();
+ document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===curTab));
+ document.body.classList.toggle("editing",editing&&curTab==="day");
+ if(curTab==="more")wireConverter();
+ window.scrollTo({top:0})}
+
+/* actions */
+window.toggleDone=k=>{S.done[k]=!S.done[k];store.save(S);render()};
+window.saveNote=v=>{S.notes[curDay]=v;store.save(S)};
+window.stepDay=n=>{curDay=Math.min(DATA.length-1,Math.max(0,curDay+n));render()};
+window.goToday=()=>{curDay=todayIdx();render()};
+window.toggleEdit=()=>{editing=!editing;render()};
+window.editItem=(k,di,bi,ii,isCustom)=>{
+ const ed=S.edits[k]||{};let base;
+ if(isCustom){const list=S.custom[di+"."+bi]||[];base=list[parseInt(ii.slice(1))]||{}}
+ else base=DATA[di].blocks[bi].items[ii];
+ const nb=prompt("Title (blank = hide this item, or keep):",ed.b??base.b??"");
+ if(nb===null)return;
+ if(nb.trim()===""){S.hidden[k]=!S.hidden[k];store.save(S);render();return}
+ const nd=prompt("Details:",ed.d??base.d??"");if(nd===null)return;
+ S.edits[k]={b:nb,d:nd};store.save(S);render()};
+window.addItem=(di,bi)=>{
+ const b=prompt("New item title:");if(!b)return;
+ const d=prompt("Details (optional):")||"";
+ const key=di+"."+bi;S.custom[key]=S.custom[key]||[];S.custom[key].push({b,d});store.save(S);render()};
+window.copyText=t=>{navigator.clipboard&&navigator.clipboard.writeText(t)};
+window.exportState=()=>{
+ const s=JSON.stringify(S);
+ if(navigator.share){navigator.share({title:"Trip app sync",text:"RYANTRIP:"+btoa(unescape(encodeURIComponent(s)))}).catch(()=>{})}
+ else{navigator.clipboard.writeText("RYANTRIP:"+btoa(unescape(encodeURIComponent(s))));alert("Copied to clipboard — paste it to Melissa via iMessage.")}};
+window.importState=()=>{
+ const t=prompt("Paste the exported text (starts with RYANTRIP:):");if(!t)return;
+ try{const s=JSON.parse(decodeURIComponent(escape(atob(t.replace("RYANTRIP:","").trim()))));S=Object.assign(S,s);store.save(S);render();alert("Imported.")}
+ catch(e){alert("That didn't parse — make sure the whole message was pasted.")}};
+function wireConverter(){
+ const f=()=>{const a=parseFloat($("#cvAmt").value)||0,c=$("#cvCur").value;
+  S.rate.nok=parseFloat($("#rNok").value)||10;S.rate.dkk=parseFloat($("#rDkk").value)||6.9;store.save(S);
+  const r=c==="nok"?S.rate.nok:S.rate.dkk;
+  $("#cvOut").textContent=a+" "+c.toUpperCase()+" ≈ $"+(a/r).toFixed(2)+" USD"};
+ ["cvAmt","cvCur","rNok","rDkk"].forEach(id=>$("#"+id).addEventListener("input",f));f()}
+
+document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{curTab=b.dataset.tab;editing=false;render()});
+window.addEventListener("online",()=>document.body.classList.remove("offline"));
+window.addEventListener("offline",()=>document.body.classList.add("offline"));
+if(!navigator.onLine)document.body.classList.add("offline");
+curDay=todayIdx();render();
+setInterval(()=>{if(curTab==="day"){const c=document.querySelector(".count");if(c)c.outerHTML=countdownHTML()}},30000);
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
