@@ -151,6 +151,58 @@ body.offline .offlineBadge{display:block}
 .lore summary::after{content:"+";position:absolute;right:12px;top:8px;font-size:17px;color:var(--rc,var(--ink2));font-weight:400}
 .lore[open] summary::after{content:"–"}
 .lore .loreBody{padding:0 12px 11px;font-size:13.5px;line-height:1.55;color:var(--ink2)}
+
+/* ---------- v2: travel chain ---------- */
+.fbN{font-size:12.5px;color:var(--warn);background:rgba(181,84,28,.07);border-left:3px solid var(--warn);
+  border-radius:0 8px 8px 0;padding:6px 9px;margin-top:5px;line-height:1.45}
+.chain{position:relative;margin-top:2px}
+.leg{display:flex;gap:11px;padding:9px 0;position:relative}
+.leg .dot{flex:none;width:16px;height:16px;margin-top:3px;border-radius:50%;border:2px solid var(--hair);
+  background:var(--paper);color:transparent;font-size:10px;display:flex;align-items:center;justify-content:center;z-index:1}
+.leg:not(:last-child)::before{content:"";position:absolute;left:7px;top:24px;bottom:-9px;width:2px;background:var(--hair)}
+.leg .lt{display:block;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-weight:700;font-size:12.5px;color:var(--rc)}
+.leg b{font-size:14.5px;display:block;margin-top:1px}
+.leg .st{display:inline-block;margin-top:3px;font-size:11px;font-weight:700;letter-spacing:.04em;
+  border-radius:99px;padding:2px 9px;background:var(--paper2);color:var(--ink2)}
+.leg.done .dot{background:var(--ok);border-color:var(--ok);color:#fff}
+.leg.done b,.leg.done .lt{opacity:.5}
+.leg.done:not(:last-child)::before{background:var(--ok)}
+.leg.go .dot{border-color:var(--rc);box-shadow:0 0 0 3px var(--paper),0 0 0 4.5px var(--rc)}
+.leg.go .st{background:var(--rc);color:#F4EFE2}
+.leg.next .dot{border-color:var(--ink)}
+.leg.next .st{background:var(--ink);color:#F4EFE2}
+.buffer{margin:2px 0 2px 27px;font-size:11.5px;color:var(--faint);font-family:ui-monospace,Menlo,monospace;letter-spacing:.03em}
+/* ---------- v2: NOW chip ---------- */
+.nowChip{display:inline-block;margin-left:8px;font-family:-apple-system,sans-serif;font-size:9.5px;font-weight:800;
+  letter-spacing:.12em;vertical-align:middle;background:var(--rc);color:#F4EFE2;border-radius:99px;padding:2px 8px}
+/* ---------- v2: tomorrow card ---------- */
+.tmr{margin:0 12px 12px;padding:13px 15px;border-radius:14px;background:var(--ink);color:#EFE9DA;cursor:pointer;
+  font-size:13.5px;line-height:1.7}
+.tmr .tmrK{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:#B9C2CE;font-weight:700}
+.tmr .tmrCity{font-size:22px;font-weight:600;margin:1px 0 6px;color:#F4EFE2}
+.tmr .tmrGo{margin-top:7px;font-size:12px;color:#AEB8C6;font-weight:600}
+/* ---------- v2: checkout ---------- */
+.coBar{font-size:11px;font-weight:700;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+h3 .coBar{margin-left:auto}
+/* ---------- v2: scavenger hunt ---------- */
+.scoreWrap{display:flex;gap:10px;margin:2px 12px 10px}
+.scoreCard{flex:1;background:var(--card);border:1px solid var(--hair);border-radius:14px;padding:12px 8px;text-align:center;transition:all .2s}
+.scoreCard.lead{border-color:var(--rc,var(--ink));box-shadow:0 0 0 2px var(--rc,var(--ink)) inset}
+.scoreCard .nm{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink2)}
+.scoreCard .pt{font-size:34px;line-height:1.1;font-weight:700}
+.huntLead{margin:0 12px 12px;font-size:13px;color:var(--ink2);text-align:center;line-height:1.5}
+.hItem{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px dashed var(--paper2)}
+.hItem:last-child{border-bottom:none}
+.hItem .ht{flex:1;font-size:14px;line-height:1.35}
+.hItem.claimed .ht{opacity:.55}
+.hItem .hPts{font-size:11px;font-weight:700;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+.cl{flex:none;width:30px;height:30px;border:1.6px solid var(--hair);border-radius:9px;font-weight:800;font-size:13px;color:var(--ink2);background:var(--paper)}
+.cl.onG{background:var(--fjord);border-color:var(--fjord);color:#fff}
+.cl.onD{background:var(--capital);border-color:var(--capital);color:#fff}
+/* ---------- v2: QR ---------- */
+#qrBox{margin-top:12px;text-align:center}
+#qrBox svg{width:220px;height:220px;background:#fff;padding:8px;border-radius:12px;border:1px solid var(--hair)}
+.qrCap{font-size:12.5px;color:var(--ink2);margin-top:9px;line-height:1.5;text-align:left}
 </style>
 </head>
 <body>
@@ -164,15 +216,19 @@ body.offline .offlineBadge{display:block}
   <button data-tab="day" class="on"><span class="ic">☀︎</span>Today</button>
   <button data-tab="days"><span class="ic">☰</span>Days</button>
   <button data-tab="vault"><span class="ic">⚓︎</span>Vault</button>
+  <button data-tab="hunt"><span class="ic">✦</span>Hunt</button>
   <button data-tab="more"><span class="ic">✚</span>More</button>
 </nav>
 <script>
-/* ============ TRIP DATA — generated from Live_Schedule_07012026.md ============ */
+/* --- inlined libs (offline): qrcode-generator + lz-string --- */
+var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],f={},c=function(t,r){o=function(t){for(var r=new Array(t),e=0;e<t;e+=1){r[e]=new Array(t);for(var n=0;n<t;n+=1)r[e][n]=null}return r}(i=4*e+17),l(0,0),l(i-7,0),l(0,i-7),s(),h(),d(t,r),e>=7&&v(t),null==a&&(a=p(e,n,u)),w(a,r)},l=function(t,r){for(var e=-1;e<=7;e+=1)if(!(t+e<=-1||i<=t+e))for(var n=-1;n<=7;n+=1)r+n<=-1||i<=r+n||(o[t+e][r+n]=0<=e&&e<=6&&(0==n||6==n)||0<=n&&n<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=n&&n<=4)},h=function(){for(var t=8;t<i-8;t+=1)null==o[t][6]&&(o[t][6]=t%2==0);for(var r=8;r<i-8;r+=1)null==o[6][r]&&(o[6][r]=r%2==0)},s=function(){for(var t=B.getPatternPosition(e),r=0;r<t.length;r+=1)for(var n=0;n<t.length;n+=1){var i=t[r],a=t[n];if(null==o[i][a])for(var u=-2;u<=2;u+=1)for(var f=-2;f<=2;f+=1)o[i+u][a+f]=-2==u||2==u||-2==f||2==f||0==u&&0==f}},v=function(t){for(var r=B.getBCHTypeNumber(e),n=0;n<18;n+=1){var a=!t&&1==(r>>n&1);o[Math.floor(n/3)][n%3+i-8-3]=a}for(n=0;n<18;n+=1){a=!t&&1==(r>>n&1);o[n%3+i-8-3][Math.floor(n/3)]=a}},d=function(t,r){for(var e=n<<3|r,a=B.getBCHTypeInfo(e),u=0;u<15;u+=1){var f=!t&&1==(a>>u&1);u<6?o[u][8]=f:u<8?o[u+1][8]=f:o[i-15+u][8]=f}for(u=0;u<15;u+=1){f=!t&&1==(a>>u&1);u<8?o[8][i-u-1]=f:u<9?o[8][15-u-1+1]=f:o[8][15-u-1]=f}o[i-8][8]=!t},w=function(t,r){for(var e=-1,n=i-1,a=7,u=0,f=B.getMaskFunction(r),c=i-1;c>0;c-=2)for(6==c&&(c-=1);;){for(var g=0;g<2;g+=1)if(null==o[n][c-g]){var l=!1;u<t.length&&(l=1==(t[u]>>>a&1)),f(n,c-g)&&(l=!l),o[n][c-g]=l,-1==(a-=1)&&(u+=1,a=7)}if((n+=e)<0||i<=n){n-=e,e=-e;break}}},p=function(t,r,e){for(var n=A.getRSBlocks(t,r),o=b(),i=0;i<e.length;i+=1){var a=e[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var u=0;for(i=0;i<n.length;i+=1)u+=n[i].dataCount;if(o.getLengthInBits()>8*u)throw"code length overflow. ("+o.getLengthInBits()+">"+8*u+")";for(o.getLengthInBits()+4<=8*u&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*u||(o.put(236,8),o.getLengthInBits()>=8*u));)o.put(17,8);return function(t,r){for(var e=0,n=0,o=0,i=new Array(r.length),a=new Array(r.length),u=0;u<r.length;u+=1){var f=r[u].dataCount,c=r[u].totalCount-f;n=Math.max(n,f),o=Math.max(o,c),i[u]=new Array(f);for(var g=0;g<i[u].length;g+=1)i[u][g]=255&t.getBuffer()[g+e];e+=f;var l=B.getErrorCorrectPolynomial(c),h=k(i[u],l.getLength()-1).mod(l);for(a[u]=new Array(l.getLength()-1),g=0;g<a[u].length;g+=1){var s=g+h.getLength()-a[u].length;a[u][g]=s>=0?h.getAt(s):0}}var v=0;for(g=0;g<r.length;g+=1)v+=r[g].totalCount;var d=new Array(v),w=0;for(g=0;g<n;g+=1)for(u=0;u<r.length;u+=1)g<i[u].length&&(d[w]=i[u][g],w+=1);for(g=0;g<o;g+=1)for(u=0;u<r.length;u+=1)g<a[u].length&&(d[w]=a[u][g],w+=1);return d}(o,n)};f.addData=function(t,r){var e=null;switch(r=r||"Byte"){case"Numeric":e=M(t);break;case"Alphanumeric":e=x(t);break;case"Byte":e=m(t);break;case"Kanji":e=L(t);break;default:throw"mode:"+r}u.push(e),a=null},f.isDark=function(t,r){if(t<0||i<=t||r<0||i<=r)throw t+","+r;return o[t][r]},f.getModuleCount=function(){return i},f.make=function(){if(e<1){for(var t=1;t<40;t++){for(var r=A.getRSBlocks(t,n),o=b(),i=0;i<u.length;i++){var a=u[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var g=0;for(i=0;i<r.length;i++)g+=r[i].dataCount;if(o.getLengthInBits()<=8*g)break}e=t}c(!1,function(){for(var t=0,r=0,e=0;e<8;e+=1){c(!0,e);var n=B.getLostPoint(f);(0==e||t>n)&&(t=n,r=e)}return r}())},f.createTableTag=function(t,r){t=t||2;var e="";e+='<table style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: "+(r=void 0===r?4*t:r)+"px;",e+='">',e+="<tbody>";for(var n=0;n<f.getModuleCount();n+=1){e+="<tr>";for(var o=0;o<f.getModuleCount();o+=1)e+='<td style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: 0px;",e+=" width: "+t+"px;",e+=" height: "+t+"px;",e+=" background-color: ",e+=f.isDark(n,o)?"#000000":"#ffffff",e+=";",e+='"/>';e+="</tr>"}return e+="</tbody>",e+="</table>"},f.createSvgTag=function(t,r,e,n){var o={};"object"==typeof arguments[0]&&(t=(o=arguments[0]).cellSize,r=o.margin,e=o.alt,n=o.title),t=t||2,r=void 0===r?4*t:r,(e="string"==typeof e?{text:e}:e||{}).text=e.text||null,e.id=e.text?e.id||"qrcode-description":null,(n="string"==typeof n?{text:n}:n||{}).text=n.text||null,n.id=n.text?n.id||"qrcode-title":null;var i,a,u,c,g=f.getModuleCount()*t+2*r,l="";for(c="l"+t+",0 0,"+t+" -"+t+",0 0,-"+t+"z ",l+='<svg version="1.1" xmlns="http://www.w3.org/2000/svg"',l+=o.scalable?"":' width="'+g+'px" height="'+g+'px"',l+=' viewBox="0 0 '+g+" "+g+'" ',l+=' preserveAspectRatio="xMinYMin meet"',l+=n.text||e.text?' role="img" aria-labelledby="'+y([n.id,e.id].join(" ").trim())+'"':"",l+=">",l+=n.text?'<title id="'+y(n.id)+'">'+y(n.text)+"</title>":"",l+=e.text?'<description id="'+y(e.id)+'">'+y(e.text)+"</description>":"",l+='<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>',l+='<path d="',a=0;a<f.getModuleCount();a+=1)for(u=a*t+r,i=0;i<f.getModuleCount();i+=1)f.isDark(a,i)&&(l+="M"+(i*t+r)+","+u+c);return l+='" stroke="transparent" fill="black"/>',l+="</svg>"},f.createDataURL=function(t,r){t=t||2,r=void 0===r?4*t:r;var e=f.getModuleCount()*t+2*r,n=r,o=e-r;return I(e,e,function(r,e){if(n<=r&&r<o&&n<=e&&e<o){var i=Math.floor((r-n)/t),a=Math.floor((e-n)/t);return f.isDark(a,i)?0:1}return 1})},f.createImgTag=function(t,r,e){t=t||2,r=void 0===r?4*t:r;var n=f.getModuleCount()*t+2*r,o="";return o+="<img",o+=' src="',o+=f.createDataURL(t,r),o+='"',o+=' width="',o+=n,o+='"',o+=' height="',o+=n,o+='"',e&&(o+=' alt="',o+=y(e),o+='"'),o+="/>"};var y=function(t){for(var r="",e=0;e<t.length;e+=1){var n=t.charAt(e);switch(n){case"<":r+="&lt;";break;case">":r+="&gt;";break;case"&":r+="&amp;";break;case'"':r+="&quot;";break;default:r+=n}}return r};return f.createASCII=function(t,r){if((t=t||1)<2)return function(t){t=void 0===t?2:t;var r,e,n,o,i,a=1*f.getModuleCount()+2*t,u=t,c=a-t,g={"██":"█","█ ":"▀"," █":"▄","  ":" "},l={"██":"▀","█ ":"▀"," █":" ","  ":" "},h="";for(r=0;r<a;r+=2){for(n=Math.floor((r-u)/1),o=Math.floor((r+1-u)/1),e=0;e<a;e+=1)i="█",u<=e&&e<c&&u<=r&&r<c&&f.isDark(n,Math.floor((e-u)/1))&&(i=" "),u<=e&&e<c&&u<=r+1&&r+1<c&&f.isDark(o,Math.floor((e-u)/1))?i+=" ":i+="█",h+=t<1&&r+1>=c?l[i]:g[i];h+="\n"}return a%2&&t>0?h.substring(0,h.length-a-1)+Array(a+1).join("▀"):h.substring(0,h.length-1)}(r);t-=1,r=void 0===r?2*t:r;var e,n,o,i,a=f.getModuleCount()*t+2*r,u=r,c=a-r,g=Array(t+1).join("██"),l=Array(t+1).join("  "),h="",s="";for(e=0;e<a;e+=1){for(o=Math.floor((e-u)/t),s="",n=0;n<a;n+=1)i=1,u<=n&&n<c&&u<=e&&e<c&&f.isDark(o,Math.floor((n-u)/t))&&(i=0),s+=i?g:l;for(o=0;o<t;o+=1)h+=s+"\n"}return h.substring(0,h.length-1)},f.renderTo2dContext=function(t,r){r=r||2;for(var e=f.getModuleCount(),n=0;n<e;n++)for(var o=0;o<e;o++)t.fillStyle=f.isDark(n,o)?"black":"white",t.fillRect(o*r,n*r,r,r)},f};t.stringToBytes=(t.stringToBytesFuncs={default:function(t){for(var r=[],e=0;e<t.length;e+=1){var n=t.charCodeAt(e);r.push(255&n)}return r}}).default,t.createStringToBytes=function(t,r){var e=function(){for(var e=S(t),n=function(){var t=e.read();if(-1==t)throw"eof";return t},o=0,i={};;){var a=e.read();if(-1==a)break;var u=n(),f=n()<<8|n();i[String.fromCharCode(a<<8|u)]=f,o+=1}if(o!=r)throw o+" != "+r;return i}(),n="?".charCodeAt(0);return function(t){for(var r=[],o=0;o<t.length;o+=1){var i=t.charCodeAt(o);if(i<128)r.push(i);else{var a=e[t.charAt(o)];"number"==typeof a?(255&a)==a?r.push(a):(r.push(a>>>8),r.push(255&a)):r.push(n)}}return r}};var r,e,n,o,i,a=1,u=2,f=4,c=8,g={L:1,M:0,Q:3,H:2},l=0,h=1,s=2,v=3,d=4,w=5,p=6,y=7,B=(r=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],e=1335,n=7973,i=function(t){for(var r=0;0!=t;)r+=1,t>>>=1;return r},(o={}).getBCHTypeInfo=function(t){for(var r=t<<10;i(r)-i(e)>=0;)r^=e<<i(r)-i(e);return 21522^(t<<10|r)},o.getBCHTypeNumber=function(t){for(var r=t<<12;i(r)-i(n)>=0;)r^=n<<i(r)-i(n);return t<<12|r},o.getPatternPosition=function(t){return r[t-1]},o.getMaskFunction=function(t){switch(t){case l:return function(t,r){return(t+r)%2==0};case h:return function(t,r){return t%2==0};case s:return function(t,r){return r%3==0};case v:return function(t,r){return(t+r)%3==0};case d:return function(t,r){return(Math.floor(t/2)+Math.floor(r/3))%2==0};case w:return function(t,r){return t*r%2+t*r%3==0};case p:return function(t,r){return(t*r%2+t*r%3)%2==0};case y:return function(t,r){return(t*r%3+(t+r)%2)%2==0};default:throw"bad maskPattern:"+t}},o.getErrorCorrectPolynomial=function(t){for(var r=k([1],0),e=0;e<t;e+=1)r=r.multiply(k([1,C.gexp(e)],0));return r},o.getLengthInBits=function(t,r){if(1<=r&&r<10)switch(t){case a:return 10;case u:return 9;case f:case c:return 8;default:throw"mode:"+t}else if(r<27)switch(t){case a:return 12;case u:return 11;case f:return 16;case c:return 10;default:throw"mode:"+t}else{if(!(r<41))throw"type:"+r;switch(t){case a:return 14;case u:return 13;case f:return 16;case c:return 12;default:throw"mode:"+t}}},o.getLostPoint=function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n+=1)for(var o=0;o<r;o+=1){for(var i=0,a=t.isDark(n,o),u=-1;u<=1;u+=1)if(!(n+u<0||r<=n+u))for(var f=-1;f<=1;f+=1)o+f<0||r<=o+f||0==u&&0==f||a==t.isDark(n+u,o+f)&&(i+=1);i>5&&(e+=3+i-5)}for(n=0;n<r-1;n+=1)for(o=0;o<r-1;o+=1){var c=0;t.isDark(n,o)&&(c+=1),t.isDark(n+1,o)&&(c+=1),t.isDark(n,o+1)&&(c+=1),t.isDark(n+1,o+1)&&(c+=1),0!=c&&4!=c||(e+=3)}for(n=0;n<r;n+=1)for(o=0;o<r-6;o+=1)t.isDark(n,o)&&!t.isDark(n,o+1)&&t.isDark(n,o+2)&&t.isDark(n,o+3)&&t.isDark(n,o+4)&&!t.isDark(n,o+5)&&t.isDark(n,o+6)&&(e+=40);for(o=0;o<r;o+=1)for(n=0;n<r-6;n+=1)t.isDark(n,o)&&!t.isDark(n+1,o)&&t.isDark(n+2,o)&&t.isDark(n+3,o)&&t.isDark(n+4,o)&&!t.isDark(n+5,o)&&t.isDark(n+6,o)&&(e+=40);var g=0;for(o=0;o<r;o+=1)for(n=0;n<r;n+=1)t.isDark(n,o)&&(g+=1);return e+=Math.abs(100*g/r/r-50)/5*10},o),C=function(){for(var t=new Array(256),r=new Array(256),e=0;e<8;e+=1)t[e]=1<<e;for(e=8;e<256;e+=1)t[e]=t[e-4]^t[e-5]^t[e-6]^t[e-8];for(e=0;e<255;e+=1)r[t[e]]=e;var n={glog:function(t){if(t<1)throw"glog("+t+")";return r[t]},gexp:function(r){for(;r<0;)r+=255;for(;r>=256;)r-=255;return t[r]}};return n}();function k(t,r){if(void 0===t.length)throw t.length+"/"+r;var e=function(){for(var e=0;e<t.length&&0==t[e];)e+=1;for(var n=new Array(t.length-e+r),o=0;o<t.length-e;o+=1)n[o]=t[o+e];return n}(),n={getAt:function(t){return e[t]},getLength:function(){return e.length},multiply:function(t){for(var r=new Array(n.getLength()+t.getLength()-1),e=0;e<n.getLength();e+=1)for(var o=0;o<t.getLength();o+=1)r[e+o]^=C.gexp(C.glog(n.getAt(e))+C.glog(t.getAt(o)));return k(r,0)},mod:function(t){if(n.getLength()-t.getLength()<0)return n;for(var r=C.glog(n.getAt(0))-C.glog(t.getAt(0)),e=new Array(n.getLength()),o=0;o<n.getLength();o+=1)e[o]=n.getAt(o);for(o=0;o<t.getLength();o+=1)e[o]^=C.gexp(C.glog(t.getAt(o))+r);return k(e,0).mod(t)}};return n}var A=function(){var t=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],r=function(t,r){var e={};return e.totalCount=t,e.dataCount=r,e},e={};return e.getRSBlocks=function(e,n){var o=function(r,e){switch(e){case g.L:return t[4*(r-1)+0];case g.M:return t[4*(r-1)+1];case g.Q:return t[4*(r-1)+2];case g.H:return t[4*(r-1)+3];default:return}}(e,n);if(void 0===o)throw"bad rs block @ typeNumber:"+e+"/errorCorrectionLevel:"+n;for(var i=o.length/3,a=[],u=0;u<i;u+=1)for(var f=o[3*u+0],c=o[3*u+1],l=o[3*u+2],h=0;h<f;h+=1)a.push(r(c,l));return a},e}(),b=function(){var t=[],r=0,e={getBuffer:function(){return t},getAt:function(r){var e=Math.floor(r/8);return 1==(t[e]>>>7-r%8&1)},put:function(t,r){for(var n=0;n<r;n+=1)e.putBit(1==(t>>>r-n-1&1))},getLengthInBits:function(){return r},putBit:function(e){var n=Math.floor(r/8);t.length<=n&&t.push(0),e&&(t[n]|=128>>>r%8),r+=1}};return e},M=function(t){var r=a,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+2<r.length;)t.put(o(r.substring(n,n+3)),10),n+=3;n<r.length&&(r.length-n==1?t.put(o(r.substring(n,n+1)),4):r.length-n==2&&t.put(o(r.substring(n,n+2)),7))}},o=function(t){for(var r=0,e=0;e<t.length;e+=1)r=10*r+i(t.charAt(e));return r},i=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);throw"illegal char :"+t};return n},x=function(t){var r=u,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+1<r.length;)t.put(45*o(r.charAt(n))+o(r.charAt(n+1)),11),n+=2;n<r.length&&t.put(o(r.charAt(n)),6)}},o=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);if("A"<=t&&t<="Z")return t.charCodeAt(0)-"A".charCodeAt(0)+10;switch(t){case" ":return 36;case"$":return 37;case"%":return 38;case"*":return 39;case"+":return 40;case"-":return 41;case".":return 42;case"/":return 43;case":":return 44;default:throw"illegal char :"+t}};return n},m=function(r){var e=f,n=t.stringToBytes(r),o={getMode:function(){return e},getLength:function(t){return n.length},write:function(t){for(var r=0;r<n.length;r+=1)t.put(n[r],8)}};return o},L=function(r){var e=c,n=t.stringToBytesFuncs.SJIS;if(!n)throw"sjis not supported.";!function(){var t=n("友");if(2!=t.length||38726!=(t[0]<<8|t[1]))throw"sjis not supported."}();var o=n(r),i={getMode:function(){return e},getLength:function(t){return~~(o.length/2)},write:function(t){for(var r=o,e=0;e+1<r.length;){var n=(255&r[e])<<8|255&r[e+1];if(33088<=n&&n<=40956)n-=33088;else{if(!(57408<=n&&n<=60351))throw"illegal char at "+(e+1)+"/"+n;n-=49472}n=192*(n>>>8&255)+(255&n),t.put(n,13),e+=2}if(e<r.length)throw"illegal char at "+(e+1)}};return i},D=function(){var t=[],r={writeByte:function(r){t.push(255&r)},writeShort:function(t){r.writeByte(t),r.writeByte(t>>>8)},writeBytes:function(t,e,n){e=e||0,n=n||t.length;for(var o=0;o<n;o+=1)r.writeByte(t[o+e])},writeString:function(t){for(var e=0;e<t.length;e+=1)r.writeByte(t.charCodeAt(e))},toByteArray:function(){return t},toString:function(){var r="";r+="[";for(var e=0;e<t.length;e+=1)e>0&&(r+=","),r+=t[e];return r+="]"}};return r},S=function(t){var r=t,e=0,n=0,o=0,i={read:function(){for(;o<8;){if(e>=r.length){if(0==o)return-1;throw"unexpected end of file./"+o}var t=r.charAt(e);if(e+=1,"="==t)return o=0,-1;t.match(/^\s$/)||(n=n<<6|a(t.charCodeAt(0)),o+=6)}var i=n>>>o-8&255;return o-=8,i}},a=function(t){if(65<=t&&t<=90)return t-65;if(97<=t&&t<=122)return t-97+26;if(48<=t&&t<=57)return t-48+52;if(43==t)return 62;if(47==t)return 63;throw"c:"+t};return i},I=function(t,r,e){for(var n=function(t,r){var e=t,n=r,o=new Array(t*r),i={setPixel:function(t,r,n){o[r*e+t]=n},write:function(t){t.writeString("GIF87a"),t.writeShort(e),t.writeShort(n),t.writeByte(128),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(255),t.writeByte(255),t.writeByte(255),t.writeString(","),t.writeShort(0),t.writeShort(0),t.writeShort(e),t.writeShort(n),t.writeByte(0);var r=a(2);t.writeByte(2);for(var o=0;r.length-o>255;)t.writeByte(255),t.writeBytes(r,o,255),o+=255;t.writeByte(r.length-o),t.writeBytes(r,o,r.length-o),t.writeByte(0),t.writeString(";")}},a=function(t){for(var r=1<<t,e=1+(1<<t),n=t+1,i=u(),a=0;a<r;a+=1)i.add(String.fromCharCode(a));i.add(String.fromCharCode(r)),i.add(String.fromCharCode(e));var f,c,g,l=D(),h=(f=l,c=0,g=0,{write:function(t,r){if(t>>>r!=0)throw"length over";for(;c+r>=8;)f.writeByte(255&(t<<c|g)),r-=8-c,t>>>=8-c,g=0,c=0;g|=t<<c,c+=r},flush:function(){c>0&&f.writeByte(g)}});h.write(r,n);var s=0,v=String.fromCharCode(o[s]);for(s+=1;s<o.length;){var d=String.fromCharCode(o[s]);s+=1,i.contains(v+d)?v+=d:(h.write(i.indexOf(v),n),i.size()<4095&&(i.size()==1<<n&&(n+=1),i.add(v+d)),v=d)}return h.write(i.indexOf(v),n),h.write(e,n),h.flush(),l.toByteArray()},u=function(){var t={},r=0,e={add:function(n){if(e.contains(n))throw"dup key:"+n;t[n]=r,r+=1},size:function(){return r},indexOf:function(r){return t[r]},contains:function(r){return void 0!==t[r]}};return e};return i}(t,r),o=0;o<r;o+=1)for(var i=0;i<t;i+=1)n.setPixel(i,o,e(i,o));var a=D();n.write(a);for(var u=function(){var t=0,r=0,e=0,n="",o={},i=function(t){n+=String.fromCharCode(a(63&t))},a=function(t){if(t<0);else{if(t<26)return 65+t;if(t<52)return t-26+97;if(t<62)return t-52+48;if(62==t)return 43;if(63==t)return 47}throw"n:"+t};return o.writeByte=function(n){for(t=t<<8|255&n,r+=8,e+=1;r>=6;)i(t>>>r-6),r-=6},o.flush=function(){if(r>0&&(i(t<<6-r),t=0,r=0),e%3!=0)for(var o=3-e%3,a=0;a<o;a+=1)n+="="},o.toString=function(){return n},o}(),f=a.toByteArray(),c=0;c<f.length;c+=1)u.writeByte(f[c]);return u.flush(),"data:image/gif;base64,"+u};return t}();qrcode.stringToBytesFuncs["UTF-8"]=function(t){return function(t){for(var r=[],e=0;e<t.length;e++){var n=t.charCodeAt(e);n<128?r.push(n):n<2048?r.push(192|n>>6,128|63&n):n<55296||n>=57344?r.push(224|n>>12,128|n>>6&63,128|63&n):(e++,n=65536+((1023&n)<<10|1023&t.charCodeAt(e)),r.push(240|n>>18,128|n>>12&63,128|n>>6&63,128|63&n))}return r}(t)},function(t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports&&(module.exports=t())}(function(){return qrcode});
+var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",n="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$",e={};function t(r,o){if(!e[r]){e[r]={};for(var n=0;n<r.length;n++)e[r][r.charAt(n)]=n}return e[r][o]}var i={compressToBase64:function(r){if(null==r)return"";var n=i._compress(r,6,function(r){return o.charAt(r)});switch(n.length%4){default:case 0:return n;case 1:return n+"===";case 2:return n+"==";case 3:return n+"="}},decompressFromBase64:function(r){return null==r?"":""==r?null:i._decompress(r.length,32,function(n){return t(o,r.charAt(n))})},compressToUTF16:function(o){return null==o?"":i._compress(o,15,function(o){return r(o+32)})+" "},decompressFromUTF16:function(r){return null==r?"":""==r?null:i._decompress(r.length,16384,function(o){return r.charCodeAt(o)-32})},compressToUint8Array:function(r){for(var o=i.compress(r),n=new Uint8Array(2*o.length),e=0,t=o.length;e<t;e++){var s=o.charCodeAt(e);n[2*e]=s>>>8,n[2*e+1]=s%256}return n},decompressFromUint8Array:function(o){if(null==o)return i.decompress(o);for(var n=new Array(o.length/2),e=0,t=n.length;e<t;e++)n[e]=256*o[2*e]+o[2*e+1];var s=[];return n.forEach(function(o){s.push(r(o))}),i.decompress(s.join(""))},compressToEncodedURIComponent:function(r){return null==r?"":i._compress(r,6,function(r){return n.charAt(r)})},decompressFromEncodedURIComponent:function(r){return null==r?"":""==r?null:(r=r.replace(/ /g,"+"),i._decompress(r.length,32,function(o){return t(n,r.charAt(o))}))},compress:function(o){return i._compress(o,16,function(o){return r(o)})},_compress:function(r,o,n){if(null==r)return"";var e,t,i,s={},u={},a="",p="",c="",l=2,f=3,h=2,d=[],m=0,v=0;for(i=0;i<r.length;i+=1)if(a=r.charAt(i),Object.prototype.hasOwnProperty.call(s,a)||(s[a]=f++,u[a]=!0),p=c+a,Object.prototype.hasOwnProperty.call(s,p))c=p;else{if(Object.prototype.hasOwnProperty.call(u,c)){if(c.charCodeAt(0)<256){for(e=0;e<h;e++)m<<=1,v==o-1?(v=0,d.push(n(m)),m=0):v++;for(t=c.charCodeAt(0),e=0;e<8;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}else{for(t=1,e=0;e<h;e++)m=m<<1|t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t=0;for(t=c.charCodeAt(0),e=0;e<16;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}0==--l&&(l=Math.pow(2,h),h++),delete u[c]}else for(t=s[c],e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;0==--l&&(l=Math.pow(2,h),h++),s[p]=f++,c=String(a)}if(""!==c){if(Object.prototype.hasOwnProperty.call(u,c)){if(c.charCodeAt(0)<256){for(e=0;e<h;e++)m<<=1,v==o-1?(v=0,d.push(n(m)),m=0):v++;for(t=c.charCodeAt(0),e=0;e<8;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}else{for(t=1,e=0;e<h;e++)m=m<<1|t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t=0;for(t=c.charCodeAt(0),e=0;e<16;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}0==--l&&(l=Math.pow(2,h),h++),delete u[c]}else for(t=s[c],e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;0==--l&&(l=Math.pow(2,h),h++)}for(t=2,e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;for(;;){if(m<<=1,v==o-1){d.push(n(m));break}v++}return d.join("")},decompress:function(r){return null==r?"":""==r?null:i._decompress(r.length,32768,function(o){return r.charCodeAt(o)})},_decompress:function(o,n,e){var t,i,s,u,a,p,c,l=[],f=4,h=4,d=3,m="",v=[],g={val:e(0),position:n,index:1};for(t=0;t<3;t+=1)l[t]=t;for(s=0,a=Math.pow(2,2),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;switch(s){case 0:for(s=0,a=Math.pow(2,8),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;c=r(s);break;case 1:for(s=0,a=Math.pow(2,16),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;c=r(s);break;case 2:return""}for(l[3]=c,i=c,v.push(c);;){if(g.index>o)return"";for(s=0,a=Math.pow(2,d),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;switch(c=s){case 0:for(s=0,a=Math.pow(2,8),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;l[h++]=r(s),c=h-1,f--;break;case 1:for(s=0,a=Math.pow(2,16),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;l[h++]=r(s),c=h-1,f--;break;case 2:return v.join("")}if(0==f&&(f=Math.pow(2,d),d++),l[c])m=l[c];else{if(c!==h)return null;m=i+i.charAt(0)}v.push(m),l[h++]=i+m.charAt(0),i=m,0==--f&&(f=Math.pow(2,d),d++)}}};return i}();"function"==typeof define&&define.amd?define(function(){return LZString}):"undefined"!=typeof module&&null!=module?module.exports=LZString:"undefined"!=typeof angular&&null!=angular&&angular.module("LZString",[]).factory("LZString",function(){return LZString});
+/* ============ TRIP DATA — generated from Live_Schedule_07052026.md ============ */
 const REGIONS={travel:"--travel",fjord:"--fjord",capital:"--capital",cruise:"--cruise",denmark:"--denmark"};
 const DATA=[
 {d:"2026-07-07",dow:"Tue",city:"Departure Day",sub:"Asheville → Atlanta → overnight to Amsterdam",r:"travel",
  lede:"Final prep, then the overnight hop across. Everything from here runs on the plan — tonight is just execution.",
- transit:[{t:"19:45",l:"AVL → ATL · Delta DL2781",ref:"XI7BLD"},{t:"22:40",l:"ATL → AMS · KLM KL0622 (overnight)",ref:"XI7BLD"}],
+ transit:[{t:"19:45",l:"AVL → ATL · Delta DL2781",arr:"20:57",ref:"XI7BLD"},{t:"22:40",l:"ATL → AMS · KLM KL0622 (overnight)",ref:"XI7BLD"}],
  blocks:[
   {n:"Afternoon — Final checks",items:[
    {b:"Apps installed on both adult phones + the spare",d:"Skyss, Ruter, Norled, Vy, Flåmsbana, Fløibanen, KLM, Delta, Airbnb, DOT (Copenhagen tickets) — plus WhatsApp for $0 calls over data. The boys' Apple Watches can't run WhatsApp; their intl text/iMessage roaming is confirmed, so messages reach them directly."},
@@ -314,9 +370,9 @@ const DATA=[
  lede:"Four vehicles, one spectacular day: express ferry down the Aurlandsfjord, one of the world's steepest railways up to Myrdal, rail to Voss, bus over to the Hardangerfjord. Every leg is booked; the buffers are built in.",
  transit:[
   {t:"11:58",l:"Norled ferry Balestrand → Flåm",ref:"#2542170371"},
-  {t:"14:45",l:"Flåmsbana Flåm → Myrdal",ref:"OGD-QDL-A3T"},
-  {t:"15:56",l:"R40 Myrdal → Voss, arr 16:51",ref:"SUA-CW4-YVS"},
-  {t:"18:01",l:"Skyss Bus 990 Voss Tinghus → Lofthus kai, arr 19:20 · pay in Skyss app",ref:"~$21–24/pp",app:{n:"Skyss",u:"https://www.skyss.no/en/"}}],
+  {t:"14:45",l:"Flåmsbana Flåm → Myrdal",ref:"OGD-QDL-A3T",fb:"Free seating — be in line 25–30 min before departure; rear cars run emptiest. Sit on the RIGHT going up."},
+  {t:"15:56",l:"R40 Myrdal → Voss",arr:"16:51",ref:"SUA-CW4-YVS",fb:"If this runs late and the 18:01 bus is missed: next 990 isn\u2019t until ~22:16 — use the Ullensvang front desk\u2019s taxi contact instead (~NOK 1,000–1,300 from Voss; the hotel was pre-flagged)."},
+  {t:"18:01",l:"Skyss Bus 990 Voss Tinghus → Lofthus kai · pay in Skyss app",arr:"19:20",ref:"~$21–24/pp",app:{n:"Skyss",u:"https://www.skyss.no/en/"}}],
  blocks:[
   {n:"Morning",items:[
    {b:"Coffee + breakfast at the apartment",d:"The usual home routine — no sit-down this morning. If anyone's earned a treat, grab a to-go pastry or soft serve from Fløyfisken (Holmen 2) and eat it by the water while you wait for the ferry.",q:"Fløyfisken, Holmen 2, Balestrand"},
@@ -382,8 +438,8 @@ const DATA=[
 {d:"2026-07-17",dow:"Fri",city:"Lofthus → Oslo",sub:"HIGH STAKES · pre-dawn bus + Bergen Railway",r:"capital",
  lede:"The one morning with zero slack: 6:55 bus to Voss, then five hours on the Bergen Railway across the roof of Norway into Oslo. After that, the trip downshifts into city mode.",
  transit:[
-  {t:"06:55",l:"Skyss Bus 990 Lofthus kai → Voss, arr ~8:25 · wake 6:00, walk 6:40",ref:"Skyss app",app:{n:"Skyss",u:"https://www.skyss.no/en/"}},
-  {t:"09:20",l:"Vy F4 Voss → Oslo S, arr 15:09 · Carriage 7, seats 17/18/21/22",ref:"6P3-IOE-EID"}],
+  {t:"06:55",l:"Skyss Bus 990 Lofthus kai → Voss · wake 6:00, walk 6:40",arr:"08:25",ref:"Skyss app",app:{n:"Skyss",u:"https://www.skyss.no/en/"},fb:"Bus fails → standby taxi arranged via Ullensvang (~NOK 3,000–4,000, ~90 min to Voss)."},
+  {t:"09:20",l:"Vy F4 Voss → Oslo S · Carriage 7, seats 17/18/21/22",arr:"15:09",ref:"6P3-IOE-EID",fb:"Missed the train → rebook at vy.no; departures run all day."}],
  blocks:[
   {n:"Afternoon — arrive Oslo",items:[
    {b:"Uber from Oslo S to Majorstuen",d:"Airbnb host Margareth Aurora · Pilestredet 53C.",q:"Pilestredet 53C, Oslo",ref:"HMAWRADHED"}]},
@@ -515,7 +571,7 @@ const DATA=[
 {d:"2026-07-23",dow:"Thu",city:"Drøbak → Cruise",sub:"Bus to Oslo · board M/S Nordic Pearl",r:"cruise",
  lede:"The one hard deadline of the back half: on the ship by 3:30. Everything today is sequenced backward from that — bakery, bus with buffer, optional food-hall lunch that gets dropped without hesitation if time runs tight.",
  transit:[
-  {t:"≤12:30",l:"Bus 500 Drøbak Brygge → Oslo Bussterminal, ~50 min · Ruter app · leave NO later than 12:30",ref:"no booking",app:{n:"Ruter",u:"https://ruter.no/en/"}},
+  {t:"≤12:30",l:"Bus 500 Drøbak Brygge → Oslo Bussterminal, ~50 min · Ruter app · leave NO later than 12:30",ref:"no booking",app:{n:"Ruter",u:"https://ruter.no/en/"},fb:"Anything slips → taxi Drøbak → Vippetangen (~45 min). Nothing jeopardizes 15:30 boarding — Vippa lunch and the grocery stop are the sacrifices, in that order."},
   {t:"15:30",l:"Board M/S Nordic Pearl at Vippetangen · departs 16:30",ref:"#119987 · DcTtM2QqkP"}],
  blocks:[
   {n:"Morning",items:[
@@ -569,7 +625,7 @@ const DATA=[
   {n:"Midday",items:[
    {b:"Lunch: DØP — the organic hot dog",d:"Amagertorv 31, on Strøget, ~20-min canal walk from GoBoat. The classic Copenhagen pølse with Nordic buns — drier, denser, better. ~$25–35 for four.",q:"DØP Amagertorv, Copenhagen"}]},
   {n:"Afternoon — pre-decided (Jul 3): Rosenborg anchors, Torvehallerne optional",items:[
-   {b:"Rosenborg Castle — 2:30 PM booked slot",d:"~12-min walk north from DØP via Købmagergade — no metro needed. Christian IV's Renaissance castle: the Danish crown jewels in the basement vault, three life-size silver lions guarding the thrones. ~1 hr inside; tight and kid-friendly, not a slog. Adults ~130 DKK, under-18 FREE. Timed 10-min entry slots sell out in July — slot is pre-booked, walk straight in. Exit through the King's Garden lawns.",q:"Rosenborg Castle, Copenhagen",u:"https://denkongeligesamling.dk/en/rosenborg-castle/tickets/",a:"Bail-out honesty: if the day truly collapses, only the two adult tickets (~260 DKK) are sunk — don't let sunk cost drag a tired family across town. But GoBoat ends 12:45; fading by 2:30 would be unusual."},
+   {b:"Rosenborg Castle — 2:30 PM booked slot",d:"~12-min walk north from DØP via Købmagergade — no metro needed. Christian IV's Renaissance castle: the Danish crown jewels in the basement vault, three life-size silver lions guarding the thrones. ~1 hr inside; tight and kid-friendly, not a slog. Adults ~130 DKK, under-18 FREE. Timed 10-min entry slots sell out in July — booking the ~2:30 Sat slot in advance is still on the prep list (denkongeligesamling.dk); once booked, walk straight in. Exit through the King's Garden lawns.",q:"Rosenborg Castle, Copenhagen",u:"https://denkongeligesamling.dk/en/rosenborg-castle/tickets/",a:"Bail-out honesty: if the day truly collapses, only the two adult tickets (~260 DKK) are sunk — don't let sunk cost drag a tired family across town. But GoBoat ends 12:45; fading by 2:30 would be unusual."},
    {b:"Torvehallerne — OPTIONAL walk-through only",d:"5-min walk from Rosenborg. Demoted from anchor: a 20–30 min browse only if energy holds — skip freely. Coffee Collective for the adults, Hija de Sanchez tacos if the line moves. The atmosphere is the point; don't shop.",q:"Torvehallerne, Copenhagen"},
    {b:"Faraos Cigarer — arrive by ~4:15",d:"Skindergade 27, Sat 10–5 — arrive by 4:15 to give the boys a real half hour before close. Copenhagen's best comics + Pokémon shop — their reward for tolerating a castle.",q:"Faraos Cigarer, Skindergade 27, Copenhagen"}]},
   {n:"Evening — Dinner [LOCKED 18:30]",items:[
@@ -605,8 +661,8 @@ const DATA=[
 {d:"2026-07-27",dow:"Mon",city:"Return",sub:"Copenhagen → Amsterdam → Atlanta → home",r:"travel",
  lede:"Twenty-one days, six beds, four boats, one fish dinner caught by hand. The Metro takes 12 minutes; the rest is airplane food and a movie backlog.",
  transit:[
-  {t:"≤11:30",l:"M2 Metro Christianshavn → CPH Airport, ~12 min, DKK 36/pp",ref:"DOT app / card",app:{n:"DOT",u:"https://dinoffentligetransport.dk/en/"}},
-  {t:"14:40",l:"CPH → AMS · KLM KL1272, arr 16:05",ref:"XIAPW6"},
+  {t:"≤11:30",l:"M2 Metro Christianshavn → CPH Airport, ~12 min, DKK 36/pp",ref:"DOT app / card",app:{n:"DOT",u:"https://dinoffentligetransport.dk/en/"},fb:"M2 runs every 2–4 minutes — miss one, take the next."},
+  {t:"14:40",l:"CPH → AMS · KLM KL1272",arr:"16:05",ref:"XIAPW6"},
   {t:"17:05",l:"AMS → ATL · KLM KL0621, arr 20:25",ref:"XIAPW6"},
   {t:"22:40",l:"ATL → AVL · Delta DL3116, arr 23:43",ref:"XIAPW6"}],
  blocks:[
@@ -676,6 +732,40 @@ const PREP=[
  "Message CPH host about Jul 24 early bag drop",
  "Confirm DFDS/Vippetangen bag-drop policy with Go Nordic"];
 
+
+/* ============ CHECKOUT MORNINGS (idiot check) ============ */
+const CO_STD=["Passports ×4 physically in hand","Wallets, cards — watches charged","Chargers pulled from EVERY outlet (incl. watch pucks)","Plug adapters packed","Bathroom sweep — toiletries, shower shelf, hooks","Under beds, in drawers, behind doors, balcony","Fridge cleared — snacks packed, nothing left behind","Trash out per host instructions","Windows shut, lights off","Offline map for the next region confirmed on both phones","Water bottles filled"];
+const CO={
+"2026-07-11":{by:"Out by ~7:15 — quay by 7:40. Bags done the night before.",extra:["Keys handled per Jonas' check-out instructions","Breakfast + snacks packed for the 4-hr ferry"]},
+"2026-07-14":{by:"Checkout 11:00.",extra:["Keys back in the key box (code 3333)","Travel lunch packed from Joker leftovers"]},
+"2026-07-17":{by:"Wake 6:00 · walk out 6:40. Everything packed the night before.",extra:["Breakfast boxes collected from the front desk","Room keys returned — bill settled the night before"]},
+"2026-07-20":{by:"Checkout by 12:00.",extra:["Keys per Margareth's check-out instructions"]},
+"2026-07-23":{by:"Checkout 11:00 · on Bus 500 no later than 12:30.",extra:["Keys per Åse's check-out instructions","Bakery haul packed to travel"]},
+"2026-07-27":{by:"Out by 11:30 — hard deadline for the 14:40 flight.",extra:["Keys per host check-out instructions","Boarding passes ready ×4 in the KLM app"]}};
+/* ============ SCAVENGER HUNT — Gavin vs Declan ============ */
+const HUNT={
+"2026-07-07":[{t:"First one asleep after the Atlanta takeoff",p:10},{t:"Spot the coast of Europe at breakfast",p:5}],
+"2026-07-08":[{t:"First fjord spotted from the plane",p:10},{t:"First 'hei hei' overheard in the wild",p:5},{t:"Find the hidden alley entrance to the Airbnb",p:5}],
+"2026-07-09":[{t:"Find a carved troll in Trollskogen",p:10},{t:"Count all seven mountains from Fløyen",p:10},{t:"Spot two Bryggen buildings leaning on each other",p:5},{t:"Eat a Kvikk Lunsj on a mountain (it's the law)",p:10}],
+"2026-07-10":[{t:"Touch 13th-century stone inside Rosenkrantz Tower",p:10},{t:"Spot tomorrow's ferry route from the cannon roof",p:10},{t:"Off the diving board into the actual fjord",p:25}],
+"2026-07-11":[{t:"Spot King Bele by the harbor",p:5},{t:"Spot 10.5-m Fridtjov across the fjord at Vangsnes",p:10},{t:"Count 5+ dragon heads on the villas",p:10},{t:"Fjord cold plunge — head under",p:25}],
+"2026-07-12":[{t:"Wild berries found on the trail",p:10},{t:"Reach the Orrabenken bench",p:10},{t:"Spot the milky 'rock flour' color in the water",p:5}],
+"2026-07-13":[{t:"First fish in the boat",p:25},{t:"Weirdest thing in the mystery net",p:10},{t:"Eat a fish you caught yourself",p:15}],
+"2026-07-14":[{t:"Spot the Huldra dancing at Kjosfossen",p:15},{t:"Find a farm clinging partway up the fjord wall",p:10},{t:"Count all 20 Flåmsbana tunnels",p:10},{t:"Catch the Berekvam train-meet",p:5}],
+"2026-07-15":[{t:"Swim with a fjord view",p:10},{t:"Waterfall spray on your face in Elvadalen",p:10},{t:"Sheep encountered on the trail",p:5}],
+"2026-07-16":[{t:"Taste apple juice or cider at a real farm",p:10},{t:"Spot the Folgefonna glacier across the fjord",p:15}],
+"2026-07-17":[{t:"Spot the Hardangerjøkulen glacier from the train",p:15},{t:"Finse station = planet Hoth — spot it",p:15},{t:"Cyclist spotted on the Rallarvegen",p:10}],
+"2026-07-18":[{t:"Find Sinnataggen, the angry baby of Vigeland Park",p:10},{t:"Order something entirely in Norwegian",p:15}],
+"2026-07-19":[{t:"Stand on the deck of a real polar ship",p:10},{t:"Run the Akershus ramparts end to end",p:5},{t:"Spot a royal guardsman",p:10}],
+"2026-07-20":[{t:"Walk on a building (Opera roof)",p:10},{t:"Find Santa in July at Julehus",p:10}],
+"2026-07-21":[{t:"Find Hugo the wolffish",p:15},{t:"Fjord swim at Skiphellestranda",p:10}],
+"2026-07-22":[{t:"Spot the cannons of Oscarsborg",p:10},{t:"Wave back at Drøbak from the island",p:5}],
+"2026-07-23":[{t:"Spot Oscarsborg slide past from the ship rail",p:10},{t:"Best bunk claimed (negotiation counts)",p:5},{t:"First sight of Denmark",p:10}],
+"2026-07-24":[{t:"Climb the OUTSIDE golden spiral",p:15},{t:"Spot our Airbnb street from the tower",p:10}],
+"2026-07-25":[{t:"Drive the boat (each captain claims)",p:10},{t:"Spot yesterday's tower from the water",p:10},{t:"Find Rosenborg's three silver lions",p:10},{t:"Stork Fountain on Strøget",p:5}],
+"2026-07-26":[{t:"Ride the 1914 coaster with the live brakeman",p:15},{t:"Catch the Tivoli Boys Guard parade",p:10},{t:"Stay until the 100,000 lamps come on",p:10}],
+"2026-07-27":[{t:"Last flødeboller at the airport",p:5},{t:"First one to spot home",p:5}]};
+
 /* ============ APP ============ */
 const $=s=>document.querySelector(s);
 const store={
@@ -683,7 +773,7 @@ const store={
  load(){try{return JSON.parse(localStorage.getItem(this.k))||{}}catch(e){return{}}},
  save(s){try{localStorage.setItem(this.k,JSON.stringify(s))}catch(e){}}
 };
-let S=store.load(); S.done=S.done||{}; S.notes=S.notes||{}; S.edits=S.edits||{}; S.hidden=S.hidden||{}; S.custom=S.custom||{}; S.prep=S.prep||{}; S.rate=S.rate||{nok:10.0,dkk:6.9};
+let S=store.load(); S.done=S.done||{}; S.notes=S.notes||{}; S.edits=S.edits||{}; S.hidden=S.hidden||{}; S.custom=S.custom||{}; S.prep=S.prep||{}; S.hunt=S.hunt||{}; S.co=S.co||{}; S.rate=S.rate||{nok:10.0,dkk:6.9};
 let curDay=0, curTab="day", editing=false;
 const esc=t=>(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 const maps=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
@@ -736,13 +826,14 @@ function renderDay(){
  h+=`<div class="dayHead" style="--rc:${rc}"><div class="kick">${esc(day.dow)} · ${fmtDate(day.d)} · Day ${curDay+1} of 21</div>
      <div class="city serif">${esc(day.city)}</div><div class="dsub">${esc(day.sub)}</div>
      <p class="lede">${esc(day.lede)}</p>${wxHTML(day)}</div>`;
- if(day.transit&&day.transit.length){
-  h+=`<div class="sec" style="--rc:${rc}"><h3>Locked transit</h3>`;
-  day.transit.forEach(t=>{h+=`<div class="item"><div class="it"><span class="time">${esc(t.t)}</span><b>${esc(t.l)}</b>
-    <div class="desc">${t.ref?`<span class="ref">${esc(t.ref)}</span> `:""}${t.app?`<a class="pill" target="_blank" rel="noopener" href="${esc(t.app.u)}">↗ ${esc(t.app.n)}</a>`:""}</div></div></div>`});
-  h+=`</div>`}
+ h+=checkoutHTML(day,rc);
+ h+=tomorrowHTML(day);
+ h+=transitHTML(day,rc);
  h+=`<div class="sec" style="--rc:${rc}"><h3>The day</h3>`;
- (day.blocks||[]).forEach((blk,bi)=>{h+=`<div class="blockName serif">${esc(blk.n)}</div>`;
+ const _per=isToday(day)?nowPeriod():null;
+ (day.blocks||[]).forEach((blk,bi)=>{const _m=blk.n.toLowerCase().match(/morning|midday|afternoon|evening/);
+  const _now=_per&&_m&&_m[0]===_per;
+  h+=`<div class="blockName serif">${esc(blk.n)}${_now?'<span class="nowChip">NOW</span>':""}</div>`;
   blk.items.forEach((it,ii)=>h+=itemHTML(curDay,bi,it,ii,false));
   const cust=(S.custom[curDay+"."+bi]||[]);
   cust.forEach((it,ci)=>h+=itemHTML(curDay,bi,it,"c"+ci,true));
@@ -759,6 +850,7 @@ function renderDay(){
  if(day.snacks)h+=`<div class="mini"><span class="lab">Snacks & groceries</span>${esc(day.snacks)}</div>`;
  if(day.customs)h+=`<div class="mini"><span class="lab">Local custom</span>${esc(day.customs)}</div>`;
  if(day.conn)h+=`<div class="mini"><span class="lab">Connectivity</span>${esc(day.conn)}</div>`;
+ if(HUNT[day.d])h+=`<div class="mini"><span class="lab">Scavenger hunt</span>${HUNT[day.d].length} finds up for grabs today — score them in the ✦ Hunt tab.</div>`;
  h+=`</div>`;
  if(day.book&&day.book.length){h+=`<div class="sec" style="--rc:${rc}"><h3>Today's bookings</h3>`;
   day.book.forEach(b=>{h+=`<div class="item"><div class="it"><b>${esc(b.l)}</b><div class="desc"><span class="ref">${esc(b.r)}</span></div></div></div>`});h+=`</div>`}
@@ -776,15 +868,17 @@ function renderDays(){let h="";const ti=todayIdx();
 
 function renderVault(){let h="";
  VAULT.forEach(g=>{h+=`<div class="vGroup"><h4>${esc(g.g)}</h4>`;
-  g.rows.forEach(r=>{h+=`<div class="vRow"><div class="vt">${esc(r.t)}</div>${r.s?`<div class="vs">${esc(r.s)}</div>`:""}
-   ${r.r?`<span class="ref">${esc(r.r)}</span><button class="copyRef" onclick="copyText('${esc(r.r)}')">copy</button>`:""}</div>`});
+  const em=/^Emergency/i.test(g.g);
+  g.rows.forEach(r=>{const vs=em?telShort(telify(esc(r.s))):telify(esc(r.s));const vr=telify(esc(r.r));
+   h+=`<div class="vRow"><div class="vt">${esc(r.t)}</div>${r.s?`<div class="vs">${vs}</div>`:""}
+   ${r.r?`<span class="ref">${vr}</span><button class="copyRef" onclick="copyText('${esc(r.r)}')">copy</button>`:""}</div>`});
   h+=`</div>`});
  h+=`<div class="footer">Everything here works offline</div>`;return h}
 
 function renderMore(){
  const prepDone=PREP.filter((_,i)=>S.prep[i]).length;
  let h=`<div class="tool"><h4>Pre-trip checklist · ${prepDone}/${PREP.length}</h4>`;
- PREP.forEach((p,i)=>{h+=`<div class="item ${S.prep[i]?"done":""}"><button class="chk" onclick="S.prep[${i}]=!S.prep[${i}];store.save(S);render()">✓</button><div class="it" style="font-size:14px">${esc(p)}</div></div>`});
+ PREP.forEach((p,i)=>{h+=`<div class="item ${S.prep[i]?"done":""}"><button class="chk" onclick="S.prep[${i}]=!S.prep[${i}];store.save(S);render(true)">✓</button><div class="it" style="font-size:14px">${esc(p)}</div></div>`});
  h+=`</div>`;
  h+=`<div class="tool"><h4>Currency</h4>
   <div class="convRow"><input type="number" id="cvAmt" inputmode="decimal" placeholder="Amount" value="100">
@@ -792,24 +886,133 @@ function renderMore(){
   <div class="convOut" id="cvOut"></div>
   <div class="small" style="margin-top:6px">Rates used: NOK <input style="width:52px;border:1px solid var(--hair);border-radius:6px;padding:2px 4px;background:var(--paper)" id="rNok" value="${S.rate.nok}"> /USD · DKK <input style="width:52px;border:1px solid var(--hair);border-radius:6px;padding:2px 4px;background:var(--paper)" id="rDkk" value="${S.rate.dkk}"> /USD — editable, saved on device.</div></div>`;
  h+=`<div class="tool"><h4>Sync between phones</h4>
-  <div class="small">Check-offs, notes and edits live on THIS phone only. To copy them to the other phone: Export here → send via iMessage → Import there.</div>
-  <button class="btn primary" onclick="exportState()">Export my changes</button>
-  <button class="btn" onclick="importState()">Import</button></div>`;
+  <div class="small">Check-offs, notes, hunt scores and edits live on THIS phone only. Fastest sync (works offline, e.g. on the ferry): show the QR here, scan it with the other phone's Camera, copy, then Import there. Or share as text over iMessage.</div>
+  <button class="btn primary" onclick="showQR()">Show sync QR</button>
+  <button class="btn" onclick="exportState()">Share as text</button>
+  <button class="btn" onclick="importState()">Import</button>
+  <div id="qrBox" style="display:none"></div></div>`;
  h+=`<div class="tool"><h4>About this app</h4>
-  <div class="small">Built from Live_Schedule_07032026.md. Works fully offline once loaded. To change the underlying itinerary (not just notes), ask Claude to regenerate the app and push the new index.html to GitHub — the app picks it up next time it opens online. Data version: 1.3 · Jul 3 2026. Live weather via Open-Meteo when online, cached for offline.</div></div>`;
+  <div class="small">Built from Live_Schedule_07052026.md. Works fully offline once loaded. To change the underlying itinerary (not just notes), ask Claude to regenerate the app and push the new index.html to GitHub — the app picks it up next time it opens online. Data version: 2.0 · Jul 5 2026. Live weather via Open-Meteo when online, cached for offline. New in 2.0: live travel-day chain with fallbacks, Tonight → Tomorrow card, checkout idiot-check, the scavenger hunt, offline QR sync, and tap-to-call numbers in the Vault.</div></div>`;
  h+=`<div class="footer">Ryan Family · Scandinavia 2026</div>`;return h}
 
-function render(){
+function render(keep){
+ const _y=keep?window.scrollY:0;
  renderVoyage();
- const views={day:renderDay,days:renderDays,vault:renderVault,more:renderMore};
+ const views={day:renderDay,days:renderDays,vault:renderVault,hunt:renderHunt,more:renderMore};
  $("#app").innerHTML=views[curTab]();
  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===curTab));
  document.body.classList.toggle("editing",editing&&curTab==="day");
  if(curTab==="more")wireConverter();
- window.scrollTo({top:0})}
+ window.scrollTo({top:keep?_y:0})}
+
+
+/* ---- shared time helpers ---- */
+function localISO(dt){const p=n=>String(n).padStart(2,"0");return dt.getFullYear()+"-"+p(dt.getMonth()+1)+"-"+p(dt.getDate())}
+const isToday=day=>localISO(new Date())===day.d;
+function hmDate(d,t){const m=(t||"").match(/(\d{1,2}):(\d{2})/);if(!m)return null;return new Date(d+"T"+m[1].padStart(2,"0")+":"+m[2]+":00")}
+function nowPeriod(){const h=new Date().getHours();if(h>=5&&h<11)return"morning";if(h>=11&&h<14)return"midday";if(h>=14&&h<18)return"afternoon";if(h>=18)return"evening";return null}
+
+/* ---- travel-day chain / transit ---- */
+function transitHTML(day,rc){
+ if(!day.transit||!day.transit.length)return"";
+ const multi=day.transit.length>=2,live=isToday(day),now=new Date();
+ const deps=day.transit.map(t=>hmDate(day.d,t.t));
+ let h=`<div class="sec" ${multi?'id="chainSec"':""} style="--rc:${rc}"><h3>${multi?"Travel day — the chain":"Locked transit"}</h3>`;
+ if(!multi){
+  day.transit.forEach(t=>{h+=`<div class="item"><div class="it"><span class="time">${esc(t.t)}</span><b>${esc(t.l)}</b>
+    <div class="desc">${t.ref?`<span class="ref">${esc(t.ref)}</span> `:""}${t.app?`<a class="pill" target="_blank" rel="noopener" href="${esc(t.app.u)}">↗ ${esc(t.app.n)}</a>`:""}</div>
+    ${t.fb?`<div class="fbN">${esc(t.fb)}</div>`:""}</div></div>`});
+  return h+`</div>`}
+ h+=`<div class="chain">`;let nextFound=false;
+ day.transit.forEach((t,i)=>{
+  const dep=deps[i],arr=t.arr?hmDate(day.d,t.arr):null;
+  let st="plan",tag="";
+  if(live&&dep){
+   const laterStarted=deps.slice(i+1).some(d2=>d2&&now>=d2);
+   if((arr&&now>arr)||laterStarted){st="done";tag="done"}
+   else if(now>=dep){st="go";tag="en route"}
+   else if(!nextFound){st="next";nextFound=true;const ms=dep-now,hh=Math.floor(ms/36e5),mm=Math.floor(ms%36e5/6e4);tag="in "+(hh?hh+"h ":"")+mm+"m"}
+  }
+  h+=`<div class="leg ${st}"><span class="dot">✓</span><div class="lg">
+   <span class="lt">${esc(t.t)}${t.arr?" → "+esc(t.arr):""}</span><b>${esc(t.l)}</b>${tag?`<span class="st">${esc(tag)}</span>`:""}
+   <div class="desc" style="font-size:12.5px;color:var(--ink2);margin-top:2px">${t.ref?`<span class="ref">${esc(t.ref)}</span> `:""}${t.app?`<a class="pill" target="_blank" rel="noopener" href="${esc(t.app.u)}">↗ ${esc(t.app.n)}</a>`:""}</div>
+   ${t.fb?`<div class="fbN">${esc(t.fb)}</div>`:""}</div></div>`;
+  const nx=deps[i+1];
+  if(arr&&nx){const bm=Math.round((nx-arr)/6e4);if(bm>0&&bm<720)h+=`<div class="buffer">⟟ ${bm} min buffer</div>`}
+ });
+ return h+`</div></div>`}
+
+/* ---- checkout idiot-check ---- */
+function checkoutHTML(day,rc){
+ const c=CO[day.d];if(!c)return"";
+ const items=CO_STD.concat(c.extra||[]);
+ const done=items.filter((_,i)=>S.co[day.d+"."+i]).length;
+ let h=`<div class="sec" style="--rc:${rc}"><h3>Checkout — idiot check <span class="coBar" style="margin-left:auto">${done}/${items.length}</span></h3>
+  <div class="desc" style="font-size:13px;color:var(--warn);font-weight:600;margin-bottom:6px">${esc(c.by)}</div>`;
+ items.forEach((it,i)=>{const k=day.d+"."+i,dn=!!S.co[k];
+  h+=`<div class="item ${dn?"done":""}"><button class="chk" onclick="S.co['${k}']=!S.co['${k}'];store.save(S);render(true)">✓</button><div class="it" style="font-size:14px">${esc(it)}</div></div>`});
+ return h+`</div>`}
+
+/* ---- tonight → tomorrow ---- */
+function tomorrowHTML(day){
+ if(!isToday(day)||new Date().getHours()<16)return"";
+ const i=DATA.indexOf(day);if(i<0||i>=DATA.length-1)return"";
+ const tm=DATA[i+1],ft=tm.transit&&tm.transit[0];
+ const W=wxGet(),k=WXDAY[tm.d],rec=W.data&&W.data[k]&&W.data[k][tm.d];
+ let rows="";
+ rows+=ft?`<div>⏱ First departure <b>${esc(ft.t)}</b> — ${esc(ft.l.split("·")[0].trim())}</div>`:`<div>No locked transit — free-flow day.</div>`;
+ if(CO[tm.d])rows+=`<div>🧳 Checkout morning — ${esc(CO[tm.d].by)}</div>`;
+ if(rec)rows+=`<div>${wxIcon(rec.c)} ${Math.round(rec.lo)}–${Math.round(rec.hi)}°F · ${rec.p}% rain</div>`;
+ return `<div class="tmr" onclick="curDay=${i+1};render()"><div class="tmrK">Tonight → Tomorrow · ${esc(tm.dow)} ${fmtDate(tm.d)}</div>
+  <div class="tmrCity serif">${esc(tm.city)}</div>${rows}<div class="tmrGo">Tap to open tomorrow →</div></div>`}
+
+/* ---- scavenger hunt ---- */
+function huntTotals(){let g=0,d=0;Object.entries(HUNT).forEach(([dt,items])=>items.forEach((it,i)=>{const c=S.hunt[dt+"."+i];if(!c)return;if(c==="G"||c==="B")g+=it.p;if(c==="D"||c==="B")d+=it.p}));return{g,d}}
+function renderHunt(){
+ const{g,d}=huntTotals(),td=localISO(new Date());
+ let lead=g===d?"All square — next find takes the lead.":(g>d?`Gavin leads by ${g-d}.`:`Declan leads by ${d-g}.`);
+ let h=`<div class="scoreWrap">
+  <div class="scoreCard ${g>d?"lead":""}" style="--rc:var(--fjord)"><div class="nm">Gavin</div><div class="pt serif" style="color:var(--fjord)">${g}</div></div>
+  <div class="scoreCard ${d>g?"lead":""}"><div class="nm">Declan</div><div class="pt serif" style="color:var(--capital)">${d}</div></div></div>
+ <div class="huntLead">${lead} Tap G or D to claim a find — both can claim shared ones.</div>`;
+ DATA.forEach(day=>{const items=HUNT[day.d];if(!items)return;
+  const rc=`var(--${day.r})`,isTd=day.d===td;
+  const claimed=items.filter((_,i)=>S.hunt[day.d+"."+i]).length;
+  h+=`<div class="sec" style="--rc:${rc};padding:0;overflow:hidden"><details class="lore" style="--rc:${rc};border:none;margin:0" ${isTd?"open":""}>
+   <summary style="padding:12px 16px">${isTd?"⭑ TODAY · ":""}${esc(day.dow)} ${fmtDate(day.d)} — ${esc(day.city)} <span class="coBar" style="float:right;margin-right:18px">${claimed}/${items.length}</span></summary>
+   <div style="padding:0 16px 10px">`;
+  items.forEach((it,i)=>{const k=day.d+"."+i,c=S.hunt[k]||"";
+   h+=`<div class="hItem ${c?"claimed":""}"><div class="ht">${esc(it.t)}</div><span class="hPts">${it.p}p</span>
+    <button class="cl ${c==="G"||c==="B"?"onG":""}" onclick="claim('${k}','G')">G</button>
+    <button class="cl ${c==="D"||c==="B"?"onD":""}" onclick="claim('${k}','D')">D</button></div>`});
+  h+=`</div></details></div>`});
+ h+=`<div class="footer">Winner picks the movie on the flight home</div>`;return h}
+window.claim=(k,w)=>{const c=S.hunt[k]||"";let n;
+ if(w==="G")n=c==="G"?"":(c==="D"?"B":(c==="B"?"D":"G"));
+ else n=c==="D"?"":(c==="G"?"B":(c==="B"?"G":"D"));
+ if(n)S.hunt[k]=n;else delete S.hunt[k];store.save(S);render(true)};
+
+/* ---- tap-to-call ---- */
+const telify=t=>(t||"").replace(/\+4[57][\d ]{7,13}\d/g,m=>`<a href="tel:${m.replace(/ /g,"")}" style="color:var(--ink);font-weight:700;text-decoration:underline dotted">${m}</a>`);
+const telShort=t=>(t||"").replace(/\b(110|112|113|1813|116 117)\b/g,m=>`<a href="tel:${m.replace(/ /g,"")}" style="color:var(--ink);font-weight:700;text-decoration:underline dotted">${m}</a>`);
+
+/* ---- QR sync ---- */
+function syncPayload(){return "RYANTRIPZ:"+LZString.compressToEncodedURIComponent(JSON.stringify(S))}
+window.showQR=()=>{
+ const box=document.getElementById("qrBox");if(!box)return;
+ if(box.style.display==="block"){box.style.display="none";return}
+ const p=syncPayload();
+ if(p.length>2800){box.style.display="block";box.innerHTML=`<div class="qrCap">Too many notes for one QR (${p.length} chars) — use “Share as text” instead.</div>`;return}
+ try{const q=qrcode(0,"L");q.addData(p,"Byte");q.make();
+  box.style.display="block";
+  box.innerHTML=q.createSvgTag({cellSize:4,margin:6})+`<div class="qrCap"><b>Other phone:</b> open the iPhone <b>Camera</b> app, point it here, tap the text banner, <b>Copy</b> — then in this app: More → Import → paste. Works with zero signal.</div>`;
+ }catch(e){box.style.display="block";box.innerHTML=`<div class="qrCap">QR failed to build — use “Share as text”.</div>`}};
+function mergeState(inc){
+ ["done","notes","edits","hidden","prep","hunt","co","custom"].forEach(f=>{if(inc[f]){S[f]=S[f]||{};Object.assign(S[f],inc[f])}});
+ if(inc.rate)S.rate=inc.rate;store.save(S)}
 
 /* actions */
-window.toggleDone=k=>{S.done[k]=!S.done[k];store.save(S);render()};
+window.toggleDone=k=>{S.done[k]=!S.done[k];store.save(S);render(true)};
 window.saveNote=v=>{S.notes[curDay]=v;store.save(S)};
 window.stepDay=n=>{curDay=Math.min(DATA.length-1,Math.max(0,curDay+n));render()};
 window.goToday=()=>{curDay=todayIdx();render()};
@@ -829,13 +1032,17 @@ window.addItem=(di,bi)=>{
  const key=di+"."+bi;S.custom[key]=S.custom[key]||[];S.custom[key].push({b,d});store.save(S);render()};
 window.copyText=t=>{navigator.clipboard&&navigator.clipboard.writeText(t)};
 window.exportState=()=>{
- const s=JSON.stringify(S);
- if(navigator.share){navigator.share({title:"Trip app sync",text:"RYANTRIP:"+btoa(unescape(encodeURIComponent(s)))}).catch(()=>{})}
- else{navigator.clipboard.writeText("RYANTRIP:"+btoa(unescape(encodeURIComponent(s))));alert("Copied to clipboard — paste it to Melissa via iMessage.")}};
+ const p=syncPayload();
+ if(navigator.share){navigator.share({title:"Trip app sync",text:p}).catch(()=>{})}
+ else{navigator.clipboard.writeText(p);alert("Copied to clipboard — paste it to the other phone via iMessage.")}};
 window.importState=()=>{
- const t=prompt("Paste the exported text (starts with RYANTRIP:):");if(!t)return;
- try{const s=JSON.parse(decodeURIComponent(escape(atob(t.replace("RYANTRIP:","").trim()))));S=Object.assign(S,s);store.save(S);render();alert("Imported.")}
- catch(e){alert("That didn't parse — make sure the whole message was pasted.")}};
+ const t=prompt("Paste the sync text (from QR-copy or iMessage):");if(!t)return;
+ try{const raw=t.trim();let s;
+  if(raw.startsWith("RYANTRIPZ:"))s=JSON.parse(LZString.decompressFromEncodedURIComponent(raw.slice(10)));
+  else if(raw.startsWith("RYANTRIP:"))s=JSON.parse(decodeURIComponent(escape(atob(raw.slice(9)))));
+  else throw 0;
+  mergeState(s);render();alert("Imported and merged — check-offs, notes and hunt scores from the other phone are in.")}
+ catch(e){alert("That didn't parse — make sure the whole text was pasted, from the start (RYANTRIPZ:).")}};
 function wireConverter(){
  const f=()=>{const a=parseFloat($("#cvAmt").value)||0,c=$("#cvCur").value;
   S.rate.nok=parseFloat($("#rNok").value)||10;S.rate.dkk=parseFloat($("#rDkk").value)||6.9;store.save(S);
@@ -874,7 +1081,8 @@ window.addEventListener("online",()=>{document.body.classList.remove("offline");
 window.addEventListener("offline",()=>document.body.classList.add("offline"));
 if(!navigator.onLine)document.body.classList.add("offline");
 curDay=todayIdx();render();wxFetch();
-setInterval(()=>{if(curTab==="day"){const c=document.querySelector(".count");if(c)c.outerHTML=countdownHTML()}},30000);
+setInterval(()=>{if(curTab==="day"){const c=document.querySelector(".count");if(c)c.outerHTML=countdownHTML();
+ const ch=document.getElementById("chainSec");if(ch)ch.outerHTML=transitHTML(DATA[curDay],`var(--${DATA[curDay].r})`)}},30000);
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>
