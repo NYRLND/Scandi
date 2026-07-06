@@ -1,5 +1,5 @@
 /* Ryan Family Scandinavia 2026 — offline service worker */
-const VERSION = "ryantrip-v3.0";
+const VERSION = "ryantrip-v3.3";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
