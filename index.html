@@ -203,6 +203,48 @@ h3 .coBar{margin-left:auto}
 #qrBox{margin-top:12px;text-align:center}
 #qrBox svg{width:220px;height:220px;background:#fff;padding:8px;border-radius:12px;border:1px solid var(--hair)}
 .qrCap{font-size:12.5px;color:var(--ink2);margin-top:9px;line-height:1.5;text-align:left}
+
+/* ---------- v3: hunt 2.0 ---------- */
+.chDates{font-size:11px;color:var(--faint);font-weight:600;margin-left:4px}
+.prizeBox{position:relative;background:var(--paper2);border:1px dashed var(--hair);border-radius:11px;padding:9px 40px 9px 12px;margin:4px 0 10px}
+.pzLab{font-size:9.5px;font-weight:800;letter-spacing:.12em;color:var(--warn)}
+.pzTxt{font-size:14px;font-weight:600;margin-top:2px;line-height:1.35}
+.pzEdit{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:1px solid var(--hair);border-radius:8px;background:var(--paper);color:var(--ink2)}
+.pRow{display:flex;align-items:center;gap:8px;margin:5px 0}
+.pWho{flex:none;width:52px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.pTrack{flex:1;height:10px;border-radius:99px;background:var(--paper2);border:1px solid var(--hair);overflow:hidden}
+.pFill{height:100%;border-radius:99px;transition:width .3s}
+.pPts{flex:none;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;font-weight:700}
+.pzWin{margin:7px 0 4px;padding:8px 11px;border-radius:10px;background:var(--ink);color:#F4EFE2;font-size:13px;font-weight:700;text-align:center}
+.mTag{font-size:8.5px;font-weight:800;letter-spacing:.1em;color:#fff;background:var(--warn);border-radius:4px;padding:1.5px 5px;vertical-align:1.5px}
+.hDay{font-size:10.5px;color:var(--faint);font-weight:600}
+#toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%) translateY(20px);max-width:86%;background:var(--ink);color:#F4EFE2;font-size:13.5px;font-weight:600;line-height:1.4;padding:11px 16px;border-radius:13px;opacity:0;pointer-events:none;transition:all .3s;z-index:99;box-shadow:0 6px 24px rgba(20,32,42,.35)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* ---------- v3: memory log ---------- */
+.whoRow{display:flex;gap:7px;margin-bottom:8px}
+.whoChip{flex:1;padding:8px 0;border:1.4px solid var(--hair);border-radius:99px;background:var(--paper);font-size:13px;font-weight:700;color:var(--ink2)}
+.whoChip.on{background:var(--ink);border-color:var(--ink);color:#F4EFE2}
+.logDate{margin:16px 14px 6px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.logCard{margin:0 12px 10px;background:var(--card);border:1px solid var(--hair);border-radius:14px;padding:11px 13px}
+.logPh{width:100%;border-radius:10px;margin-bottom:8px;min-height:40px;background:var(--paper2)}
+.logTxt{font-size:14.5px;line-height:1.5}
+.logMeta{display:flex;justify-content:space-between;align-items:center;margin-top:7px}
+.logWho{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--warn)}
+.logDel{border:none;background:none;color:var(--faint);font-size:11.5px;text-decoration:underline dotted}
+/* ---------- v3: odometer + dispatch ---------- */
+.odoStrip{margin:0 12px 12px;text-align:center;font-size:12px;color:var(--ink2);font-family:ui-monospace,Menlo,monospace;line-height:1.6}
+.odoBig{font-size:38px;font-weight:700;color:var(--ink);margin:2px 0 8px}
+.odoRow{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;border-bottom:1px dashed var(--paper2)}
+.odoRow:last-of-type{border-bottom:none}
+/* ---------- v3: phrasebook ---------- */
+.phRow{display:flex;align-items:baseline;gap:8px;padding:6px 0;border-bottom:1px dashed var(--paper2);flex-wrap:wrap}
+.phRow:last-child{border-bottom:none}
+.phE{flex:1 1 110px;font-size:12.5px;color:var(--ink2)}
+.phP{font-size:15px;font-weight:700}
+.phPr{font-size:11.5px;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+/* ---------- v3: 6-tab bar ---------- */
+#tabs button{padding:7px 0 6px;font-size:9.5px}
+#tabs .ic{font-size:17px}
 </style>
 </head>
 <body>
@@ -217,6 +259,7 @@ h3 .coBar{margin-left:auto}
   <button data-tab="days"><span class="ic">☰</span>Days</button>
   <button data-tab="vault"><span class="ic">⚓︎</span>Vault</button>
   <button data-tab="hunt"><span class="ic">✦</span>Hunt</button>
+  <button data-tab="log"><span class="ic">✎</span>Log</button>
   <button data-tab="more"><span class="ic">✚</span>More</button>
 </nav>
 <script>
@@ -730,8 +773,33 @@ const PREP=[
  "Offline Google Maps: Bergen · Sognefjord · Flåm+Voss · Hardanger · Oslo · Drøbak · Copenhagen",
  "Online check-in + seat grab for transatlantic legs (no seats held!)",
  "Message CPH host about Jul 24 early bag drop",
- "Confirm DFDS/Vippetangen bag-drop policy with Go Nordic"];
+ "Confirm DFDS/Vippetangen bag-drop policy with Go Nordic",
+ "Google Translate app: download OFFLINE packs for Norwegian + Danish (camera mode then works with zero signal)"];
 
+
+/* ============ PHRASEBOOK ============ */
+const ESS_NO=[
+{e:"Hello",p:"Hei hei",pr:"hay hay"},{e:"Thank you",p:"Takk / Tusen takk",pr:"tahk / TOO-sen tahk"},
+{e:"Please",p:"Vær så snill",pr:"vair saw SNILL"},{e:"Excuse me / sorry",p:"Unnskyld",pr:"OON-shill"},
+{e:"Yes / No",p:"Ja / Nei",pr:"yah / nay"},{e:"Can I have…?",p:"Kan jeg få…?",pr:"kahn yai FAW"},
+{e:"Where is the toilet?",p:"Hvor er toalettet?",pr:"voor air too-ah-LET-eh"},
+{e:"The bill, please",p:"Regningen, takk",pr:"RYE-ning-en tahk"},
+{e:"Do you speak English?",p:"Snakker du engelsk?",pr:"SNAH-ker doo ENG-elsk"},
+{e:"I don't understand",p:"Jeg forstår ikke",pr:"yai for-STAWR IK-keh"},
+{e:"Water",p:"Vann",pr:"vahn"},{e:"How much?",p:"Hvor mye?",pr:"voor MEE-eh"},
+{e:"It tastes good!",p:"Det smaker godt!",pr:"deh SMAH-ker got"},{e:"Cheers!",p:"Skål!",pr:"skawl"},
+{e:"Goodbye",p:"Ha det bra",pr:"hah deh BRAH"},{e:"Help!",p:"Hjelp!",pr:"yelp"}];
+const ESS_DA=[
+{e:"Hello",p:"Hej hej",pr:"hi hi"},{e:"Thank you",p:"Tak / Tusind tak",pr:"tahk / TOO-sin tahk"},
+{e:"Excuse me / sorry",p:"Undskyld",pr:"OON-skool"},{e:"Yes / No",p:"Ja / Nej",pr:"yah / nigh"},
+{e:"May I have…?",p:"Må jeg få…?",pr:"moh yai FOH"},
+{e:"Where is the toilet?",p:"Hvor er toilettet?",pr:"voor air toy-LET-et"},
+{e:"The bill, please",p:"Regningen, tak",pr:"RYE-ning-en tahk"},
+{e:"Do you speak English?",p:"Taler du engelsk?",pr:"TAY-ler doo ENG-elsk"},
+{e:"I don't understand",p:"Jeg forstår ikke",pr:"yai for-STOR IG-geh"},
+{e:"Water",p:"Vand",pr:"van"},{e:"How much?",p:"Hvor meget?",pr:"voor MY-et"},
+{e:"It tastes good!",p:"Det smager godt!",pr:"deh SMAY-er got"},{e:"Cheers!",p:"Skål!",pr:"skol"},
+{e:"Goodbye",p:"Farvel",pr:"fah-VEL"},{e:"Help!",p:"Hjælp!",pr:"yelp"}];
 
 /* ============ CHECKOUT MORNINGS (idiot check) ============ */
 const CO_STD=["Passports ×4 physically in hand","Wallets, cards — watches charged","Chargers pulled from EVERY outlet (incl. watch pucks)","Plug adapters packed","Bathroom sweep — toiletries, shower shelf, hooks","Under beds, in drawers, behind doors, balcony","Fridge cleared — snacks packed, nothing left behind","Trash out per host instructions","Windows shut, lights off","Offline map for the next region confirmed on both phones","Water bottles filled"];
@@ -743,28 +811,128 @@ const CO={
 "2026-07-23":{by:"Checkout 11:00 · on Bus 500 no later than 12:30.",extra:["Keys per Åse's check-out instructions","Bakery haul packed to travel"]},
 "2026-07-27":{by:"Out by 11:30 — hard deadline for the 14:40 flight.",extra:["Keys per host check-out instructions","Boarding passes ready ×4 in the KLM app"]}};
 /* ============ SCAVENGER HUNT — Gavin vs Declan ============ */
-const HUNT={
-"2026-07-07":[{t:"First one asleep after the Atlanta takeoff",p:10},{t:"Spot the coast of Europe at breakfast",p:5}],
-"2026-07-08":[{t:"First fjord spotted from the plane",p:10},{t:"First 'hei hei' overheard in the wild",p:5},{t:"Find the hidden alley entrance to the Airbnb",p:5}],
-"2026-07-09":[{t:"Find a carved troll in Trollskogen",p:10},{t:"Count all seven mountains from Fløyen",p:10},{t:"Spot two Bryggen buildings leaning on each other",p:5},{t:"Eat a Kvikk Lunsj on a mountain (it's the law)",p:10}],
-"2026-07-10":[{t:"Touch 13th-century stone inside Rosenkrantz Tower",p:10},{t:"Spot tomorrow's ferry route from the cannon roof",p:10},{t:"Off the diving board into the actual fjord",p:25}],
-"2026-07-11":[{t:"Spot King Bele by the harbor",p:5},{t:"Spot 10.5-m Fridtjov across the fjord at Vangsnes",p:10},{t:"Count 5+ dragon heads on the villas",p:10},{t:"Fjord cold plunge — head under",p:25}],
-"2026-07-12":[{t:"Wild berries found on the trail",p:10},{t:"Reach the Orrabenken bench",p:10},{t:"Spot the milky 'rock flour' color in the water",p:5}],
-"2026-07-13":[{t:"First fish in the boat",p:25},{t:"Weirdest thing in the mystery net",p:10},{t:"Eat a fish you caught yourself",p:15}],
-"2026-07-14":[{t:"Spot the Huldra dancing at Kjosfossen",p:15},{t:"Find a farm clinging partway up the fjord wall",p:10},{t:"Count all 20 Flåmsbana tunnels",p:10},{t:"Catch the Berekvam train-meet",p:5}],
-"2026-07-15":[{t:"Swim with a fjord view",p:10},{t:"Waterfall spray on your face in Elvadalen",p:10},{t:"Sheep encountered on the trail",p:5}],
-"2026-07-16":[{t:"Taste apple juice or cider at a real farm",p:10},{t:"Spot the Folgefonna glacier across the fjord",p:15}],
-"2026-07-17":[{t:"Spot the Hardangerjøkulen glacier from the train",p:15},{t:"Finse station = planet Hoth — spot it",p:15},{t:"Cyclist spotted on the Rallarvegen",p:10}],
-"2026-07-18":[{t:"Find Sinnataggen, the angry baby of Vigeland Park",p:10},{t:"Order something entirely in Norwegian",p:15}],
-"2026-07-19":[{t:"Stand on the deck of a real polar ship",p:10},{t:"Run the Akershus ramparts end to end",p:5},{t:"Spot a royal guardsman",p:10}],
-"2026-07-20":[{t:"Walk on a building (Opera roof)",p:10},{t:"Find Santa in July at Julehus",p:10}],
-"2026-07-21":[{t:"Find Hugo the wolffish",p:15},{t:"Fjord swim at Skiphellestranda",p:10}],
-"2026-07-22":[{t:"Spot the cannons of Oscarsborg",p:10},{t:"Wave back at Drøbak from the island",p:5}],
-"2026-07-23":[{t:"Spot Oscarsborg slide past from the ship rail",p:10},{t:"Best bunk claimed (negotiation counts)",p:5},{t:"First sight of Denmark",p:10}],
-"2026-07-24":[{t:"Climb the OUTSIDE golden spiral",p:15},{t:"Spot our Airbnb street from the tower",p:10}],
-"2026-07-25":[{t:"Drive the boat (each captain claims)",p:10},{t:"Spot yesterday's tower from the water",p:10},{t:"Find Rosenborg's three silver lions",p:10},{t:"Stork Fountain on Strøget",p:5}],
-"2026-07-26":[{t:"Ride the 1914 coaster with the live brakeman",p:15},{t:"Catch the Tivoli Boys Guard parade",p:10},{t:"Stay until the 100,000 lamps come on",p:10}],
-"2026-07-27":[{t:"Last flødeboller at the airport",p:5},{t:"First one to spot home",p:5}]};
+const CHAPTERS=[
+{id:"bergen",name:"Bergen",r:"fjord",d1:"2026-07-07",d2:"2026-07-10",
+ prize:"Bakery-counter rights — pick ANY pastry at a Bergen bakery (skillingsbolle strongly advised)",
+ items:[
+ {t:"Spot a leaning wooden building in Bryggen",p:10,s:"P"},
+ {t:"Find a wooden troll on Mount Fløyen — how many can you find?",p:10,s:"P"},
+ {t:"Find a fish you've never seen at the Fish Market",p:10,s:"P"},
+ {t:"Count the cannons at Bergenhus Fortress",p:10,s:"P"},
+ {t:"Spot a stockfish (dried cod) hanging somewhere",p:10,s:"P"},
+ {t:"Order a skillingsbolle and say \"Takk!\"",p:15,s:"M"},
+ {t:"Ride the Fløibanen and photograph the city from the top",p:15,s:"M"},
+ {t:"Try one bite of reindeer hot dog",p:15,s:"M"},
+ {t:"Greet a shopkeeper with \"Hei hei!\"",p:15,s:"M"},
+ {t:"First one asleep after the Atlanta takeoff",p:10,d:"2026-07-07"},
+ {t:"First fjord spotted from the plane",p:10,d:"2026-07-08"},
+ {t:"Find the hidden alley entrance to the Airbnb",p:5,d:"2026-07-08"},
+ {t:"Count all seven mountains from Fløyen",p:10,d:"2026-07-09"},
+ {t:"Eat a Kvikk Lunsj on a mountain (it's the law)",p:10,d:"2026-07-09"},
+ {t:"Touch 13th-century stone inside Rosenkrantz Tower",p:10,d:"2026-07-10"},
+ {t:"Off the diving board into the actual fjord",p:25,d:"2026-07-10"}]},
+{id:"balestrand",name:"Balestrand",r:"fjord",d1:"2026-07-11",d2:"2026-07-13",
+ prize:"DAD GETS DUNKED in the Sognefjord — you pick the moment",
+ items:[
+ {t:"Spot the dark-wood \"English Church\" tucked in the trees",p:10,s:"P"},
+ {t:"Find an apple or cherry orchard",p:10,s:"P"},
+ {t:"Count the waterfalls on the mountains across the fjord",p:10,s:"P"},
+ {t:"Spot the King Bele statue by the harbor",p:10,s:"P"},
+ {t:"Find the matching Fridtjov statue across the water at Vangsnes",p:10,s:"P"},
+ {t:"Watch a fjord ferry pull into the quay",p:10,s:"P"},
+ {t:"Take a cold plunge into the Sognefjord",p:15,s:"M"},
+ {t:"Catch your own dinner on the fishing boat",p:15,s:"M",d:"2026-07-13"},
+ {t:"Hike to the Orrabenken viewpoint (370 m)",p:15,s:"M"},
+ {t:"Try a Balholm apple cider or juice",p:15,s:"M"},
+ {t:"Order cake at Peters plass on the pier",p:15,s:"M"},
+ {t:"Say \"Det smaker godt!\" after dinner",p:15,s:"M"},
+ {t:"Count 5+ dragon heads on the villas",p:10},
+ {t:"Wild berries found on the trail",p:10},
+ {t:"Spot the milky \"rock flour\" color in the water",p:5},
+ {t:"First fish in the boat",p:10,d:"2026-07-13"},
+ {t:"Weirdest thing in the mystery net",p:10,d:"2026-07-13"}]},
+{id:"lofthus",name:"Lofthus",r:"orchard",d1:"2026-07-14",d2:"2026-07-16",
+ prize:"Dessert draft — you pick the family dessert at Bunnpris",
+ items:[
+ {t:"Find all four fruit trees: apple, pear, plum, cherry",p:10,s:"P"},
+ {t:"Spot the Folgefonna glacier across the fjord",p:10,s:"P"},
+ {t:"Find the Skrikjo waterfall plunging down the mountain",p:10,s:"P"},
+ {t:"Find the rock with ancient drilled holes on the Elvadalen trail",p:10,s:"P"},
+ {t:"Spot the medieval stone church",p:10,s:"P"},
+ {t:"Find Grieg's little composing hut in the garden",p:10,s:"P"},
+ {t:"Hike the Elvadalen valley to the waterfalls",p:15,s:"M"},
+ {t:"Walk the Fruit Trail and taste apple cider (juice for the boys)",p:15,s:"M"},
+ {t:"Swim in the hotel's 88-metre pool or plunge in the fjord",p:15,s:"M"},
+ {t:"Try a wood-fired pizza at Lofthus Ekspedisjon",p:15,s:"M"},
+ {t:"Get a burger at KOMPAEN",p:15,s:"M"},
+ {t:"Say \"Skål!\" over a glass of Hardanger cider or juice",p:15,s:"M"},
+ {t:"Spot the Huldra dancing at Kjosfossen",p:15,d:"2026-07-14"},
+ {t:"Find a farm clinging partway up the fjord wall",p:10,d:"2026-07-14"},
+ {t:"Count all 20 Flåmsbana tunnels",p:10,d:"2026-07-14"},
+ {t:"Catch the Berekvam train-meet",p:5,d:"2026-07-14"},
+ {t:"Sheep encountered on a trail",p:5}]},
+{id:"oslo",name:"Oslo",r:"capital",d1:"2026-07-17",d2:"2026-07-19",
+ prize:"Pokémon pack — earned, sealed, yours",
+ items:[
+ {t:"Find the \"Angry Boy\" (Sinnataggen) in Vigeland Park",p:10,s:"P"},
+ {t:"Spot a guard on duty at the Royal Palace",p:10,s:"P"},
+ {t:"Count the cannons at Akershus Fortress",p:10,s:"P"},
+ {t:"Find a snake or a tarantula at the Reptile Park",p:10,s:"P"},
+ {t:"Spot street art along the Akerselva in Grünerløkka",p:10,s:"P"},
+ {t:"See a boat out on the Oslofjord",p:10,s:"P"},
+ {t:"Run up the Opera House marble roof",p:15,s:"M",d:"2026-07-20"},
+ {t:"Walk the whole length of Karl Johans gate",p:15,s:"M"},
+ {t:"Find the Monolith in Vigeland Park (121 figures!)",p:15,s:"M",d:"2026-07-18"},
+ {t:"Try a moose or reindeer burger at Mathallen",p:15,s:"M",d:"2026-07-18"},
+ {t:"Sip a hot chocolate at a world-famous coffee bar",p:15,s:"M"},
+ {t:"Say \"Takk for maten!\" after a meal",p:15,s:"M"},
+ {t:"Spot the Hardangerjøkulen glacier from the train",p:15,d:"2026-07-17"},
+ {t:"Finse station = planet Hoth — spot it",p:15,d:"2026-07-17"},
+ {t:"Cyclist spotted on the Rallarvegen",p:10,d:"2026-07-17"},
+ {t:"Order something entirely in Norwegian",p:15},
+ {t:"Stand on the deck of a real polar ship",p:10,d:"2026-07-19"}]},
+{id:"drobak",name:"Drøbak",r:"coast",d1:"2026-07-20",d2:"2026-07-23",
+ prize:"Fun-drink rights at the fancy dinner — any (non-coffee) drink on the menu",
+ items:[
+ {t:"Meet Hugo the wolffish at the aquarium",p:10,s:"P",d:"2026-07-21"},
+ {t:"Find the mermaid statue in the harbor",p:10,s:"P"},
+ {t:"Count the big cannons at Oscarsborg Fortress",p:10,s:"P",d:"2026-07-22"},
+ {t:"Spot Oscarsborg's islands out in the sound",p:10,s:"P"},
+ {t:"Find a red-painted boathouse along the shore",p:10,s:"P"},
+ {t:"Send a letter at the Christmas House post office",p:10,s:"P"},
+ {t:"Ride the little ferry across to Oscarsborg",p:15,s:"M",d:"2026-07-22"},
+ {t:"Walk the Kyststien path to Skiphelle beach",p:15,s:"M",d:"2026-07-21"},
+ {t:"Take a sauna and cold-plunge into the fjord",p:15,s:"M",d:"2026-07-21"},
+ {t:"Swim off the rocks on the fortress island",p:15,s:"M",d:"2026-07-22"},
+ {t:"Try the creamy fish soup (Kumlegaarden or dgb)",p:15,s:"M"},
+ {t:"Say \"Takk for i dag!\" at day's end",p:15,s:"M"},
+ {t:"Spot Oscarsborg slide past from the ship rail",p:10,d:"2026-07-23"},
+ {t:"Best bunk claimed (negotiation counts)",p:5,d:"2026-07-23"},
+ {t:"First sight of Denmark",p:10,d:"2026-07-23"}]},
+{id:"cph",name:"Copenhagen",r:"danish",d1:"2026-07-24",d2:"2026-07-27",
+ prize:"Double scoop at Tivoli — flavors of your choosing",
+ items:[
+ {t:"Count the colors of the houses along Nyhavn",p:10,s:"P"},
+ {t:"Find the silver lions guarding the thrones at Rosenborg",p:10,s:"P",d:"2026-07-25"},
+ {t:"Spot a Danish flag (the Dannebrog) flying",p:10,s:"P"},
+ {t:"Find the 1914 wooden roller coaster at Tivoli",p:10,s:"P",d:"2026-07-26"},
+ {t:"Spot a houseboat on the Christianshavn canals",p:10,s:"P"},
+ {t:"See how many bikes you can count in one spot",p:10,s:"P"},
+ {t:"Climb the 400 steps up the golden spire of Vor Frelsers Kirke",p:15,s:"M",d:"2026-07-24"},
+ {t:"Steer your own GoBoat through the canals",p:15,s:"M",d:"2026-07-25"},
+ {t:"Ride the 1914 wooden coaster at Tivoli",p:15,s:"M",d:"2026-07-26"},
+ {t:"Try a real Danish hot dog (a pølse) at DØP",p:15,s:"M"},
+ {t:"Hunt for cards at Faraos Cigarer",p:15,s:"M"},
+ {t:"Say \"Tak for mad!\" after dinner",p:15,s:"M"},
+ {t:"Spot our Airbnb street from the tower",p:10,d:"2026-07-24"},
+ {t:"Spot yesterday's tower from the water",p:10,d:"2026-07-25"},
+ {t:"Catch the Tivoli Boys Guard parade",p:10,d:"2026-07-26"},
+ {t:"Last flødeboller at the airport",p:5,d:"2026-07-27"},
+ {t:"First one to spot home",p:5,d:"2026-07-27"}]}];
+const chMax=c=>c.items.reduce((a,i)=>a+i.p,0);
+const chGoal=c=>Math.ceil(chMax(c)*0.6/5)*5;
+const chapterFor=d=>CHAPTERS.find(c=>d>=c.d1&&d<=c.d2);
+const prizeOf=c=>(S.prizes&&S.prizes[c.id])||c.prize;
 
 /* ============ APP ============ */
 const $=s=>document.querySelector(s);
@@ -773,7 +941,7 @@ const store={
  load(){try{return JSON.parse(localStorage.getItem(this.k))||{}}catch(e){return{}}},
  save(s){try{localStorage.setItem(this.k,JSON.stringify(s))}catch(e){}}
 };
-let S=store.load(); S.done=S.done||{}; S.notes=S.notes||{}; S.edits=S.edits||{}; S.hidden=S.hidden||{}; S.custom=S.custom||{}; S.prep=S.prep||{}; S.hunt=S.hunt||{}; S.co=S.co||{}; S.rate=S.rate||{nok:10.0,dkk:6.9};
+let S=store.load(); S.done=S.done||{}; S.notes=S.notes||{}; S.edits=S.edits||{}; S.hidden=S.hidden||{}; S.custom=S.custom||{}; S.prep=S.prep||{}; S.hunt=S.hunt||{}; S.hdate=S.hdate||{}; S.co=S.co||{}; S.log=S.log||{}; S.rate=S.rate||{nok:10.0,dkk:6.9};
 let curDay=0, curTab="day", editing=false;
 const esc=t=>(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 const maps=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
@@ -850,12 +1018,24 @@ function renderDay(){
  if(day.snacks)h+=`<div class="mini"><span class="lab">Snacks & groceries</span>${esc(day.snacks)}</div>`;
  if(day.customs)h+=`<div class="mini"><span class="lab">Local custom</span>${esc(day.customs)}</div>`;
  if(day.conn)h+=`<div class="mini"><span class="lab">Connectivity</span>${esc(day.conn)}</div>`;
- if(HUNT[day.d])h+=`<div class="mini"><span class="lab">Scavenger hunt</span>${HUNT[day.d].length} finds up for grabs today — score them in the ✦ Hunt tab.</div>`;
+ const _ch=chapterFor(day.d);
+ if(_ch){const _tdItems=_ch.items.filter(it=>it.d===day.d).length;
+  h+=`<div class="mini"><span class="lab">Scavenger hunt</span>${esc(_ch.name)} chapter is live${_tdItems?` — ${_tdItems} find${_tdItems>1?"s":""} pinned to today`:""}. Prize: ${esc(prizeOf(_ch))} · ✦ Hunt tab.</div>`}
  h+=`</div>`;
  if(day.book&&day.book.length){h+=`<div class="sec" style="--rc:${rc}"><h3>Today's bookings</h3>`;
   day.book.forEach(b=>{h+=`<div class="item"><div class="it"><b>${esc(b.l)}</b><div class="desc"><span class="ref">${esc(b.r)}</span></div></div></div>`});h+=`</div>`}
  h+=`<div class="sec" style="--rc:${rc}"><h3>Notes for this day</h3>
      <textarea class="note" placeholder="Anything worth remembering — a change of plan, a place you loved, something to tell Claude to update later…" onchange="saveNote(this.value)">${esc(S.notes[curDay]||"")}</textarea></div>`;
+ h+=`<div class="sec" style="--rc:${rc}"><h3>Daily dispatch — send home</h3>
+  <div class="desc" style="font-size:13px;color:var(--ink2);margin-bottom:8px">Auto-written from today: weather, kilometers, hunt finds, and Log quotes. Copy → WhatsApp → attach your photos. The cover card leads the album.</div>
+  <details class="lore" style="--rc:${rc}"><summary>Preview today's dispatch</summary><div style="white-space:pre-wrap;font-size:13.5px;padding:8px 14px 12px;line-height:1.55">${esc(dispatchText(day))}</div></details>
+  <div style="display:flex;gap:8px;margin-top:9px;flex-wrap:wrap">
+   <button class="btn primary" style="margin:0" onclick="copyDispatch()">Copy dispatch</button>
+   <button class="btn" style="margin:0" onclick="shareDispatch()">Share…</button>
+   <button class="btn" style="margin:0" onclick="makeCard()">Cover card</button></div>
+  <div id="cardBox" style="display:none;margin-top:10px"></div></div>`;
+ const _od=odoThrough(day.d);
+ h+=`<div class="odoStrip">🧭 ~${Math.round(_od.total).toLocaleString()} km so far · ${Object.keys(ODO_LBL).filter(k=>_od[k]>0).map(k=>ODO_LBL[k].split(" ")[0]+" "+Math.round(_od[k]).toLocaleString()).join(" · ")}</div>`;
  h+=`<div class="navRow"><button class="navBtn" onclick="toggleEdit()">${editing?"Done editing":"✎ Edit this day"}</button></div>`;
  h+=`<div class="footer">Ryan Family · Scandinavia 2026</div>`;
  return h}
@@ -886,23 +1066,38 @@ function renderMore(){
   <div class="convOut" id="cvOut"></div>
   <div class="small" style="margin-top:6px">Rates used: NOK <input style="width:52px;border:1px solid var(--hair);border-radius:6px;padding:2px 4px;background:var(--paper)" id="rNok" value="${S.rate.nok}"> /USD · DKK <input style="width:52px;border:1px solid var(--hair);border-radius:6px;padding:2px 4px;background:var(--paper)" id="rDkk" value="${S.rate.dkk}"> /USD — editable, saved on device.</div></div>`;
  h+=`<div class="tool"><h4>Sync between phones</h4>
-  <div class="small">Check-offs, notes, hunt scores and edits live on THIS phone only. Fastest sync (works offline, e.g. on the ferry): show the QR here, scan it with the other phone's Camera, copy, then Import there. Or share as text over iMessage.</div>
+  <div class="small">Check-offs, notes, hunt claims, memory-log text and edits live on THIS phone only (photos stay per-device). Fastest sync (works offline, e.g. on the ferry): show the QR here, scan it with the other phone's Camera, copy, then Import there. Or share as text over iMessage.</div>
   <button class="btn primary" onclick="showQR()">Show sync QR</button>
   <button class="btn" onclick="exportState()">Share as text</button>
   <button class="btn" onclick="importState()">Import</button>
   <div id="qrBox" style="display:none"></div></div>`;
+ const phEss=(list)=>list.map(x=>`<div class="phRow"><span class="phE">${esc(x.e)}</span><span class="phP serif">${esc(x.p)}</span><span class="phPr">${esc(x.pr)}</span></div>`).join("");
+ h+=`<div class="tool"><h4>Phrasebook</h4>
+  <details class="lore"><summary>Norwegian essentials (16)</summary><div style="padding:4px 14px 12px">${phEss(ESS_NO)}</div></details>
+  <details class="lore"><summary>Danish essentials (15)</summary><div style="padding:4px 14px 12px">${phEss(ESS_DA)}</div></details>
+  <details class="lore"><summary>Phrase-a-day — all 21</summary><div style="padding:4px 14px 12px">${DATA.map(d=>d.phrase?`<div class="phRow"><span class="phE">${fmtDate(d.d)}</span><span class="phP serif">${esc(d.phrase.p)}</span><span class="phPr">${esc(d.phrase.pr)}</span></div>`:"").join("")}</div></details>
+  <div style="display:flex;gap:8px;margin-top:9px;flex-wrap:wrap">
+   <a class="btn" style="margin:0;text-decoration:none;text-align:center" href="https://translate.google.com/?sl=no&tl=en&op=translate" target="_blank" rel="noopener">↗ Translate Norwegian</a>
+   <a class="btn" style="margin:0;text-decoration:none;text-align:center" href="https://translate.google.com/?sl=da&tl=en&op=translate" target="_blank" rel="noopener">↗ Translate Danish</a></div>
+  <div class="small" style="margin-top:7px">For menus and signs: Google Translate app → camera mode — works offline once the Norwegian + Danish packs are downloaded (it's on the pre-trip checklist).</div></div>`;
+ const _oc=odoThrough(localISO(new Date())<DATA[0].d?DATA[0].d:localISO(new Date()));
+ h+=`<div class="tool"><h4>Trip odometer</h4>
+  <div class="odoBig serif">~${Math.round(_oc.total).toLocaleString()} km</div>
+  ${Object.keys(ODO_LBL).map(k=>`<div class="odoRow"><span>${ODO_LBL[k]}</span><b>~${Math.round(_oc[k]).toLocaleString()} km</b></div>`).join("")}
+  <div class="small" style="margin-top:7px">Estimates from the locked itinerary, counted through today. Grand total by Jul 27: ~${Math.round(odoThrough("2026-07-27").total).toLocaleString()} km — about 44% of the way around the planet.</div></div>`;
  h+=`<div class="tool"><h4>About this app</h4>
-  <div class="small">Built from Live_Schedule_07052026.md. Works fully offline once loaded. To change the underlying itinerary (not just notes), ask Claude to regenerate the app and push the new index.html to GitHub — the app picks it up next time it opens online. Data version: 2.0 · Jul 5 2026. Live weather via Open-Meteo when online, cached for offline. New in 2.0: live travel-day chain with fallbacks, Tonight → Tomorrow card, checkout idiot-check, the scavenger hunt, offline QR sync, and tap-to-call numbers in the Vault.</div></div>`;
+  <div class="small">Built from Live_Schedule_07052026.md. Works fully offline once loaded. To change the underlying itinerary (not just notes), ask Claude to regenerate the app and push the new index.html to GitHub — the app picks it up next time it opens online. Data version: 3.0 · Jul 6 2026. Live weather via Open-Meteo when online, cached for offline. New in 3.0: Hunt 2.0 — cooperative chapters matched to the six posters, with editable prizes and unlock goals; the Memory Log (photo-book capture); Daily Dispatch + cover card for WhatsApp; the Trip Odometer; and the offline Phrasebook with Translate links.</div></div>`;
  h+=`<div class="footer">Ryan Family · Scandinavia 2026</div>`;return h}
 
 function render(keep){
  const _y=keep?window.scrollY:0;
  renderVoyage();
- const views={day:renderDay,days:renderDays,vault:renderVault,hunt:renderHunt,more:renderMore};
+ const views={day:renderDay,days:renderDays,vault:renderVault,hunt:renderHunt,log:renderLog,more:renderMore};
  $("#app").innerHTML=views[curTab]();
  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===curTab));
  document.body.classList.toggle("editing",editing&&curTab==="day");
  if(curTab==="more")wireConverter();
+ if(curTab==="log")hydratePhotos();
  window.scrollTo({top:keep?_y:0})}
 
 
@@ -963,34 +1158,214 @@ function tomorrowHTML(day){
  rows+=ft?`<div>⏱ First departure <b>${esc(ft.t)}</b> — ${esc(ft.l.split("·")[0].trim())}</div>`:`<div>No locked transit — free-flow day.</div>`;
  if(CO[tm.d])rows+=`<div>🧳 Checkout morning — ${esc(CO[tm.d].by)}</div>`;
  if(rec)rows+=`<div>${wxIcon(rec.c)} ${Math.round(rec.lo)}–${Math.round(rec.hi)}°F · ${rec.p}% rain</div>`;
+ rows+=`<div>✎ Log today's best moment before bed — Log tab.</div>`;
  return `<div class="tmr" onclick="curDay=${i+1};render()"><div class="tmrK">Tonight → Tomorrow · ${esc(tm.dow)} ${fmtDate(tm.d)}</div>
   <div class="tmrCity serif">${esc(tm.city)}</div>${rows}<div class="tmrGo">Tap to open tomorrow →</div></div>`}
 
-/* ---- scavenger hunt ---- */
-function huntTotals(){let g=0,d=0;Object.entries(HUNT).forEach(([dt,items])=>items.forEach((it,i)=>{const c=S.hunt[dt+"."+i];if(!c)return;if(c==="G"||c==="B")g+=it.p;if(c==="D"||c==="B")d+=it.p}));return{g,d}}
+/* ---- scavenger hunt 2.0: cooperative chapters ---- */
+function chScore(c){let g=0,d=0;c.items.forEach((it,i)=>{const v=S.hunt[c.id+"."+i];if(!v)return;if(v==="G"||v==="B")g+=it.p;if(v==="D"||v==="B")d+=it.p});return{g,d}}
+function huntToday(){const td=localISO(new Date()),out=[];CHAPTERS.forEach(c=>c.items.forEach((it,i)=>{const k=c.id+"."+i;if(S.hunt[k]&&S.hdate[k]===td)out.push({t:it.t,w:S.hunt[k]})}));return out}
+function barHTML(who,pts,goal,col){const pc=Math.min(100,Math.round(pts/goal*100));
+ return `<div class="pRow"><span class="pWho" style="color:${col}">${who}</span>
+  <div class="pTrack"><div class="pFill" style="width:${pc}%;background:${col}"></div></div>
+  <span class="pPts">${pts}<span style="color:var(--faint)">/${goal}</span>${pts>=goal?" 🏅":""}</span></div>`}
 function renderHunt(){
- const{g,d}=huntTotals(),td=localISO(new Date());
- let lead=g===d?"All square — next find takes the lead.":(g>d?`Gavin leads by ${g-d}.`:`Declan leads by ${d-g}.`);
- let h=`<div class="scoreWrap">
-  <div class="scoreCard ${g>d?"lead":""}" style="--rc:var(--fjord)"><div class="nm">Gavin</div><div class="pt serif" style="color:var(--fjord)">${g}</div></div>
-  <div class="scoreCard ${d>g?"lead":""}"><div class="nm">Declan</div><div class="pt serif" style="color:var(--capital)">${d}</div></div></div>
- <div class="huntLead">${lead} Tap G or D to claim a find — both can claim shared ones.</div>`;
- DATA.forEach(day=>{const items=HUNT[day.d];if(!items)return;
-  const rc=`var(--${day.r})`,isTd=day.d===td;
-  const claimed=items.filter((_,i)=>S.hunt[day.d+"."+i]).length;
-  h+=`<div class="sec" style="--rc:${rc};padding:0;overflow:hidden"><details class="lore" style="--rc:${rc};border:none;margin:0" ${isTd?"open":""}>
-   <summary style="padding:12px 16px">${isTd?"⭑ TODAY · ":""}${esc(day.dow)} ${fmtDate(day.d)} — ${esc(day.city)} <span class="coBar" style="float:right;margin-right:18px">${claimed}/${items.length}</span></summary>
-   <div style="padding:0 16px 10px">`;
-  items.forEach((it,i)=>{const k=day.d+"."+i,c=S.hunt[k]||"";
-   h+=`<div class="hItem ${c?"claimed":""}"><div class="ht">${esc(it.t)}</div><span class="hPts">${it.p}p</span>
-    <button class="cl ${c==="G"||c==="B"?"onG":""}" onclick="claim('${k}','G')">G</button>
-    <button class="cl ${c==="D"||c==="B"?"onD":""}" onclick="claim('${k}','D')">D</button></div>`});
+ const td=localISO(new Date());
+ let h=`<div class="huntLead" style="margin-top:4px"><b>Team hunt.</b> Hit the goal in each chapter and the prize is yours — <i>both</i> of you can win every prize. Shared finds count for both, so work together. Tap G or D to claim.</div>`;
+ CHAPTERS.forEach(c=>{
+  const rc=`var(--${c.r})`,cur=td>=c.d1&&td<=c.d2,{g,d}=chScore(c),goal=chGoal(c),mx=chMax(c);
+  const claimed=c.items.filter((_,i)=>S.hunt[c.id+"."+i]).length;
+  h+=`<div class="sec" style="--rc:${rc};padding:0;overflow:hidden"><details class="lore" style="--rc:${rc};border:none;margin:0" ${cur?"open":""}>
+   <summary style="padding:12px 16px">${cur?"⭑ NOW · ":""}${esc(c.name)} <span class="chDates">${fmtDate(c.d1)}–${fmtDate(c.d2)}</span> <span class="coBar" style="float:right;margin-right:18px">${claimed}/${c.items.length}</span></summary>
+   <div style="padding:2px 16px 12px">
+   <div class="prizeBox"><span class="pzLab">PRIZE · ${goal} of ${mx} pts</span><div class="pzTxt">${esc(prizeOf(c))}</div><button class="pzEdit" onclick="editPrize('${c.id}')">✎</button></div>
+   ${barHTML("Gavin",g,goal,"var(--fjord)")}${barHTML("Declan",d,goal,"var(--capital)")}
+   ${(g>=goal||d>=goal)?`<div class="pzWin">🏅 ${g>=goal&&d>=goal?"BOTH UNLOCKED":(g>=goal?"Gavin has":"Declan has")+" unlocked"} the ${esc(c.name)} prize!</div>`:""}`;
+  c.items.forEach((it,i)=>{const k=c.id+"."+i,v=S.hunt[k]||"";
+   h+=`<div class="hItem ${v?"claimed":""}"><div class="ht">${it.s==="M"?'<span class="mTag">MISSION</span> ':""}${esc(it.t)}${it.d?` <span class="hDay">${fmtDate(it.d)}</span>`:""}</div><span class="hPts">${it.p}p</span>
+    <button class="cl ${v==="G"||v==="B"?"onG":""}" onclick="claim('${k}','G')">G</button>
+    <button class="cl ${v==="D"||v==="B"?"onD":""}" onclick="claim('${k}','D')">D</button></div>`});
   h+=`</div></details></div>`});
- h+=`<div class="footer">Winner picks the movie on the flight home</div>`;return h}
+ h+=`<div class="footer">MISSION items are from your posters — check them off in both places</div>`;return h}
+window.editPrize=id=>{const c=CHAPTERS.find(x=>x.id===id);const cur=prizeOf(c);
+ const n=prompt("Edit the "+c.name+" prize:",cur);if(n===null)return;
+ S.prizes=S.prizes||{};if(n.trim())S.prizes[id]=n.trim();else delete S.prizes[id];store.save(S);render(true)};
 window.claim=(k,w)=>{const c=S.hunt[k]||"";let n;
  if(w==="G")n=c==="G"?"":(c==="D"?"B":(c==="B"?"D":"G"));
  else n=c==="D"?"":(c==="G"?"B":(c==="B"?"G":"D"));
- if(n)S.hunt[k]=n;else delete S.hunt[k];store.save(S);render(true)};
+ const ch=CHAPTERS.find(x=>k.startsWith(x.id+"."));
+ const pre=ch?chScore(ch):null;
+ if(n){S.hunt[k]=n;S.hdate[k]=localISO(new Date())}else{delete S.hunt[k];delete S.hdate[k]}
+ if(ch&&pre){const post=chScore(ch),goal=chGoal(ch);
+  ["g","d"].forEach(b=>{if(pre[b]<goal&&post[b]>=goal)toast(`🏅 ${b==="g"?"Gavin":"Declan"} unlocked the ${ch.name} prize — ${prizeOf(ch)}`)})}
+ store.save(S);render(true)};
+let _toastT=null;
+function toast(msg){let t=document.getElementById("toast");
+ if(!t){t=document.createElement("div");t.id="toast";document.body.appendChild(t)}
+ t.textContent=msg;t.classList.add("show");clearTimeout(_toastT);_toastT=setTimeout(()=>t.classList.remove("show"),5000)}
+
+/* ---- memory log: entries in S.log (text syncs via QR); photos in IndexedDB (this device) ---- */
+const idb={
+ open(){return new Promise((res,rej)=>{const r=indexedDB.open("ryantrip",1);
+  r.onupgradeneeded=()=>r.result.createObjectStore("ph");
+  r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})},
+ async put(k,v){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction("ph","readwrite");tx.objectStore("ph").put(v,k);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})},
+ async get(k){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction("ph").objectStore("ph").get(k);q.onsuccess=()=>res(q.result||null);q.onerror=()=>rej(q.error)})},
+ async del(k){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction("ph","readwrite");tx.objectStore("ph").delete(k);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})},
+ async keys(){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction("ph").objectStore("ph").getAllKeys();q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})}};
+let lgWho="Dad",lgPhoto=null;
+window.setWho=w=>{lgWho=w;document.querySelectorAll(".whoChip").forEach(b=>b.classList.toggle("on",b.dataset.w===w))};
+window.pickPhoto=inp=>{const f=inp.files&&inp.files[0];if(!f)return;
+ const img=new Image(),rd=new FileReader();
+ rd.onload=()=>{img.onload=()=>{
+  const mx=900,sc=Math.min(1,mx/Math.max(img.width,img.height));
+  const cv=document.createElement("canvas");cv.width=Math.round(img.width*sc);cv.height=Math.round(img.height*sc);
+  cv.getContext("2d").drawImage(img,0,0,cv.width,cv.height);
+  lgPhoto=cv.toDataURL("image/jpeg",0.72);
+  const pv=document.getElementById("lgPrev");if(pv){pv.src=lgPhoto;pv.style.display="block"}};
+ img.src=rd.result};rd.readAsDataURL(f)};
+window.addLog=async()=>{
+ const ta=document.getElementById("lgTxt"),txt=(ta&&ta.value||"").trim();
+ if(!txt&&!lgPhoto){toast("Write a line or add a photo first");return}
+ const id="e"+Date.now(),day=DATA[todayIdx()];
+ S.log[id]={t:txt,w:lgWho,d:localISO(new Date()),c:day?day.city:"",ph:lgPhoto?1:0,ts:Date.now()};
+ if(lgPhoto){try{await idb.put(id,lgPhoto)}catch(e){S.log[id].ph=0;toast("Photo could not be saved — text kept")}}
+ lgPhoto=null;store.save(S);render();toast("Logged ✓")};
+window.delLog=id=>{if(!confirm("Delete this memory?"))return;delete S.log[id];idb.del(id).catch(()=>{});store.save(S);render(true)};
+function renderLog(){
+ const entries=Object.entries(S.log).sort((a,b)=>b[1].ts-a[1].ts);
+ let h=`<div class="tool"><h4>New memory</h4>
+  <div class="small" style="margin-bottom:8px">20 seconds, once a day, and the photo book writes itself. Who's talking?</div>
+  <div class="whoRow">${["Gavin","Declan","Mom","Dad"].map(w=>`<button class="whoChip ${w===lgWho?"on":""}" data-w="${w}" onclick="setWho('${w}')">${w}</button>`).join("")}</div>
+  <textarea class="note" id="lgTxt" placeholder="Best moment · funniest quote · thing we'll forget if we don't write it down…"></textarea>
+  <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+   <label class="btn" style="margin:0">📷 Photo<input type="file" accept="image/*" style="display:none" onchange="pickPhoto(this)"></label>
+   <button class="btn primary" style="margin:0" onclick="addLog()">Save memory</button></div>
+  <img id="lgPrev" style="display:none;max-width:100%;border-radius:10px;margin-top:8px">
+  <div class="small" style="margin-top:8px">Text syncs between phones via QR; photos stay on the phone that took them (full-res lives in your camera roll — thumbnails here are for the book).</div></div>`;
+ let lastD="";
+ entries.forEach(([id,e])=>{
+  if(e.d!==lastD){lastD=e.d;const dd=DATA.find(x=>x.d===e.d);
+   h+=`<div class="logDate">${dd?esc(dd.dow)+" ":""}${fmtDate(e.d)}${e.c?" — "+esc(e.c):""}</div>`}
+  h+=`<div class="logCard">${e.ph?`<img class="logPh" data-ph="${id}">`:""}
+   ${e.t?`<div class="logTxt">${esc(e.t)}</div>`:""}
+   <div class="logMeta"><span class="logWho">${esc(e.w)}</span><button class="logDel" onclick="delLog('${id}')">delete</button></div></div>`});
+ if(!entries.length)h+=`<div class="footer" style="margin-top:30px">No memories yet — the first skillingsbolle will fix that</div>`;
+ else h+=`<div class="tool"><h4>Export for the photo book</h4>
+  <div class="small">After the trip, hand this export to Claude and the memory book gets built from it. Export from BOTH phones (photos are per-device).</div>
+  <button class="btn primary" onclick="exportLog(1)">Export with photos</button>
+  <button class="btn" onclick="exportLog(0)">Copy text only</button></div>
+  <div class="footer">${entries.length} memories and counting</div>`;
+ return h}
+async function hydratePhotos(){const imgs=document.querySelectorAll("img.logPh[data-ph]");
+ for(const im of imgs){try{const d=await idb.get(im.dataset.ph);if(d)im.src=d}catch(e){}}}
+window.exportLog=async withPh=>{
+ const out={exported:localISO(new Date()),entries:S.log,photos:{}};
+ if(withPh){try{const ks=await idb.keys();for(const k of ks)if(S.log[k])out.photos[k]=await idb.get(k)}catch(e){}}
+ const txt=JSON.stringify(out);
+ if(!withPh){const lines=Object.values(S.log).sort((a,b)=>a.ts-b.ts).map(e=>`${e.d} · ${e.w}: ${e.t}`).join("\n");
+  try{await navigator.clipboard.writeText(lines);toast("Copied — paste anywhere")}catch(e){prompt("Copy:",lines)}return}
+ try{const f=new File([txt],"ryantrip-memories-"+localISO(new Date())+".json",{type:"application/json"});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}}catch(e){}
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"application/json"}));
+ a.download="ryantrip-memories.json";a.click();toast("Downloaded")};
+
+/* ---- trip odometer (~estimates from the locked itinerary; km) ---- */
+const ODO={
+"2026-07-07":{p:7340},"2026-07-08":{p:745,w:2},"2026-07-09":{t:1,w:4},"2026-07-10":{w:5},
+"2026-07-11":{f:185,w:3},"2026-07-12":{w:6},"2026-07-13":{f:15,w:2},
+"2026-07-14":{f:82,t:70,b:78,w:2},"2026-07-15":{w:6},"2026-07-16":{w:7},
+"2026-07-17":{b:78,t:385,w:3},"2026-07-18":{w:7},"2026-07-19":{f:4,w:6},
+"2026-07-20":{b:38,w:4},"2026-07-21":{w:6},"2026-07-22":{f:3,w:4},
+"2026-07-23":{b:43,f:485,w:3},"2026-07-24":{w:5},"2026-07-25":{f:6,w:5},
+"2026-07-26":{w:6},"2026-07-27":{m:8,p:7960}};
+const ODO_LBL={p:"✈ Plane",f:"⛴ Boat & ferry",t:"🚂 Train",b:"🚌 Bus",m:"Ⓜ Metro",w:"👟 On foot"};
+function odoThrough(dateISO){const out={p:0,f:0,t:0,b:0,m:0,w:0};
+ Object.entries(ODO).forEach(([d,v])=>{if(d<=dateISO)Object.entries(v).forEach(([k,km])=>out[k]+=km)});
+ out.total=Object.keys(ODO_LBL).reduce((a,k)=>a+out[k],0);return out}
+function odoDay(dateISO){return ODO[dateISO]||{}}
+
+/* ---- daily dispatch ---- */
+function dispatchText(day){
+ const i=DATA.indexOf(day),dk=day.d;
+ const W=wxGet(),wk=WXDAY[dk],rec=W.data&&W.data[wk]&&W.data[wk][dk];
+ const dz=odoDay(dk),cum=odoThrough(dk);
+ const dparts=Object.entries(dz).map(([k,km])=>`${ODO_LBL[k].split(" ").slice(1).join(" ")||k} ~${km} km`);
+ const finds=huntToday();
+ const quotes=Object.values(S.log).filter(e=>e.d===dk&&e.t).sort((a,b)=>a.ts-b.ts);
+ let L=[];
+ L.push(`${dk<"2026-07-24"?"🇳🇴":"🇩🇰"} Scandinavia — Day ${i+1} of 21 · ${day.dow} ${fmtDate(dk)}`);
+ L.push(`📍 ${day.city}`);
+ if(day.sub)L.push(day.sub);
+ if(rec)L.push(`☁️ ${Math.round(rec.lo)}–${Math.round(rec.hi)}°F, ${rec.p}% rain`);
+ if(dparts.length)L.push(`🧭 Today: ${dparts.join(" · ")} — trip total ~${Math.round(cum.total).toLocaleString()} km`);
+ if(finds.length)L.push(`✦ Hunt finds: ${finds.map(f=>f.t+" ("+(f.w==="B"?"both boys":f.w==="G"?"Gavin":"Declan")+")").join("; ")}`);
+ quotes.slice(0,4).forEach(q=>L.push(`💬 "${q.t}" — ${q.w}`));
+ L.push(`— Dan, Melissa, Gavin & Declan`);
+ return L.join("\n")}
+window.copyDispatch=async()=>{const t=dispatchText(DATA[curDay]);
+ try{await navigator.clipboard.writeText(t);toast("Dispatch copied — paste into WhatsApp, add today's photos")}catch(e){prompt("Copy:",t)}};
+window.shareDispatch=async()=>{const t=dispatchText(DATA[curDay]);
+ if(navigator.share){try{await navigator.share({text:t})}catch(e){}}else copyDispatch()};
+
+/* ---- cover card (canvas, nautical style, no photos — real photos follow in the album) ---- */
+window.makeCard=async()=>{
+ const day=DATA[curDay],i=curDay,dk=day.d;
+ const cv=document.createElement("canvas");cv.width=1080;cv.height=1350;const x=cv.getContext("2d");
+ const C={paper:"#EFE6D2",ink:"#1E3140",ink2:"#5B6B78",red:"#A5442A",sea:"#2E6E62",gold:"#B98A2F"};
+ x.fillStyle=C.paper;x.fillRect(0,0,1080,1350);
+ x.strokeStyle=C.ink;x.lineWidth=6;x.strokeRect(36,36,1008,1278);
+ x.lineWidth=1.5;x.strokeRect(52,52,976,1246);
+ x.setLineDash([2,7]);x.lineWidth=2;x.strokeStyle=C.ink2;x.strokeRect(70,70,940,1210);x.setLineDash([]);
+ x.fillStyle=C.ink2;x.font="600 30px Georgia";x.textAlign="center";x.letterSpacing="10px";
+ x.fillText("THE RYAN FAMILY · SCANDINAVIA 2026",540,150);x.letterSpacing="0px";
+ x.fillStyle=C.red;x.font="700 34px Georgia";
+ x.fillText("DAY "+(i+1)+" OF 21  ·  "+day.dow.toUpperCase()+" "+fmtDate(dk).toUpperCase(),540,215);
+ x.fillStyle=C.ink;x.font="700 92px Georgia";
+ const city=day.city.replace(/→/g,"→");
+ x.font=city.length>16?"700 64px Georgia":"700 92px Georgia";
+ x.fillText(city,540,330);
+ x.fillStyle=C.ink2;x.font="italic 34px Georgia";
+ wrapText(x,day.sub||"",540,392,860,44);
+ // compass rose
+ const cx=540,cy=640,R=150;
+ x.strokeStyle=C.ink;x.lineWidth=3;x.beginPath();x.arc(cx,cy,R,0,7);x.stroke();
+ x.lineWidth=1;x.beginPath();x.arc(cx,cy,R-14,0,7);x.stroke();
+ for(let a=0;a<8;a++){const th=a*Math.PI/4,long=a%2===0;
+  x.save();x.translate(cx,cy);x.rotate(th);
+  x.fillStyle=long?C.ink:C.red;x.beginPath();
+  x.moveTo(0,-(long?R-20:R-52));x.lineTo(12,0);x.lineTo(-12,0);x.closePath();x.fill();x.restore()}
+ x.fillStyle=C.paper;x.beginPath();x.arc(cx,cy,26,0,7);x.fill();
+ x.strokeStyle=C.ink;x.lineWidth=2.5;x.beginPath();x.arc(cx,cy,26,0,7);x.stroke();
+ x.fillStyle=C.ink;x.font="700 44px Georgia";x.fillText("N",cx,cy-R-24);
+ // stats band
+ const cum=odoThrough(dk),finds=huntToday(),nlog=Object.values(S.log).filter(e=>e.d===dk).length;
+ const stats=[["~"+Math.round(cum.total).toLocaleString()+" km","traveled so far"],
+  [String(finds.length),"hunt finds today"],
+  [String(nlog),nlog===1?"memory logged":"memories logged"]];
+ let sx=540-330;
+ x.textAlign="center";
+ stats.forEach(s=>{x.fillStyle=C.sea;x.font="700 56px Georgia";x.fillText(s[0],sx,900);
+  x.fillStyle=C.ink2;x.font="26px Georgia";x.fillText(s[1].toUpperCase(),sx,940);sx+=330});
+ // per-mode line
+ x.fillStyle=C.ink2;x.font="28px Georgia";
+ const modes=Object.keys(ODO_LBL).filter(k=>cum[k]>0).map(k=>ODO_LBL[k]+" ~"+Math.round(cum[k]).toLocaleString());
+ wrapText(x,modes.join("   ·   "),540,1010,880,38);
+ // footer
+ x.fillStyle=C.red;x.font="italic 700 40px Georgia";
+ x.fillText(dk<"2026-07-24"?"Hilsen fra Norge!":"Hilsner fra København!",540,1180);
+ x.fillStyle=C.ink2;x.font="24px Georgia";
+ x.fillText("· real photos follow ·",540,1230);
+ cv.toBlob(async b=>{
+  try{const f=new File([b],"day"+(i+1)+"-card.jpg",{type:"image/jpeg"});
+   if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}}catch(e){}
+  const box=document.getElementById("cardBox");
+  if(box){box.style.display="block";box.innerHTML='<img style="max-width:100%;border-radius:12px" src="'+cv.toDataURL("image/jpeg",0.9)+'"><div class="small" style="margin-top:6px">Long-press the card to save, then attach it first in WhatsApp.</div>'}
+ },"image/jpeg",0.9)};
+function wrapText(x,text,cx,y,maxW,lh){const words=(text||"").split(" ");let line="";
+ words.forEach(w=>{const t=line?line+" "+w:w;
+  if(x.measureText(t).width>maxW&&line){x.fillText(line,cx,y);y+=lh;line=w}else line=t});
+ if(line)x.fillText(line,cx,y)}
 
 /* ---- tap-to-call ---- */
 const telify=t=>(t||"").replace(/\+4[57][\d ]{7,13}\d/g,m=>`<a href="tel:${m.replace(/ /g,"")}" style="color:var(--ink);font-weight:700;text-decoration:underline dotted">${m}</a>`);
@@ -1008,7 +1383,7 @@ window.showQR=()=>{
   box.innerHTML=q.createSvgTag({cellSize:4,margin:6})+`<div class="qrCap"><b>Other phone:</b> open the iPhone <b>Camera</b> app, point it here, tap the text banner, <b>Copy</b> — then in this app: More → Import → paste. Works with zero signal.</div>`;
  }catch(e){box.style.display="block";box.innerHTML=`<div class="qrCap">QR failed to build — use “Share as text”.</div>`}};
 function mergeState(inc){
- ["done","notes","edits","hidden","prep","hunt","co","custom"].forEach(f=>{if(inc[f]){S[f]=S[f]||{};Object.assign(S[f],inc[f])}});
+ ["done","notes","edits","hidden","prep","hunt","hdate","prizes","co","log","custom"].forEach(f=>{if(inc[f]){S[f]=S[f]||{};Object.assign(S[f],inc[f])}});
  if(inc.rate)S.rate=inc.rate;store.save(S)}
 
 /* actions */
