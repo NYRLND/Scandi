@@ -209,6 +209,7 @@ h3 .coBar{margin-left:auto}
 .prizeBox{position:relative;background:var(--paper2);border:1px dashed var(--hair);border-radius:11px;padding:9px 40px 9px 12px;margin:4px 0 10px}
 .pzLab{font-size:9.5px;font-weight:800;letter-spacing:.12em;color:var(--warn)}
 .pzTxt{font-size:14px;font-weight:600;margin-top:2px;line-height:1.35}
+.pzCond{font-size:11.5px;color:var(--ink2);margin-top:5px;line-height:1.4;font-style:italic}
 .pzEdit{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:1px solid var(--hair);border-radius:8px;background:var(--paper);color:var(--ink2)}
 .pRow{display:flex;align-items:center;gap:8px;margin:5px 0}
 .pWho{flex:none;width:52px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
@@ -832,7 +833,7 @@ const CHAPTERS=[
  {t:"Touch 13th-century stone inside Rosenkrantz Tower",p:10,d:"2026-07-10"},
  {t:"Off the diving board into the actual fjord",p:25,d:"2026-07-10"}]},
 {id:"balestrand",name:"Balestrand",r:"fjord",d1:"2026-07-11",d2:"2026-07-13",
- prize:"DAD GETS DUNKED in the Sognefjord — you pick the moment",
+ prize:"$20 spending money for the trip",
  items:[
  {t:"Spot the dark-wood \"English Church\" tucked in the trees",p:10,s:"P"},
  {t:"Find an apple or cherry orchard",p:10,s:"P"},
@@ -852,7 +853,7 @@ const CHAPTERS=[
  {t:"First fish in the boat",p:10,d:"2026-07-13"},
  {t:"Weirdest thing in the mystery net",p:10,d:"2026-07-13"}]},
 {id:"lofthus",name:"Lofthus",r:"orchard",d1:"2026-07-14",d2:"2026-07-16",
- prize:"Dessert draft — you pick the family dessert at Bunnpris",
+ prize:"A trip to Outland in Oslo + a Pokémon pack (we go the first full Oslo day)",
  items:[
  {t:"Find all four fruit trees: apple, pear, plum, cherry",p:10,s:"P"},
  {t:"Spot the Folgefonna glacier across the fjord",p:10,s:"P"},
@@ -872,7 +873,7 @@ const CHAPTERS=[
  {t:"Catch the Berekvam train-meet",p:5,d:"2026-07-14"},
  {t:"Sheep encountered on a trail",p:5}]},
 {id:"oslo",name:"Oslo",r:"capital",d1:"2026-07-17",d2:"2026-07-19",
- prize:"Pokémon pack — earned, sealed, yours",
+ prize:"Pick your own dessert or candy + $10 spending money",
  items:[
  {t:"Find the \"Angry Boy\" (Sinnataggen) in Vigeland Park",p:10,s:"P"},
  {t:"Spot a guard on duty at the Royal Palace",p:10,s:"P"},
@@ -892,7 +893,7 @@ const CHAPTERS=[
  {t:"Order something entirely in Norwegian",p:15},
  {t:"Stand on the deck of a real polar ship",p:10,d:"2026-07-19"}]},
 {id:"drobak",name:"Drøbak",r:"coast",d1:"2026-07-20",d2:"2026-07-23",
- prize:"Fun-drink rights at the fancy dinner — any (non-coffee) drink on the menu",
+ prize:"A visit to Faraos Cigarer in Copenhagen + $20 spending money",
  items:[
  {t:"Meet Hugo the wolffish at the aquarium",p:10,s:"P",d:"2026-07-21"},
  {t:"Find the mermaid statue in the harbor",p:10,s:"P"},
@@ -910,7 +911,7 @@ const CHAPTERS=[
  {t:"Best bunk claimed (negotiation counts)",p:5,d:"2026-07-23"},
  {t:"First sight of Denmark",p:10,d:"2026-07-23"}]},
 {id:"cph",name:"Copenhagen",r:"danish",d1:"2026-07-24",d2:"2026-07-27",
- prize:"Double scoop at Tivoli — flavors of your choosing",
+ prize:"Double-scoop ice cream (or other dessert) at Tivoli on the last night",
  items:[
  {t:"Count the colors of the houses along Nyhavn",p:10,s:"P"},
  {t:"Find the silver lions guarding the thrones at Rosenborg",p:10,s:"P",d:"2026-07-25"},
@@ -1078,7 +1079,7 @@ function renderMore(){
   ${Object.keys(ODO_LBL).map(k=>`<div class="odoRow"><span>${ODO_LBL[k]}</span><b>~${Math.round(_oc[k]).toLocaleString()} km</b></div>`).join("")}
   <div class="small" style="margin-top:7px">Estimates from the locked itinerary, counted through today. Grand total by Jul 27: ~${Math.round(odoThrough("2026-07-27").total).toLocaleString()} km — about 44% of the way around the planet.</div></div>`;
  h+=`<div class="tool"><h4>About this app</h4>
-  <div class="small">Built from Live_Schedule_07052026.md. Works fully offline once loaded. To change the underlying itinerary (not just notes), ask Claude to regenerate the app and push the new index.html to GitHub — the app picks it up next time it opens online. Data version: 3.3 · Jul 6 2026. Live weather via Open-Meteo when online, cached for offline. New in 3.0: Hunt 2.0 — cooperative chapters matched to the six posters, with editable prizes and unlock goals; the Memory Log (photo-book capture); the Trip Odometer; and the offline Phrasebook with Translate links.</div></div>`;
+  <div class="small">Built from Live_Schedule_07052026.md. Works fully offline once loaded. To change the underlying itinerary (not just notes), ask Claude to regenerate the app and push the new index.html to GitHub — the app picks it up next time it opens online. Data version: 3.4 · Jul 6 2026. Live weather via Open-Meteo when online, cached for offline. New in 3.0: Hunt 2.0 — cooperative chapters matched to the six posters, with editable prizes and unlock goals; the Memory Log (photo-book capture); the Trip Odometer; and the offline Phrasebook with Translate links.</div></div>`;
  h+=`<div class="footer">Ryan Family · Scandinavia 2026</div>`;return h}
 
 function render(keep){
@@ -1163,14 +1164,16 @@ function barHTML(who,pts,goal,col){const pc=Math.min(100,Math.round(pts/goal*100
   <span class="pPts">${pts}<span style="color:var(--faint)">/${goal}</span>${pts>=goal?" 🏅":""}</span></div>`}
 function renderHunt(){
  const td=localISO(new Date());
+ if(!huntOpen){huntOpen=new Set();CHAPTERS.forEach(c=>{if(td>=c.d1&&td<=c.d2)huntOpen.add(c.id)})}
  let h=`<div class="huntLead" style="margin-top:4px"><b>Team hunt.</b> Hit the goal in each chapter and the prize is yours — <i>both</i> of you can win every prize. Shared finds count for both, so work together. Tap G or D to claim.</div>`;
  CHAPTERS.forEach(c=>{
   const rc=`var(--${c.r})`,cur=td>=c.d1&&td<=c.d2,{g,d}=chScore(c),goal=chGoal(c),mx=chMax(c);
   const claimed=c.items.filter((_,i)=>S.hunt[c.id+"."+i]).length;
-  h+=`<div class="sec" style="--rc:${rc};padding:0;overflow:hidden"><details class="lore" style="--rc:${rc};border:none;margin:0" ${cur?"open":""}>
+  const isOpen=huntOpen?huntOpen.has(c.id):cur;
+  h+=`<div class="sec" style="--rc:${rc};padding:0;overflow:hidden"><details class="lore" style="--rc:${rc};border:none;margin:0" ${isOpen?"open":""} ontoggle="toggleChapter('${c.id}',this)">
    <summary style="padding:12px 16px">${cur?"⭑ NOW · ":""}${esc(c.name)} <span class="chDates">${fmtDate(c.d1)}–${fmtDate(c.d2)}</span> <span class="coBar" style="float:right;margin-right:18px">${claimed}/${c.items.length}</span></summary>
    <div style="padding:2px 16px 12px">
-   <div class="prizeBox"><span class="pzLab">PRIZE · ${goal} of ${mx} pts</span><div class="pzTxt">${esc(prizeOf(c))}</div><button class="pzEdit" onclick="editPrize('${c.id}')">✎</button></div>
+   <div class="prizeBox"><span class="pzLab">PRIZE · ${goal} of ${mx} pts</span><div class="pzTxt">${esc(prizeOf(c))}</div><div class="pzCond">Earned by hitting the goal <b>and</b> being good to travel with — no fighting, no nagging.</div><button class="pzEdit" onclick="editPrize('${c.id}')">✎</button></div>
    ${barHTML("Gavin",g,goal,"var(--fjord)")}${barHTML("Declan",d,goal,"var(--capital)")}
    ${(g>=goal||d>=goal)?`<div class="pzWin">🏅 ${g>=goal&&d>=goal?"BOTH UNLOCKED":(g>=goal?"Gavin has":"Declan has")+" unlocked"} the ${esc(c.name)} prize!</div>`:""}`;
   c.items.forEach((it,i)=>{const k=c.id+"."+i,v=S.hunt[k]||"";
@@ -1182,6 +1185,8 @@ function renderHunt(){
 window.editPrize=id=>{const c=CHAPTERS.find(x=>x.id===id);const cur=prizeOf(c);
  const n=prompt("Edit the "+c.name+" prize:",cur);if(n===null)return;
  S.prizes=S.prizes||{};if(n.trim())S.prizes[id]=n.trim();else delete S.prizes[id];store.save(S);render(true)};
+let huntOpen=null; // Set of open chapter ids; null = uninitialised (use current-date default)
+window.toggleChapter=(id,el)=>{if(!huntOpen)huntOpen=new Set();if(el.open)huntOpen.add(id);else huntOpen.delete(id)};
 window.claim=(k,w)=>{const c=S.hunt[k]||"";let n;
  if(w==="G")n=c==="G"?"":(c==="D"?"B":(c==="B"?"D":"G"));
  else n=c==="D"?"":(c==="G"?"B":(c==="B"?"G":"D"));
